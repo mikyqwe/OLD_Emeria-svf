@@ -1,0 +1,17 @@
+quest anti_exp begin
+	state start begin
+		when kill with pc.getqf("exp_block")==1 and not npc.is_pc() begin
+			if pc.get_exp()>1 then
+				pc.give_exp2(-pc.get_exp())
+			end
+		end
+		when 72501.use with pc.getqf("exp_block")==0 begin
+			chat("Ab jetzt bekommst du KEINE Exp mehr!")
+			pc.setqf("exp_block", 1)			
+		end
+		when 72501.use with pc.getqf("exp_block")==1 begin
+			chat("Ab jetzt bekommst du wieder Exp!")
+			pc.setqf("exp_block", 0)
+		end
+	end
+end

@@ -1,0 +1,41 @@
+quest horse_guard begin
+	state start begin
+		when 20349.chat."Information" begin
+			local s=number(1, 7)
+			say_title("Stableboy")
+			if 1>=s then
+				say("Always remember to ")
+				say("constantly feed your horse")
+				say("or else it dies.")
+			elseif 2>=s then 
+				say("The Beginner Horse")
+				say("is tired very quickly.")
+				say("Dont stay on its back too long.")
+			elseif 3>=s then 
+				say("To improve your horse, you")
+				say("will need Horse Medals.")
+				say("You find them in the")
+				say("various Ape Dungeons.")
+			elseif 4>=s then 
+				say("If your horse died,")
+				say("there are many herbs")
+				say("of the ape kings,")
+				say("to revive your horse")
+			elseif 5>=s then 
+				say("There are 9 different")
+				say("Horse Appearances.")
+				say("Without a guild, with a guild, as leader.")
+			elseif 6>=s then 
+				say("The Beginner Horse")
+				say("likes to eat hay.")
+				say("The Battle Horse")
+				say("likes to eat carrots.")
+				say("The Military Horse")
+				say("likes to eat red Ginseng.")
+			elseif 7>=s then 
+				say("Read Handbooks of Horse Taming")
+				say("to be able to call your horse faster.")
+			end
+		end
+	end	
+end

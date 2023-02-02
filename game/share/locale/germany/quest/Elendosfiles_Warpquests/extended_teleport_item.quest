@@ -1,0 +1,556 @@
+--[[
+	UPDATES:
+		02.08:	-ALTER WARPRING DRIN, NEUEN WOLLEN DIE NICHT
+
+]]
+quest extended_teleport_item begin
+	state start begin
+		when 70058.use begin
+			if pc.get_map_index()==342 then
+				say_title(item.get_name())
+				say("You can not use this here.")
+				return
+			end
+			local s=1
+			if game.get_event_flag("premium_"..pc.get_account_id())==1 then
+				say_title(item.get_name())
+				say("By using the box (VIP), the warpring allows you to")
+				say("set your own warppoints.")
+				say("Where do you want to be teleported??")
+				s = select("Standard Teleportpoints", "Own Teleportpoints")
+			end
+			if s==1 then
+				local x
+				local y
+				local t
+				local e = pc.get_empire()
+				say_title(item.get_name())
+				say("Where do you want to be teleported?")
+				local s = select("Map1", "Map2", "Valley of Seungryoung", "Desert", "Iceland", "Fireland", "More")
+				if s==7 then
+					say_title(item.get_name())
+					say("Where do you want to be teleported?")
+					local p = select("Demon Tower", "Spiderdungeon", "Haunted Woods", "Red Woods", "Land of the Giants", "Grotto 1 Entrance", "More")
+					if p==1 then
+						x="590300"
+						y="110800"
+					elseif p==2 then
+						x="91600"
+						y="525300"
+					elseif p==3 then
+						x="302700"
+						y="26600"
+					elseif p==4 then
+						say_title(item.get_name())
+						say("Where do you want to be teleported?")
+						t = select("Start", "End", "Exit")
+						if t==1 then
+							x="1118300"
+							y="69000"
+						elseif t==2 then
+							x="1119600"
+							y="8500"
+						end
+					elseif p==5 then
+						x="1811500"
+						y="1847000"
+					elseif p==6 then
+						x="284200"
+						y="809600"
+					elseif p==7 then
+						say_title(item.get_name())
+						say("Where do you want to be teleported?")
+						local q = select("Devil's Catacomb", "Spiderdungeon-3", "Kap of the Dragon", "Enchanted Wood", "Great valley of Elendosfiles (5-180)", "Green Island (95-120)", "More")
+						if q==7 then
+							-- new page
+							say_title(item.get_name())
+							say("Where do you want to be teleported?")
+							local o = select("White Dragon Cave (120-135)", "Sand of Death (135-150)", "Heaven Island (150-180)", "Fire Elemental World Boss (50-180)", "Mystical Elemental World Boss (50-180)", "Premium Map (60-95)", "Exit")
+							if o==1 then
+								if pc.get_level()<120 then 
+									say_title(item.get_name())
+									say("You can only enter this map at level 120+.")
+									return
+								end
+								--White Dragon Cave
+								x = "157800"
+								y = "371200"
+							elseif o==2 then
+								--Sand of Death
+								if pc.get_level()<135 then 
+									say_title(item.get_name())
+									say("You can only enter this map at level 135+.")
+									return
+								end
+								x = "653000"
+								y = "2394400"
+							elseif o==3 then
+								--Heaven Island
+								if pc.get_level()<150 then 
+									say_title(item.get_name())
+									say("You can only enter this map at level 150+.")
+									return
+								end
+								x = "373700"
+								y = "27100"
+							elseif o==4 then
+								--Fire Elemental World Boss
+								if pc.get_level()<50 then 
+									say_title(item.get_name())
+									say("You can only enter this map at level 50+.")
+									return
+								end
+								x = "901100"
+								y = "663900"
+							elseif o==5 then
+								--Mystical Elemental World Boss (New)
+								if pc.get_level()<50 then 
+									say_title(item.get_name())
+									say("You can only enter this map at level 50+.")
+									return
+								end
+								x = "807300"
+								y = "803500"
+							elseif o==6 then
+								--Premium Map
+								if pc.get_level()<60 then 
+									say_title(item.get_name())
+									say("You can only enter this map at level 60+.")
+									return
+								end
+								x = "456100"
+								y = "479600"
+							else
+								return
+							end
+						elseif q==1 then
+							-- Devlils Catacomb
+							x="589800"
+							y="98500"
+						elseif q==2 then
+							if pc.get_level()<60 then 
+								say_title(item.get_name())
+								say("You can only enter this map at level 60+.")
+								return
+							end
+							-- Spiderdungeon-3 end
+							x="68900"
+							y="610800"
+						elseif q==3 then
+							if pc.get_level()<90 then 
+								say_title(item.get_name())
+								say("You can only enter this map at level 90+.")
+								return
+							end
+							-- Kap of the Dragon
+							x="1084900"
+							y="1784400"
+						elseif q==4 then
+							if pc.get_level()<105 then 
+								say_title(item.get_name())
+								say("You can only enter this map at level 105+.")
+								return
+							end
+							-- Verwunscher Wald
+							x="808700"
+							y="1497200"
+						elseif q==5 then
+							if pc.get_level()<5 then 
+								say_title(item.get_name())
+								say("You can only enter this map at level 5+.")
+								return
+							end
+							-- Great valley of Elendosfiles
+							x="471800"
+							y="470900"
+						elseif q==6 then
+							if pc.get_level()<95 then 
+								say_title(item.get_name())
+								say("You can only enter this map at level 95+.")
+								return
+							end
+							-- Green Island
+							x="48500"
+							y="454900"
+						end
+					end
+				elseif s==1 then
+					say_title(item.get_name())
+					say("Where do you want to be teleported?")
+					t = select("Red Kingdom", "Yellow Kingdom", "Blue Kingdom", "Exit")
+					if t==1 then
+						x="473500"
+						y="954900"
+					elseif t==2 then
+						x="62800"
+						y="165900"
+					elseif t==3 then
+						x="959700"
+						y="269800"
+					end
+				elseif s==2 then
+					say_title(item.get_name())
+					say("Where do you want to be teleported?")
+					t = select("Red Kingdom", "Yellow Kingdom", "Blue Kingdom", "Exit")
+					if t==1 then
+						x="352300"
+						y="882700"
+					elseif t==2 then
+						x="145700"
+						y="239800"
+					elseif t==3 then
+						x="863800"
+						y="246000"
+					end
+				elseif s==3 then
+					say_title(item.get_name())
+					say("Where do you want to be teleported?")
+					t = select("Start", "Middle", "Rib-Meadow", "Exit")
+					if t==1 then
+						if e==1 then
+							x="402100"
+							y="673900"						
+						elseif e==2 then
+							x="270400"
+							y="739900"
+						elseif e==3 then
+							x="321300"
+							y="808000"
+						end
+					elseif t==2 then
+						x="332700"
+						y="745600"
+					elseif t==3 then
+						x="282800"
+						y="792800"
+					end
+				elseif s==4 then
+					say_title(item.get_name())
+					say("Where do you want to be teleported?")
+					t = select("Start", "Middle", "Exit")
+					if t==1 then
+						if e==1 then
+							x="217800"
+							y="627200"						
+						elseif e==2 then
+							x="221900"
+							y="502700"
+						elseif e==3 then
+							x="344000"
+							y="502500"
+						end
+					elseif t==2 then
+						x="296300"
+						y="547500"
+					end
+				elseif s==5 then
+					say_title(item.get_name())
+					say("Where do you want to be teleported?")
+					t = select("Start", "Middle", "Exit")
+					if t==1 then
+						if e==1 then
+							x="434200"
+							y="290600"						
+						elseif e==2 then
+							x="375200"
+							y="174900"
+						elseif e==3 then
+							x="491800"
+							y="173600"
+						end
+					elseif t==2 then
+						x="436200"
+						y="215300"
+					end			
+				elseif s==6 then
+					say_title(item.get_name())
+					say("Where do you want to be teleported?")
+					t = select("Teleporter", "Exit")
+					if t==1 then
+						if e==1 then
+							x="600900"
+							y="687300"						
+						elseif e==2 then
+							x="600900"
+							y="687300"
+						elseif e==3 then
+							x="600900"
+							y="687300"
+						end
+					end
+				end			
+				if q != 5 then
+					pc.warp(x, y)
+				end
+				--[[local cost = math.floor(pc.get_level()/5)*1000
+				if cost < 1000 then cost = 1000 end
+				say_title(item.get_name())
+				if pc.get_level() <= 10 then
+					say("Hm… your Level is to low to get teleported.")
+					say("Come back, if you are Level 10 or higher.")
+					return
+				end
+				local s
+				say("Where do you want to be teleported?")
+				say_reward("This costs "..cost.." Yang.")
+				if not table_is_in({1, 3, 21, 23, 41, 43}, pc.get_map_index()) then
+					local warp = {
+						{
+							{89700, 66700},
+							{89700, 66700},
+							{969600, 66700}
+						},
+						{
+							{353100, 882900},
+							{145500, 240000},
+							{863900, 246000}
+						}
+					}
+					local map_names = {{"Yongan","Jayang"},{"Joan","Bokjung"},{"Pyungmoo","Bakra"}}
+					table.insert(map_names[pc.get_empire()], "Abbrechen")
+					s = select_table(map_names[pc.get_empire()])
+					if s==3 then return end				
+					say_title(item.get_name())
+					if pc.get_gold() < cost then
+						say("The teleport is not for free.")
+						say_reward("It costs "..cost.." Yang.")
+						return
+					end
+					say("Attention, I will teleport you now. You will")
+					say("land in a dangerous place, so watch out")
+					say("Good Luck!")
+					pc.change_gold(-cost)
+					wait()
+					local z = warp[s][pc.get_empire()]
+					pc.warp(z[1], z[2])
+					return
+				end
+				local warp = {
+						{
+							{128500, 1000},
+							{179500, 1000},
+							{271800, 13000},
+						},
+						{
+							{402100, 673900},
+							{270400, 739900},
+							{321300, 808000},
+						},
+						{
+							{217800, 627200},
+							{221900, 502700},
+							{344000, 502500},
+						},
+						{
+							{434200, 290600},
+							{375200, 174900},
+							{491800, 173600},
+						},
+						{
+							{91700, 525600},
+							{91700, 525600},
+							{91700, 525600},						
+						} ,
+						{
+							{600900, 687300},
+							{600900, 687300},
+							{600900, 687300},
+						},
+						{
+							{590500, 110500},
+							{590500, 110500},
+							{590500, 110500},
+						},
+				}
+				if pc.get_level()>=60 then
+					s = select("Guildzone", "Valley of Seungryoung", "Desert", "Mount Sohan", "Spiderdungeon", "Other Places")
+					if s==7 then return end
+					if s==6 then
+						say_title(item.get_name())
+						say("Where do you want to be teleported?")
+						say_reward("This costs "..cost.." Yang.")
+						s = select("Doyyumhwaji", "Deamontower", "Back", "Exit")+5
+						if s==9 then return end
+						if s==8 then 
+							say_title(item.get_name())
+							say("Where do you want to be teleported?")
+							say_reward("This costs "..cost.." Yang.")
+							s = select("Guildzone", "Valley of Seungryoung", "Yongi-Desert", "Mount Sohan", "Spiderdungeon", "Exit")
+							if s==6 then return end
+						end
+					end
+				else
+					s = select("Guildzone", "Valley of Seungryoung", "Yongi-Desert", "Mount Sohan", "Spiderdungeon", "Exit")
+					if s==6 then return end
+				end
+				say_title(item.get_name())
+				if pc.get_gold() < cost then
+					say("The teleport is not free.")
+					say_reward("It costs "..cost.." Yang.")
+					return
+				end
+				say("Attention, I will teleport you now. You will")
+				say("land in a dangerous place, so watch out")
+				say("Good Luck!")
+				pc.change_gold(-cost)
+				wait()
+				local z = warp[s][pc.get_empire()]
+				pc.warp(z[1], z[2])]]
+			elseif s==2 then
+				say_title(item.get_name())
+			
+				-- Hole die aktuellen Positionen
+				local warp, sel = {}, {}
+				for i=1, 10 do
+					warp[i] = {}
+					if pc.getqf("mapi"..i)==0 then break end
+					table.insert(sel, extended_teleport_item.mapname(pc.getqf("mapi"..i)).." ("..pc.getqf("mapx"..i)/100 .." "..pc.getqf("mapy"..i)/100 ..")")
+					table.insert(warp[i], pc.getqf("mapx"..i))
+					table.insert(warp[i], pc.getqf("mapy"..i))
+				end
+				local anzahl_belegt = table.getn(sel)
+				table.insert(sel, "Exit")
+				local t = "warp_left"
+				
+				-- Variablen			
+				local sdr_timecheck, sdr_next = 0, 60*5	--Zeitabfrage zur Benutzung aktivieren/deaktivieren/einstellen
+				local sdr_usecheck, sdr_use = 0, 15		--Abfrage zur Benutzung aktivieren/deaktivieren/einstellen
+				local sdr_levelcheck, sdr_level = 0, 20	--Levelabfrage aktivieren/deaktivieren/einstellen			
+				local auswahl = {"Teleport", "Add", "Remove", "Exit"}			
+				local tab_say = {
+					["begin"] = "What do you want to do?",
+					["time"] = "You can not use that yet.",
+					["level"] = "Your level is too low.",
+					["warp"] = "At which of your locations would you like to return?",
+					["used_none"] = "All of your 10 memory points are not occupied.",
+					["used_all"] = "All your memory points are occupied. If you want to add [ENTER], you must first delete one [ENTER] earlier.",
+					["no_warps"] = "You have not set any savepoints [ENTER] which you can manage.",
+					["map_block"] = "At this point, you can not set [ENTER] any points of view.",
+					["delete"] = "Select the save point you want to delete [ENTER].",
+					["delete_accept"] = "Are you sure you want to delete this save point?",
+					["add_accept"] = "Do you want to save your current position?",
+					["warp_left"] = "You have ".. 10-anzahl_belegt.." of 10 Memorypoints in use.",
+					["use_left"] = "You can use this item "..sdr_use-pc.getqf("use").."x times."
+				}
+				
+				-- Überprüfe Variablen
+				if sdr_levelcheck==1 and sdr_level<pc.get_level() then
+					say(tab_say["level"])
+					return
+				end	
+				if sdr_timecheck==1 and pc.getqf("next")>get_time() then 
+					say(tab_say["time"])
+					return
+				end		
+				---------------------------
+				
+				if anzahl_belegt==0 then t = "used_none" elseif anzahl_belegt==10 then t = "used_all" end
+				say(tab_say["begin"])
+				say_reward(tab_say[t])
+				if sdr_usecheck==1 then say_reward(tab_say["use_left"]) end
+				local s = select_table(auswahl)
+				if s==table.getn(auswahl) then return end
+				say_title(item.get_name())
+				if s==1 then 
+					if anzahl_belegt==0 then say(tab_say["no_warps"]) return end
+					say(tab_say["warp"])
+					local w = select_table(sel)
+					if w==table.getn(sel) then return end
+					pc.warp(warp[w][1], warp[w][2])
+					if sdr_timecheck==1 then pc.setqf("next", get_time()+sdr_next) end
+					if sdr_usecheck==1 then if sdr_use==pc.getqf("use")+1 then pc.delqf("use") item.remove() return end pc.setqf("use", pc.getqf("use")+1) end
+				elseif s==2 then 
+					if anzahl_belegt==10 then say(tab_say["used_all"]) return elseif extended_teleport_item.mapname(pc.get_map_index())=="nix" then say(tab_say["map_block"]) return end
+					say(tab_say["add_accept"])
+					if select("Ja", "Nein")==2 then return end
+					pc.setqf("mapi"..anzahl_belegt+1, pc.get_map_index())
+					pc.setqf("mapx"..anzahl_belegt+1, pc.get_x()*100)
+					pc.setqf("mapy"..anzahl_belegt+1, pc.get_y()*100)
+				elseif s==3 then 
+					if anzahl_belegt==0 then say(tab_say["no_warps"]) return end
+					say(tab_say["delete"])
+					local w = select_table(sel)
+					if w==table.getn(sel) then return end
+					say_title(item.get_name())
+					say(tab_say["delete_accept"])
+					if select("Ja", "Nein")==2 then return end
+					for i=w, 10 do
+						if pc.getqf("mapi"..i) == 0 then break end
+						if i==10 then pc.delqf("mapi"..i) pc.delqf("mapx"..i) pc.delqf("mapy"..i) break end
+						pc.setqf("mapi"..i, pc.getqf("mapi"..i+1))
+						pc.setqf("mapx"..i, pc.getqf("mapx"..i+1))
+						pc.setqf("mapy"..i, pc.getqf("mapy"..i+1))
+					end
+				end
+			end
+		end
+		function mapname(m)	--Maps die ihr Sperren wollt einfach nicht einfügen
+			local ret = ({
+			-- [Mapindex] = "Mapname",
+				[1] = "Yongan",
+				[3] = "Jayang",
+				[4] = "Jungrang",
+				[5] = "Hasun Dong",
+				[21] = "Joan",
+				[23] = "Bokjung",
+				[24] = "Waryong",
+				[25] = "Hasun Dong",
+				[41] = "Pyungmoo",
+				[43] = "Bakra",
+				[44] = "Imha",
+				[45] = "Hasun Dong",
+				[61] = "Berg Sohan",
+				[62] = "Doyyumhwaji",
+				[63] = "Yongbi-Wüste",
+				[64] = "Tal von Seungryong",
+				[65] = "Hwang-Tempel",
+				[67] = "Lungsam",
+				[68] = "Roter Wald",
+				[69] = "Schlangenfeld",
+				[70] = "Land der Riesen",
+				[104] = "Kuahklo Dong",
+				[108] = "Jungsun Dong",
+				[109] = "Sangsun Dong",
+				[404] = "Nephritbucht",
+				[401] = "Kap of the Dragon",
+				[402] = "Thunder Mountain",
+				[403] = "Gautamakliff",
+				[405] = "Enchanted Wood",
+				[334] = "Great vally of Elendosfiles",
+				[57] = "Sand of Death",
+				[270] = "Green Island",
+				[271] = "White Dragoncave",
+				[273] = "Heaven Island",
+				[367] = "Worldboss Fire",
+				[368] = "Worldboss Magic"
+			})[m]
+			if ret == nil then ret = "nix" end
+			return ret
+		end
+	end
+end
+
+--[[neu!!!
+
+local port = {
+	{"Map1",
+		{"Red Kingdom", {473500, 954900}},
+		{"Yellow Kingdom", {62800, 165900}},
+		{"Blue Kingdom", {959700, 269800}}
+	},
+	{"Map2",
+		{"Red Kingdom", {352300, 882700}},
+		{"Yellow Kingdom", {145700, 239800}},
+		{"Blue Kingdom", {863800, 246000}}
+	},
+	{"Valley of Seungryoung",
+		{"Start", [
+			{352300, 882700},
+			{352300, 882700},
+			{352300, 882700},
+		},
+		{"Middle", {145700, 239800}},
+		{"Seon-Pyeong", {863800, 246000}}
+	},
+	
+]]

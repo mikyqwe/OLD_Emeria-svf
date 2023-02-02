@@ -1,0 +1,40 @@
+quest Truhe_der_Reittiere begin
+	state start begin
+		when 50132.use begin
+			say_title("Truhe")
+            say("")
+            say("Welches Pet moechtest du haben?")
+				box = select("Espeon", "Eevee", "Flareon", "Jolteon", "Umbreon",  "Vaporeon", "Glaceon", "Leafeon",  "Sylveon",  "Gar nichts")
+			if box == 1 then 
+				pc.give_item2(34033, 1)
+				pc.remove_item(50132, 1)
+			elseif box == 2 then
+				pc.give_item2(34032, 1)
+				pc.remove_item(50132, 1)
+			elseif box == 2 then
+				pc.give_item2(34034, 1)
+				pc.remove_item(50132, 1)
+			elseif box == 3 then
+				pc.give_item2(34035, 1)
+				pc.remove_item(50132, 1)
+			elseif box == 2 then
+				pc.give_item2(34037, 1)
+				pc.remove_item(50132, 1)
+			elseif box == 3 then
+				pc.give_item2(34038, 1)
+				pc.remove_item(50132, 1)
+			elseif box == 3 then
+				pc.give_item2(34041, 1)
+				pc.remove_item(50132, 1)
+			elseif box == 3 then
+				pc.give_item2(34043, 1)
+				pc.remove_item(50132, 1)
+			elseif box == 3 then
+				pc.give_item2(34045, 1)
+				pc.remove_item(50132, 1)
+			elseif box == 4 then
+				return
+			end
+		end
+	end
+end

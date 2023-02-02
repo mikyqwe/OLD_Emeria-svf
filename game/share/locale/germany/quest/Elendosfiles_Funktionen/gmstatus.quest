@@ -1,0 +1,43 @@
+quest gmstatus begin
+	state start begin
+		when login begin
+			gmstatus.TeamMember()
+			loop_timer("CheckGMActivity", 20)
+		end
+		
+		when login with pc.is_gm() begin
+			local name = pc.get_name()
+			game.set_event_flag("GM"..name, 1)
+		end
+		
+		when logout with pc.is_gm() begin
+			local name = pc.get_name()
+			game.set_event_flag("GM"..name, 0)
+		end
+		
+		when CheckGMActivity.timer begin
+			gmstatus.TeamMember()
+		end
+		
+		function TeamMember()
+			local TeamMember = {
+				"[GM]Elendosfiles1",
+				"[GM]Elendosfiles2",
+				"[GM]Elendosfiles3",
+				"[GM]Elendosfiles4",
+				"[GM]Elendosfiles5",
+				"[GM]Elendosfiles6"
+				}
+			local i = 1
+			local TeamCount = table.getn(TeamMember) + 1
+			while i < TeamCount do
+				if game.get_event_flag("GM"..TeamMember[i]) == 1 then
+					cmdchat("Teamler_on "..TeamMember[i])
+				else
+					cmdchat("Teamler_off "..TeamMember[i])
+				end
+				i = i + 1
+			end
+		end
+	end
+end

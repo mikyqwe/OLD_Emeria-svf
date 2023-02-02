@@ -1,0 +1,44 @@
+quest item_shop begin
+	state start begin
+		when login begin
+			cmdchat("itemshopqid "..q.getcurrentquestindex())
+		end
+		
+		when button or info begin
+			say_title("Itemshop Storage")
+			say("Do you want to get all Items assigned")
+			say("out of your Itemshop Storage?")
+			if select("Yes", "No")==2 then return end
+			item_shop.give_items()
+		end
+		
+		--[[when 9005.chat."Clear Itemshop Storage" begin
+			say_title("Storekeeper")
+			say("Do you want to get all Items assigned")
+			say("out of your Itemshop Storage?")
+			if select("Yes", "No")==2 then return end
+			item_shop.give_items()
+		end]]
+		
+		function give_items()
+			if pc.getqf("last_time")-get_time()>0 then syschat("<Storage> You have to wait 10 seconds, until you can open your Warehouse again.") return end
+			local set = mysql_query("SELECT * FROM account.item_shop WHERE account_id = \'"..pc.get_account_id().."\';")
+			if table.getn(set)==0 then syschat("You dont have Items in your Itemshop Storage.") pc.setqf("last_time", get_time()+10) return
+			elseif not pc.enough_inventory(set[1][3]) then syschat("You dont have enough space in your Inventory.") pc.setqf("last_time", get_time()+10) return end
+			for i=1, table.getn(set) do
+				local p = set[i]
+				if not pc.enough_inventory(p[3]) then
+					syschat("You've received some items, but no more space in the inventory. Come back later!")
+					return
+				end
+				mysql_query("INSERT INTO account.item_shop_log (account_id,vnum,count,bought,redeemed) VALUES (\'"..p[2].."\',\'"..p[3].."\',\'"..p[4].."\',\'"..p[5].."\',NOW());")
+				local count = p[4]
+				if count==0 then count=1 end
+				pc.give_item2(p[3], count)
+				mysql_query("DELETE FROM account.item_shop WHERE id = \'"..p[1].."\';")
+			end
+			syschat("Deine Items wurden deinem Inventar hinzugefügt!")
+			pc.setqf("last_time", get_time()+10)
+		end
+	end
+end

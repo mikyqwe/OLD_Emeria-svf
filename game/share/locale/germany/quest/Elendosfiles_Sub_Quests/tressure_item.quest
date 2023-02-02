@@ -1,0 +1,374 @@
+--[[
+	UPDATE 03.08:
+					-BUG GEFIXXT WO ITEMS AUFM BODEN FALLEN
+					-DIE DIE MEHR ALS EINE IM INVI HABEN WERDEN ENTFERNT
+]]
+quest truhen_zero begin 
+    state start begin
+		when login begin
+			local check, check2 = false, false
+			for i=50187, 50196 do
+				if pc.count_item(i)>=1 then
+					if check then
+						pc.remove_item(i, pc.count_item(i))
+						check2 = true						
+					else
+						if pc.count_item(i)==1 then
+							check = true
+						else
+							pc.remove_item(i, pc.count_item(i)-1)
+							check2 = true
+						end						
+					end
+				end
+			end
+			if check2 then
+				notice("BUG_CHECK_SYSTEM: You had more than one Chest. So")
+				notice("BUG_CHECK_SYSTEM: we removed all your apprentice Chest,")
+				notice("BUG_CHECK_SYSTEM: except the right one. Have fun on the Elendosfiles!")
+			end
+		end
+        when 50187.use begin
+			if pc.get_empty_inventory_count()<15 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(72723, 1)  --Elixier der Sonne (P)
+            pc.give_item2(72727, 1)  --Elixier des Mondes (P)
+			pc.give_item2(50937, 1)  --Grüner Trank (P)
+			pc.give_item2(70038, 1)  --Tapfi Perma
+			pc.give_item2(71084, 1)  --Permanentes Verzaubern
+			pc.give_item2(71085, 1)  --Permanentes Verstärken
+			pc.give_item2(78727, 2)  --Kostüm-Gutschein
+			pc.give_item2(33726, 1)  --Blutroter Kimestu(StartMount)
+			pc.give_item2(33583, 1)  --Dunkler Ritter(StartPet)
+			pc.give_item2(50188, 1)  --Lehrlingstruhe II
+            pc.remove_item(50187, 1) --Lehrlingstruhe I verschwindet
+        end 
+        when 50188.use with pc.get_level() >= 10 begin
+			if pc.get_empty_inventory_count()<4 then syschat("You do not have enough space in your inventory.") return end
+			pc.give_item2(76011, 1)  --Buch der Anführer (B)
+            pc.give_item2(50189, 1)  --Lehrlingstruhe III
+            pc.remove_item(50188, 1) --Lehrlingstruhe II verschwindet
+        end 
+        when 50189.use with pc.get_level() >= 20 begin
+			if pc.get_empty_inventory_count()<2 then syschat("You do not have enough space in your inventory.") return end
+			pc.give_item2(70102, 5)  --Zen-Bohne
+			pc.give_item2(76016, 5)  --Segenschriftrolle (B)
+            pc.give_item2(50190, 1)  --Expertentruhe I
+            pc.remove_item(50189, 1) --Lehrlingstruhe III verschwindet
+        end 
+        when 50190.use with pc.get_level() >= 30 begin
+			if pc.get_empty_inventory_count()<3 then syschat("You do not have enough space in your inventory.") return end 
+            pc.give_item2(76016, 10)  --Segenschriftrollen (B)
+			pc.give_item2(38056, 3)  --Verbesserungstruhe (I)
+            pc.give_item2(30006, 2)  --Orkzahn
+			pc.give_item2(27987, 6)  --Muscheln
+            pc.give_item2(50191, 1)  --Expertentruhe II
+            pc.remove_item(50190, 1) --Expertentruhe I verschwindet
+        end 
+        when 50191.use with pc.get_level() >= 40 begin
+			if pc.get_empty_inventory_count()<3 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(70102, 10) --Zen-Bohne
+			pc.give_item2(50517, 1)  --Techstein
+			pc.give_item2(30047, 2)  --Fluchsammlung
+			pc.give_item2(50070, 1)  --Oberork-Truhe
+            pc.give_item2(50192, 1)  --Expertentruhe III
+            pc.remove_item(50191, 1) --Expertentruhe II verschwindet
+        end 
+        when 50192.use with pc.get_level() >= 50 begin 
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(27987, 3)  --Muschel
+			pc.give_item2(50077, 1)  --Neunschwanztruhe
+			pc.give_item2(30050, 3)  --Eiskugel
+			pc.give_item2(50517, 1)  --Techstein
+            pc.give_item2(50193, 1)  --Meistertruhe I
+            pc.remove_item(50192, 1) --Expertentruhe III verschwindet
+        end 
+        when 50193.use with pc.get_level() >= 60 begin 
+			if pc.get_empty_inventory_count()<4 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(71032, 5)  --Schriftrolle des Drachen
+			pc.give_item2(71015, 1)  --Erfahrungsring
+			pc.give_item2(71016, 1)  --Drophandschuh
+            pc.give_item2(50194, 1)  --Meistertruhe II
+            pc.remove_item(50193, 1) --Meistertruhe I verschwindet
+        end 
+        when 50194.use with pc.get_level() >= 70 begin
+			if pc.get_empty_inventory_count()<4 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(27987, 10) --Muschel
+			pc.give_item2(27992, 1)  --W Perle
+			pc.give_item2(50082, 1)  --Sensenmantruhe
+            pc.give_item2(50195, 1)  --Meistertruhe III
+            pc.remove_item(50194, 1) --Meistertruhe II verschwindet
+        end 
+        when 50195.use with pc.get_level() >= 80 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(30319, 5)  --Schrumpfkopf
+			pc.give_item2(82120, 10) --Verbesserungstruhe II
+			pc.give_item2(82121, 10) --Verbesserungstruhe III
+			pc.give_item2(50186, 1)  --Azrael Truhe
+			pc.give_item2(37274, 5)  --Drachen Seele
+			pc.give_item2(37275, 5)  --Dunkler Diamant
+			pc.give_item2(37276, 5)  --Dunkle Perle
+			pc.give_item2(37277, 5)  --Dunkler Saphir
+			pc.give_item2(71153, 1)  --Trank der Weißheit
+            pc.give_item2(50196, 1)  --Großmeistertruhe I
+            pc.remove_item(50195, 1) --Meistertruhe III verschwindet
+        end
+        when 50196.use with pc.get_level() >= 90 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(50516, 1)   --Buch der Dunkelheit
+            pc.give_item2(82120, 12)  --Verbesserungstruhe II
+            pc.give_item2(82121, 12)  --Verbesserungstruhe III
+			pc.give_item2(37274, 5)   --Drachen Seele
+			pc.give_item2(37275, 5)   --Dunkler Diamant
+			pc.give_item2(37276, 5)   --Dunkle Perle
+			pc.give_item2(37277, 5)   --Dunkler Saphir
+			pc.give_item2(50197, 1)   --Großmeistertruhe II
+            pc.remove_item(50196, 1)  --Großmeistertruhe verschwindet
+		end
+		when 50197.use with pc.get_level() >= 100 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(50516, 1)  --Buch der Dunkelheit
+			pc.give_item2(25041, 3)  --Magischer Stein
+			pc.give_item2(37274, 5)  --Drachen Seele
+			pc.give_item2(37275, 5)  --Dunkler Diamant
+			pc.give_item2(37276, 5)  --Dunkle Perle
+			pc.give_item2(37277, 5)  --Dunkler Saphir
+			pc.give_item2(50198, 1)  --Großmeistertruhe III
+            pc.remove_item(50197, 1) --Großmeistertruhe I verschwindet
+		end
+		when 50198.use with pc.get_level() >= 110 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(25041, 3)  --Magischer Stein
+            pc.give_item2(71153, 1)  --Trank der Weißheit
+			pc.give_item2(50517, 3)  --Techstein
+			pc.give_item2(50516, 1)  --Buch der Dunkelheit
+			pc.give_item2(82121, 10) --Verbesserungstruhe (III)
+			pc.give_item2(82122, 10) --Verbesserungstruhe (IIII)
+			pc.give_item2(50199, 1)  --Großmeistertruhe III
+            pc.remove_item(50198, 1) --Großmeistertruhe III verschwindet
+		end
+		when 50199.use with pc.get_level() >= 120 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(25041, 5)  --Magischer Stein
+			pc.give_item2(82121, 10) --Verbesserungstruhe (III)
+			pc.give_item2(82122, 10) --Verbesserungstruhe (IIII)
+			pc.give_item2(63720, 2)  --Spirituelle Erleuchtung
+			pc.give_item2(48298, 1)  --Perfekte Truhe
+            pc.remove_item(50199, 1) --Legendäre Truhe verschwindet
+        end
+		when 48298.use with pc.get_level() >= 135 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(25041, 5)  --Magischer Stein
+			pc.give_item2(34367, 1)  --Manni Siegel (IG)
+			pc.give_item2(82121, 10)  --Verbesserungstruhe (III)
+			pc.give_item2(82122, 10)  --Verbesserungstruhe (IIII)
+			pc.give_item2(63720, 2)  --Spirituelle Erleuchtung
+			pc.give_item2(48299, 1)  --Ultra Truhe
+            pc.remove_item(48298, 1) --Perfekte Truhe verschwindet
+        end
+		when 48299.use with pc.get_level() >= 150 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(25041, 6)  --Magischer Stein
+			pc.give_item2(60028, 1)  --Kiste der Waffen
+			pc.give_item2(82121, 10) --Verbesserungstruhe (III)
+			pc.give_item2(82122, 10) --Verbesserungstruhe (IIII)
+			pc.give_item2(63720, 2)  --Spirituelle Erleuchtung
+			pc.give_item2(48400, 1)  --Ultra Truhe II
+            pc.remove_item(48299, 1) --Ultra Truhe verschwindet
+        end
+		when 48400.use with pc.get_level() >= 165 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(25041, 7)  --Magischer Stein
+			pc.give_item2(60029, 1)  --Kiste der Rüstungen
+			pc.give_item2(82121, 10) --Verbesserungstruhe (III)
+			pc.give_item2(82122, 10) --Verbesserungstruhe (IIII)
+			pc.give_item2(63720, 2)  --Spirituelle Erleuchtung
+			pc.give_item2(48401, 1)  --Ultra Truhe III
+            pc.remove_item(48400, 1) --Ultra Truhe II verschwindet
+        end
+		when 48401.use with pc.get_level() >= 180 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(25041, 8)  --Magischer Stein
+			pc.give_item2(60030, 1)  --Kiste der Flügel
+			pc.give_item2(80014, 1)  --Coins Gutschein 100
+            pc.remove_item(48401, 1) --Ultra Truhe III verschwindet
+        end
+			when 77551.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(71125, 1)  --Straterpacket 1
+			pc.give_item2(53016, 1)  --Straterpacket 1
+			pc.give_item2(71136, 1)  --Straterpacket 1
+            pc.remove_item(77551, 1) --Starter Package (L) verschwindet
+        end
+			when 77552.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(71161, 1)  --Straterpacket 2
+			pc.give_item2(53015, 1)  --Straterpacket 2
+			pc.give_item2(71143, 1)  --Straterpacket 2
+			pc.give_item2(18080, 1)  --Straterpacket 2
+            pc.remove_item(77552, 1) --Starter Package (M) verschwindet
+        end
+			when 77553.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(71143, 1)  --Straterpacket 3
+			pc.give_item2(71135, 1)  --Straterpacket 3
+			pc.give_item2(50271, 1)  --Straterpacket 3
+			pc.give_item2(60028, 1)  --Straterpacket 3
+			pc.give_item2(60029, 1)  --Straterpacket 3
+			pc.give_item2(60030, 1)  --Straterpacket 3
+			pc.give_item2(18080, 1)  --Straterpacket 3
+            pc.remove_item(77553, 1) --Starter Package (B) verschwindet
+        end
+			when 77554.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(55344, 1)  --Straterpacket 4
+			pc.give_item2(55342, 1)  --Straterpacket 4
+			pc.give_item2(55401, 1)  --Straterpacket 4
+			pc.give_item2(71143, 1)  --Straterpacket 4
+			pc.give_item2(71135, 1)  --Straterpacket 4
+			pc.give_item2(71136, 1)  --Straterpacket 4
+			pc.give_item2(77720, 1)  --Straterpacket 4
+			pc.give_item2(90027, 1)  --Straterpacket 4
+			pc.give_item2(60028, 1)  --Straterpacket 4
+			pc.give_item2(60029, 1)  --Straterpacket 4
+			pc.give_item2(60030, 1)  --Straterpacket 4
+			pc.give_item2(18080, 1)  --Straterpacket 4
+            pc.remove_item(77554, 1) --Starter Package (E) verschwindet
+        end
+			when 66280.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(35690, 1)  --Kostüm (Männlich Engels Kostüm)
+			pc.give_item2(35692, 1)  --Frisur (Männlich Engels Frisur)
+			pc.give_item2(57015, 1)  --Pet (Engels Pet)
+			pc.give_item2(33731, 1)  --Mount (Engels Mount)
+            pc.remove_item(66280, 1) --Truhe der Liebe (M) verschwindet
+        end
+			when 66281.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(35691, 1)  --Kostüm (Weiblich Engels Kostüm)
+			pc.give_item2(35693, 1)  --Frisur (Weiblich Engels Frisur)
+			pc.give_item2(57015, 1)  --Pet (Engels Pet)
+			pc.give_item2(33731, 1)  --Mount (Engels Mount)
+            pc.remove_item(66281, 1) --Truhe der Liebe (W) verschwindet
+        end
+			when 66282.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(54370, 1)  --Kostüm (Männlich Dark Ruler Kostüm)
+			pc.give_item2(54372, 1)  --Frisur (Männlich Dark Ruler Frisur)
+			pc.give_item2(33584, 1)  --Pet (Dark Ruler Pet)
+			pc.give_item2(33728, 1)  --Mount (Dark Ruler Mount)
+            pc.remove_item(66282, 1) --Dark Ruler Kiste (M) verschwindet
+        end
+			when 66283.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(54371, 1)  --Kostüm (Weiblich Dark Ruler Kostüm)
+			pc.give_item2(54373, 1)  --Frisur (Weiblich Dark Ruler Frisur)
+			pc.give_item2(33584, 1)  --Pet (Dark Ruler Pet)
+			pc.give_item2(33728, 1)  --Mount (Dark Ruler Mount)
+            pc.remove_item(66283, 1) --Dark Ruler Kiste (F) verschwindet
+        end
+			when 66284.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(71124, 1)  -- Weißer Löwe
+			pc.give_item2(71153, 3)  -- Trank der Weißheit
+			pc.give_item2(71135, 1)  -- Halbmondring
+			pc.give_item2(70005, 1)  -- Erfahrungsring 1x
+			pc.give_item2(70005, 1)  -- Erfahrungsring 1x
+			pc.give_item2(70005, 1)  -- Erfahrungsring 1x
+            pc.remove_item(66284, 1) --Erfahrungstruhe verschwindet
+        end
+			when 66285.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(33722, 1)  -- 1x Magic Horse Mount
+			pc.give_item2(55342, 1)  -- 1x Pegasus Pet
+			pc.give_item2(71153, 1)  -- 1x Potion of Wisdom
+			pc.give_item2(70043, 1)  -- 1x Thief's Gloves
+			pc.give_item2(70043, 1)  -- 1x Thief's Gloves
+			pc.give_item2(70043, 1)  -- 1x Thief's Gloves
+			pc.give_item2(71993, 1)  -- 1x Ring of Demons
+			pc.give_item2(71992, 1)  -- 1x Emperors Ring
+			pc.give_item2(55629, 1)  -- 1x Auto Pickup
+			pc.give_item2(90027, 1)  -- 1x Magic Cape
+            pc.remove_item(66285, 1) --PvM Truhe verschwindet
+        end
+			when 66287.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(71860, 1)  -- 1x Titanium Ring
+			pc.give_item2(71861, 1)  -- 1x Platinum Ring
+            pc.remove_item(66287, 1) --PvP Truhe verschwindet
+        end
+			when 66288.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(66552, 1)  -- 1x VIP Feature (7 Tage)
+			pc.give_item2(71520, 1)  -- 1x Premium Trank Bronze
+			pc.give_item2(71521, 1)  -- 1x Premium Trank Silber
+			pc.give_item2(71522, 1)  -- 1x Premium Trank Gold
+			pc.give_item2(60028, 1)  -- 1x Kiste der Waffen
+			pc.give_item2(60029, 1)  -- 1x Kiste der Rüstungen
+			pc.give_item2(60030, 1)  -- 1x Kiste der Flügel
+            pc.remove_item(66288, 1) --VIP Truhe klein verschwindet
+        end
+			when 66289.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(66553, 1)  -- 1x VIP Feature (15 Tage)
+			pc.give_item2(71520, 1)  -- 1x Premium Trank Bronze
+			pc.give_item2(71521, 1)  -- 1x Premium Trank Silber
+			pc.give_item2(71522, 1)  -- 1x Premium Trank Gold
+			pc.give_item2(60028, 3)  -- 3x Kiste der Waffen
+			pc.give_item2(60029, 3)  -- 3x Kiste der Rüstungen
+			pc.give_item2(60030, 3)  -- 3x Kiste der Flügel
+			pc.give_item2(33720, 1)  -- 1x Weißer Gold Löwe (Permanent)
+            pc.remove_item(66289, 1) --VIP Truhe Normal verschwindet
+        end
+			when 66290.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(66554, 1)  -- 1x VIP Feature (30 Tage)
+			pc.give_item2(71520, 1)  -- 1x Premium Trank Bronze
+			pc.give_item2(71521, 1)  -- 1x Premium Trank Silber
+			pc.give_item2(71522, 1)  -- 1x Premium Trank Gold
+			pc.give_item2(60028, 8)  -- 8x Kiste der Waffen
+			pc.give_item2(60029, 8)  -- 8x Kiste der Rüstungen
+			pc.give_item2(60030, 8)  -- 8x Kiste der Flügel
+			pc.give_item2(33721, 1)  -- 1x Schwarzer Gold Löwe (Permanent)
+			pc.give_item2(55270, 1)  -- 1x Adria Pet ( 30 Tage)
+            pc.remove_item(66290, 1) --VIP Truhe Groß verschwindet
+        end
+			when 71770.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(25041, 10)  -- 10x Magischer Stein
+			pc.give_item2(70039, 10)  -- 10x Schmiede Handbuch
+			pc.give_item2(25040, 10)  -- 10x Segenschriftrolle
+			pc.give_item2(71032, 10)  -- 10x Schriftrolle des Drachen
+            pc.remove_item(71770, 1) -- Magische Kiste ( Upkiste Itemshop)
+        end
+			when 71771.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(38056, 10)  -- 10x Verbesserungstruhe I
+            pc.remove_item(71771, 1) -- 10er Pack Verbesserungstruhe I
+        end
+			when 71772.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(82120, 10)  -- 10x Verbesserungstruhe II
+            pc.remove_item(71772, 1) -- 10er Pack Verbesserungstruhe II
+        end
+			when 71773.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(82121, 10)  -- 10x Verbesserungstruhe III
+            pc.remove_item(71773, 1) -- 10er Pack Verbesserungstruhe III
+        end
+			when 71774.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(82122, 10)  -- 10x Verbesserungstruhe IIII
+            pc.remove_item(71774, 1) -- 10er Pack Verbesserungstruhe IIII
+        end
+			when 71775.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(30903, 10)  -- 10x Verbesserungstruhe V
+            pc.remove_item(71775, 1) -- 10er Pack Verbesserungstruhe V
+        end
+			when 71776.use with pc.get_level() >= 1 begin
+			if pc.get_empty_inventory_count()<5 then syschat("You do not have enough space in your inventory.") return end
+            pc.give_item2(50130, 5)  -- 5x Erzekiste
+            pc.remove_item(71776, 1) -- 5er Pack Erzekiste
+        end
+    end 
+end  

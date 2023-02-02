@@ -1,0 +1,598 @@
+----------------------------------------------------
+-- Power Mount System
+-- lvl x
+-- Copyright ©Zymos
+----------------------------------------------------
+quest p_mount begin
+state start begin
+	when 80024.use begin
+	chat("hi")
+	end
+	when 20349.take begin
+	if pc.is_mount() then
+	say_title(""..mob_name(20349).."")
+	say("")
+	say("könntest du bitte von deinem Mount absteigen,")
+	say("solange wir miteinander reden? Ich habe einen")
+	say("steifen Nacken und es ist ziemlich anstregend,")
+	say("die ganze Zeit zu dir aufzuschauen zu müssen.")
+	say("")
+	return
+	end
+	chat("time "..item.get_socket(2).."")
+	chat("pos "..item.get_cell().."")
+	item.set_socket( 2,1 )
+	local vnum = item.get_vnum()
+	if vnum >= 20201 and vnum <= 52090 then
+		if pc.count_item(38100) >= 1 --Powersnack (7 Tage) 
+		or pc.count_item(38101) >= 1 --Powersnack (15 Tage) 
+		or pc.count_item(38102) >= 1 --Powersnack (30 Tage) 
+		then
+		say_title(""..mob_name(20349).."")
+		say("")
+		say("Ich sehe, du besitzt einen Powersnack. Diese")
+		say("wertvolle Heilplane versorgt dein Power Mount")
+		say("mit reiner Energie, um seine Lebenszeit für")
+		say("einige Tage zu verlängern. Was soll ich für dich")
+		say("tun? Möchtest du, dass ich das Leben deines")
+		say("Mounts verlängere oder möchtest du es verbessern")
+		say("lassen?")
+		say("")
+		local i = select ("Verlängern","Verbessern","Abrechen")
+		if i == 1 then
+		local t = select("7 Tage","15 Tage","30 Tage","Abrechen")
+		if t == 1 then --7 Tage
+			if pc.count_item(38100) >= 1 then --Powersnack (7 Tage)
+				say("verlängern 7 tage")
+				pc.removeitem(38100,1)
+			else
+			p_mount.fail_message()
+			end
+		elseif t == 2 then --15 Tage
+			if pc.count_item(38101) >= 1 then --Powersnack (15 Tage)
+				say("verlängern 15 tage")
+				pc.removeitem(38101,1)
+			else
+			p_mount.fail_message()
+			end
+		elseif t == 3 then --30 Tage
+			if pc.count_item(38102) >= 1 then --Powersnack (30 Tage)
+				say("verlängern 30 tage")
+				pc.removeitem(38102,1)
+			else
+			p_mount.fail_message()
+			end
+		else
+			return
+		end
+		elseif i == 2 then
+			if p_mount.upgrade(vnum) == true then
+				pc.give_item2(vnum +5,1)
+				item.remove()
+			else
+				p_mount.fail_message()
+			end
+		end
+	local blub = 1
+	elseif blub == 2 then --item.get_socket(2) <= 1440 then
+		say_title(""..mob_name(20349).."")
+		say("")
+		say("Dein Mountsiegel hält weniger als 1 Tag noch.")
+		say("Text... Text.. Text..")
+		local f = select("Ja möchte ich","Nein noch nicht")
+		say(""..pc.get_gold().." "..pc.count_item(50068).."")
+		say(""..f.."")
+		if f == 1 then
+			if pc.get_gold() <= 200000 then
+				say_title(""..mob_name(20349).."")
+				say("")
+				say("Um die Laufzeit deines Mounts zu verlängern.")
+				say("Benötigst du 200.000 Yang.")
+				return
+			elseif pc.count_item(50068) == 0 then --Rolle der Mutation
+				say_title(""..mob_name(20349).."")
+				say("")
+				say("Um die Laufzeit deines Mounts zu verlängern.")
+				say("Benötigst du eine "..item_name(50068)..".")
+				say("")
+				say_item_vnum(50068)
+				return
+			elseif pc.get_gold() >= 200000 and pc.count_item(50068) >= 1 then
+				pc.remove_item(50068,1)
+				pc.changegold(-200000)
+					if number(1,2) == 1 then
+					local wert = item.get_socket(2)
+					item.set_socket(2,wert + 60*24* number(1,3))
+					say("Zeit wurde verlängert")
+					else
+						say("Die Zeitaufwertung ist fehlgeschlagen")
+					end
+			else
+			p_mount.fail_message()
+			end
+		else --Nein noch nicht
+		return
+		end
+		elseif vnum >= 52011 and vnum <= 52015
+		or vnum >= 52026 and vnum <= 52030
+		or vnum >= 52041 and vnum <= 52045
+		or vnum >= 52056 and vnum <= 52060
+		or vnum >= 52071 and vnum <= 52075
+		or vnum >= 52086 and vnum <= 52090	then --Tapferere Mounts
+		say_title(""..mob_name(20349).."")
+		say("")
+		say("Dieses Siegel kannst du nicht weiter verbessern.")
+		return
+		elseif pc.count_item(50067) >= 1 or pc.count_item(50068) >= 1 then
+		say_title(""..mob_name(20349).."")
+		say("")
+		say("Wie ich sehe möchtest du wohl dein Mount verbessern.")
+		say("")
+		say("Möchtest du dies?")
+		say("")
+		local m = select("Ja","Nein")
+		if m == 1 then --Ja
+			if p_mount.upgrade(vnum) == true then
+				pc.give_item2(vnum +5,1)
+				--local wert = item.get_socket(2)
+				--Upgrade 1-4 erhöhen laufzeit? ? item.set_socket(2,wert + 60*24* number(1,3))
+				item.remove()
+			else
+				p_mount.fail_message()
+			end
+		else --Nein
+			return
+		end
+	else
+	p_mount.fail_message()
+	end
+	end
+	end
+	function upgrade(vnum)
+		if (vnum >= 52001 and vnum <= 52005
+		or vnum >= 52016 and vnum <= 52020
+		or vnum >= 52031 and vnum <= 52035
+		or vnum >= 52046 and vnum <= 52050
+		or vnum >= 52061 and vnum <= 52065
+		or vnum >= 52076 and vnum <= 52080) and pc.count_item(50067) >= 1 then --junge Mounts und Rolle der Evolution
+			pc.remove_item(50067,1)
+			return true
+		elseif  (vnum >= 52006 and vnum <= 52010
+		or vnum >= 52021 and vnum <= 52025
+		or vnum >= 52036 and vnum <= 52040
+		or vnum >= 52051 and vnum <= 52055
+		or vnum >= 52066 and vnum <= 52070
+		or vnum >= 52081 and vnum <= 52085) and pc.count_item(50068) >= 1 then --Wilde Mounts und Rolle der Mutation
+			pc.remove_item(50068,1)
+			return true
+		else
+			return false
+		end
+		
+	end
+	when 20349.chat."Ich will mein Mount verbessern" begin
+		say_title(""..mob_name(20349).."")
+		say("")
+		say("Du willst also dein Mount verbessern? Weisst du")
+		say("weißt du denn, wie das geht? Also gut,")
+		say("ich werde es dir erklären.")
+		wait()
+		say_title(""..mob_name(20349).."")
+		say("")
+		say("Um den Mount zu einem Wilden Reittier zu")
+		say("verwandeln, musst du dich auf der Suche nach der")
+		say("Rolle der Evolution begeben. Finde die Rolle der")
+		say("Mutation, damit du das Wilde zu einem Tapferen")
+		say("Reittier ausbilden kanns. Es heisst, sie seien in")
+		say("eineim fernen Land, bewohnt von gefährlichen")
+		say("giganen versteckt!")
+		wait()
+		say_title(""..mob_name(20349).."")
+		say("")
+		say("Bring mir eine dieser Rollen und ich werde den")
+		say("Mount verbessern. Du hast sie nicht zuäfflig")
+		say("schon bei dir?")
+		local v = select("Ja, ich möchte mein Mount verbessern!","Nein, jetzt nicht.")
+		if v == 1 then
+		say("Ziehe das Mount Siegel auf mich hierfür")
+		end
+	end
+	when 20349.chat."Urkunde gegen Mount eintauschen" begin 
+		say_title(""..mob_name(20349).."")
+		say("")
+		say("Du möchtest deine Urkunde gegen ein Mount")
+		say("eintauschen? Lass mich sehen, welche du dabei")
+		say("hast. Besitzt du mehere Urkunden, kannst du")
+		say("dich in den folgenden Schritten für eine")
+		say("entscheiden.")
+		wait()
+		say_title(""..mob_name(20349).."")
+		say("")
+		if pc.count_item(52701) >= 1 then --Löwen-Urkunde
+			say("du bringst mir ein "..item_name(52701).."")
+			pc.setqf("mount",1)
+		elseif pc.count_item(52702) >= 1 then --Tiger-Urkunde
+			say("du bringst mir ein "..item_name(52702).."")
+			pc.setqf("mount",2)
+		elseif pc.count_item(52703) >= 1 then --Keiler-Urkunde
+			say("du bringst mir ein "..item_name(52703).."")
+			pc.setqf("mount",3)
+		elseif pc.count_item(52704) >= 1 then --Wolfs-Urkunde
+			say("du bringst mir ein "..item_name(52704).."")
+			pc.setqf("mount",4)
+		elseif pc.count_item(52705) >= 1 then --Rentier-Urkunde (m)
+			say("du bringst mir ein "..item_name(52705).."")
+			pc.setqf("mount",5)
+		elseif pc.count_item(52706) >= 1 then --Rentier-Urkunde (w)
+			say("du bringst mir ein "..item_name(52706).."")
+			pc.setqf("mount",6)
+		else
+			say("Du hast keine Mount-Urkunde bei dir")
+			return
+		end
+		--
+		say("Für Welcchen Boni entscheidest du dich?")
+		say("")
+		local b = select("Stark gegen Monster","Erfahrung (EXP)","Trefferpunkte (TP)","Verteidigung (DEF)","Angriffswert (AW)","Nein, lieber doch nichht.")
+		if b == 1 then --Stark gegen Monster
+			p_mount.give_seal(pc.getqf("mount"),1)
+		elseif b == 2 then --Erfahrung (EXP)
+			p_mount.give_seal(pc.getqf("mount"),2)
+		elseif b == 3 then --Trefferpunkte (TP)
+			p_mount.give_seal(pc.getqf("mount"),3)
+		elseif b == 4 then --Verteidigung(DEF)
+			p_mount.give_seal(pc.getqf("mount"),4)
+		elseif b == 5 then --Angriffswert (AW)
+			p_mount.give_seal(pc.getqf("mount"),5)
+		end
+	end
+	function fail_message()
+		say_title(""..mob_name(20349).."")
+		say("")
+		say("Tut mir leid, ohne die richtigen Dokumente kann")
+		say("ich nichts für dich tun, Versuche nicht nochmal,")
+		say("mich übers Ohr zu hauenn, sonst lass ich dich")
+		say("dafür bezahlen.")
+	end
+	function give_seal(a,b)
+	if a == 1 then --Löwen-Urkunde
+		if b == 1 then --Start
+			pc.give_item2( 52031 )
+			item.set_socket( 52031 , 100 )
+	
+			--pc.give_item2(52031,1) --Stark gegen Monster
+			pc.remove_item(52701,1) --Löwen-Urkunde
+			return true
+		elseif b == 2 then
+			pc.give_item2(52032,1) --Erfahrung
+			pc.remove_item(52701,1) --Löwen-Urkunde
+		elseif b == 3 then
+			pc.give_item2(52033,1) --Tp
+			pc.remove_item(52701,1) --Löwen-Urkunde
+		elseif b == 4 then
+			pc.give_item2(52034,1) --Verteidigungswert
+			pc.remove_item(52701,1) --Löwen-Urkunde
+		elseif b == 5 then
+			pc.give_item2(52035,1) --Angriffswert
+			pc.remove_item(52701,1) --Löwen-Urkunde
+		else
+			return
+		end
+	elseif a == 2 then --Tiger-Urkunde
+		if b == 1 then --Start
+			pc.give_item2(52046,1) --Stark gegen Monster
+			pc.remove_item(52702,1) --Tiger-Urkunde
+		elseif b == 2 then
+			pc.give_item2(52047,1) --Erfahrung
+			pc.remove_item(52702,1) --Tiger-Urkunde
+		elseif b == 3 then
+			pc.give_item2(52048,1) --Tp
+			pc.remove_item(52702,1) --Tiger-Urkunde
+		elseif b == 4 then
+			pc.give_item2(52049,1) --Verteidigungswert
+			pc.remove_item(52702,1) --Tiger-Urkunde
+		elseif b == 5 then
+			pc.give_item2(52050,1) --Angriffswert
+			pc.remove_item(52702,1) --Tiger-Urkunde
+		else
+			return
+		end
+	elseif a == 3 then --Keiler-Urkunde
+		if b == 1 then --Start
+			pc.give_item2(52001,1) --Stark gegen Monster
+			pc.remove_item(52703,1) --Keiler-Urkunde
+		elseif b == 2 then
+			pc.give_item2(52002,1) --Erfahrung
+			pc.remove_item(52703,1) --Keiler-Urkunde
+		elseif b == 3 then
+			pc.give_item2(52003,1) --Tp
+			pc.remove_item(52703,1) --Keiler-Urkunde
+		elseif b == 4 then
+			pc.give_item2(52004,1) --Verteidigungswert
+			pc.remove_item(52703,1) --Keiler-Urkunde
+		elseif b == 5 then
+			pc.give_item2(52005,1) --Angriffswert
+			pc.remove_item(52703,1) --Keiler-Urkunde
+		else
+			return
+		end
+	elseif a == 4 then --Wolfs-Urkunde
+		if b == 1 then --Start
+			pc.give_item2(52016,1) --Stark gegen Monster
+			pc.remove_item(52704,1) --Wolfs-Urkunde
+		elseif b == 2 then
+			pc.give_item2(52017,1) --Erfahrung
+			pc.remove_item(52704,1) --Wolfs-Urkunde
+		elseif b == 3 then
+			pc.give_item2(52018,1) --Tp
+			pc.remove_item(52704,1) --Wolfs-Urkunde
+		elseif b == 4 then
+			pc.give_item2(52019,1) --Verteidigungswert
+			pc.remove_item(52704,1) --Wolfs-Urkunde
+		elseif b == 5 then
+			pc.give_item2(52020,1) --Angriffswert
+			pc.remove_item(52704,1) --Wolfs-Urkunde
+		else
+			return
+		end
+	elseif a == 5 then --Rentier-Urkunde m
+		if b == 1 then --Start
+			pc.give_item2(52016,1) --Stark gegen Monster
+			pc.remove_item(52705,1) --Rentier-Urkunde
+		elseif b == 2 then
+			pc.give_item2(52062,1) --Erfahrung
+			pc.remove_item(52705,1) --Rentier-Urkunde
+		elseif b == 3 then
+			pc.give_item2(52063,1) --Tp
+			pc.remove_item(52705,1) --Rentier-Urkunde
+		elseif b == 4 then
+			pc.give_item2(52064,1) --Verteidigungswert
+			pc.remove_item(52705,1) --Rentier-Urkunde
+		elseif b == 5 then
+			pc.give_item2(52065,1) --Angriffswert
+			pc.remove_item(52705,1) --Rentier-Urkunde
+		else
+			return
+		end
+	elseif a == 6 then --Rentier-Urkunde w
+		if b == 1 then --Start
+			pc.give_item2(52076,1) --Stark gegen Monster
+			pc.remove_item(52706,1) --Rentier-Urkunde
+		elseif b == 2 then
+			pc.give_item2(52077,1) --Erfahrung
+			pc.remove_item(52706,1) --Rentier-Urkunde
+		elseif b == 3 then
+			pc.give_item2(52078,1) --Tp
+			pc.remove_item(52706,1) --Rentier-Urkunde
+		elseif b == 4 then
+			pc.give_item2(52079,1) --Verteidigungswert
+			pc.remove_item(52706,1) --Rentier-Urkunde
+		elseif b == 5 then
+			pc.give_item2(52080,1) --Angriffswert
+			pc.remove_item(52706,1) --Rentier-Urkunde
+		else
+			return
+		end
+	end
+	end
+	when 52001.use or 52002.use or 52003.use or 52004.use or 52005.use or 52006.use or 52007.use or 52008.use or 52009.use or 52010.use
+	 or 52011.use or 52012.use or 52013.use or 52014.use or 52015.use or 52016.use or 52017.use or 52018.use or 52019.use or 52020.use
+	 or 52021.use or 52022.use or 52023.use or 52024.use or 52025.use or 52026.use or 52027.use or 52028.use or 52029.use or 52030.use
+	 or 52031.use or 52032.use or 52033.use or 52034.use or 52035.use or 52036.use or 52037.use or 52038.use or 52039.use or 52040.use
+	 or 52041.use or 52042.use or 52043.use or 52044.use or 52045.use or 52046.use or 52047.use or 52048.use or 52049.use or 52050.use
+	 or 52051.use or 52052.use or 52053.use or 52054.use or 52055.use or 52056.use or 52057.use or 52058.use or 52059.use or 52060.use 
+	 or 52061.use or 52062.use or 52063.use or 52064.use or 52065.use or 52066.use or 52067.use or 52068.use or 52069.use or 52070.use
+	 or 52071.use or 52072.use or 52073.use or 52074.use or 52075.use or 52076.use or 52077.use or 52078.use or 52079.use or 52080.use
+	 or 52081.use or 52082.use or 52083.use or 52084.use or 52085.use or 52086.use or 52087.use or 52088.use or 52089.use or 52090.use begin
+		local vnum = item.get_vnum()
+		local mounts_horse_lvl = horse.get_level()
+		local player_level = pc.get_level()
+		if pc.getf("pets","pet_active") == 1 or horse.is_summon() and horse.get_level() >= 22 then
+		mounts_horse_lvl = pc.getf("pets","old_horse_level")
+		end
+	if pc.is_polymorphed() then
+		say("Du kannst nicht reiten während du Verwandelt bist!")
+		return
+	elseif pc.is_mount() then
+		pc.unmount()
+		return
+	end
+	if vnum >= 52006 and vnum <= 52010
+		or vnum >= 52021 and vnum <= 52025
+		or vnum >= 52036 and vnum <= 52040
+		or vnum >= 52051 and vnum <= 52055
+		or vnum >= 52066 and vnum <= 52070
+		or vnum >= 52081 and vnum <= 52085 then --Wilde Mounts 
+		if player_level < 35 then 
+			syschat("Dein Level ist zu niedrig um dieses Mount zu benutzen!")
+			return
+		end	
+		if mounts_horse_lvl < 11 then 
+			syschat("Dein Pferde-level ist zu niedrig um dieses Mount zu benutzen!")
+			return
+		end
+	elseif vnum >= 52011 and vnum <= 52015
+		or vnum >= 52026 and vnum <= 52030
+		or vnum >= 52041 and vnum <= 52045
+		or vnum >= 52056 and vnum <= 52060
+		or vnum >= 52071 and vnum <= 52075
+		or vnum >= 52086 and vnum <= 52090	then --Tapferere Mounts
+		if player_level < 50 then 
+			syschat("Dein Level ist zu niedrig um dieses Mount zu benutzen!")
+			return
+		end	
+		if mounts_horse_lvl < 21 then 
+			syschat("Dein Pferde-level ist zu niedrig um dieses Mount zu benutzen!")
+			return
+		end
+	end
+		local check = p_mount.give_mount_bonus(vnum)
+		if check == true then
+		local timee = 3600 --item.get_socket(2)*60
+		syschat("Dein Mount wurde erfolgreich gerufen.")
+		else
+		syschat("Es ist ein Fehler aufgetreten als du dein Mount rufen wolltest.")
+		end
+	end
+	function give_mount_bonus(a)
+	pc.delqf("mount")
+	local vnum = a
+	local mounts_bonus = {
+		[20201] = { 20201,'NO_SKILL',0}, 				--Junger Keiler
+		[52002] = { 20201,'NO_SKILL',0}, 				--Junger Keiler
+		[52003] = { 20201,'NO_SKILL',0}, 				--Junger Keiler
+		[52004] = { 20201,'NO_SKILL',0}, 				--Junger Keiler
+		[52005] = { 20201,'NO_SKILL',0}, 				--Junger Keiler
+		[52006] = { 20205,apply.ATTBONUS_MONSTER,3}, 	--Wilder Keiler
+		[52007] = { 20205,apply.EXP_DOUBLE_BONUS,3},	--Wilder Keiler
+		[52008] = { 20205,apply.MAX_HP,250}, 			--Wilder Keiler
+		[52009] = { 20205,apply.DEF_GRADE_BONUS,50},	--Wilder Keiler
+		[52010] = { 20205,apply.ATT_GRADE_BONUS,30}, 	--Wilder Keiler
+		[52011] = { 20209,apply.ATTBONUS_MONSTER,5}, 	--Tapferer Keiler
+		[52012] = { 20209,apply.EXP_DOUBLE_BONUS,5}, 	--Tapferer Keiler
+		[52013] = { 20209,apply.MAX_HP,500},		 	--Tapferer Keiler
+		[52014] = { 20209,apply.DEF_GRADE_BONUS,150},	--Tapferer Keiler
+		[52015] = { 20209,apply.ATT_GRADE_BONUS,100}, 	--Tapferer Keiler
+
+		[52016] = { 20202,'NO_SKILL',0}, 				--Junger Wolf
+		[52017] = { 20202,'NO_SKILL',0}, 				--Junger Wolf
+		[52018] = { 20202,'NO_SKILL',0}, 				--Junger Wolf
+		[52019] = { 20202,'NO_SKILL',0}, 				--Junger Wolf
+		[52020] = { 20202,'NO_SKILL',0}, 				--Junger Wolf
+		[52021] = { 20206,apply.ATTBONUS_MONSTER,3}, 	--Wilder Wolf
+		[52022] = { 20206,apply.EXP_DOUBLE_BONUS,3},	--Wilder Wolf
+		[52023] = { 20206,apply.MAX_HP,250}, 			--Wilder Wolf
+		[52024] = { 20206,apply.DEF_GRADE_BONUS,50},	--Wilder Wolf
+		[52025] = { 20206,apply.ATT_GRADE_BONUS,30}, 	--Wilder Wolf
+		[52026] = { 20210,apply.ATTBONUS_MONSTER,5}, 	--Tapferer Wolf
+		[52027] = { 20210,apply.EXP_DOUBLE_BONUS,5}, 	--Tapferer Wolf
+		[52028] = { 20210,apply.MAX_HP,500},		 	--Tapferer Wolf
+		[52029] = { 20210,apply.DEF_GRADE_BONUS,150},	--Tapferer Wolf
+		[52030] = { 20210,apply.ATT_GRADE_BONUS,100}, 	--Tapferer Wolf		
+		
+		[52031] = { 20204,'NO_SKILL',0}, 				--Junger Löwe
+		[52032] = { 20204,'NO_SKILL',0}, 				--Junger Löwe
+		[52033] = { 20204,'NO_SKILL',0}, 				--Junger Löwe
+		[52034] = { 20204,'NO_SKILL',0}, 				--Junger Löwe
+		[52035] = { 20204,'NO_SKILL',0}, 				--Junger Löwe
+		[52036] = { 20208,apply.ATTBONUS_MONSTER,3}, 	--Wilder Löwe
+		[52037] = { 20208,apply.EXP_DOUBLE_BONUS,3},	--Wilder Löwe
+		[52038] = { 20208,apply.MAX_HP,250}, 			--Wilder Löwe
+		[52039] = { 20208,apply.DEF_GRADE_BONUS,50},	--Wilder Löwe
+		[52040] = { 20208,apply.ATT_GRADE_BONUS,30}, 	--Wilder Löwe
+		[52041] = { 20212,apply.ATTBONUS_MONSTER,5}, 	--Tapferer Löwe
+		[52042] = { 20212,apply.EXP_DOUBLE_BONUS,5}, 	--Tapferer Löwe
+		[52043] = { 20212,apply.MAX_HP,500},		 	--Tapferer Löwe
+		[52044] = { 20212,apply.DEF_GRADE_BONUS,150},	--Tapferer Löwe
+		[52045] = { 20212,apply.ATT_GRADE_BONUS,100}, 	--Tapferer Löwe
+		
+		[52046] = { 20203,'NO_SKILL',0}, 				--Junger Tiger
+		[52047] = { 20203,'NO_SKILL',0}, 				--Junger Tiger
+		[52048] = { 20203,'NO_SKILL',0}, 				--Junger Tiger
+		[52049] = { 20203,'NO_SKILL',0}, 				--Junger Tiger
+		[52050] = { 20203,'NO_SKILL',0}, 				--Junger Tiger
+		[52051] = { 20207,apply.ATTBONUS_MONSTER,3}, 	--Wilder Tiger
+		[52052] = { 20207,apply.EXP_DOUBLE_BONUS,3},	--Wilder Tiger
+		[52053] = { 20207,apply.MAX_HP,250}, 			--Wilder Tiger
+		[52054] = { 20207,apply.DEF_GRADE_BONUS,50},	--Wilder Tiger
+		[52055] = { 20207,apply.ATT_GRADE_BONUS,30}, 	--Wilder Tiger
+		[52056] = { 20211,apply.ATTBONUS_MONSTER,5}, 	--Tapferer Tiger
+		[52057] = { 20211,apply.EXP_DOUBLE_BONUS,5}, 	--Tapferer Tiger
+		[52058] = { 20211,apply.MAX_HP,500},		 	--Tapferer Tiger
+		[52059] = { 20211,apply.DEF_GRADE_BONUS,150},	--Tapferer Tiger
+		[52060] = { 20211,apply.ATT_GRADE_BONUS,100}, 	--Tapferer Tiger
+		
+		[52061] = { 20213,'NO_SKILL',0}, 				--Junger Rentier-Siegel (m)
+		[52062] = { 20213,'NO_SKILL',0}, 				--Junger Rentier-Siegel (m)
+		[52063] = { 20213,'NO_SKILL',0}, 				--Junger Rentier-Siegel (m)
+		[52064] = { 20213,'NO_SKILL',0}, 				--Junger Rentier-Siegel (m)
+		[52065] = { 20213,'NO_SKILL',0}, 				--Junger Rentier-Siegel (m)
+		[52066] = { 20214,apply.ATTBONUS_MONSTER,3}, 	--Wilder Rentier-Siegel (m)
+		[52067] = { 20214,apply.EXP_DOUBLE_BONUS,3},	--Wilder Rentier-Siegel (m)
+		[52068] = { 20214,apply.MAX_HP,250}, 			--Wilder Rentier-Siegel (m)
+		[52069] = { 20214,apply.DEF_GRADE_BONUS,50},	--Wilder Rentier-Siegel (m)
+		[52070] = { 20214,apply.ATT_GRADE_BONUS,30}, 	--Wilder Rentier-Siegel (m)
+		[52071] = { 20215,apply.ATTBONUS_MONSTER,5}, 	--Tapferer Rentier-Siegel (m)
+		[52072] = { 20215,apply.EXP_DOUBLE_BONUS,5}, 	--Tapferer Rentier-Siegel (m)
+		[52073] = { 20215,apply.MAX_HP,500},		 	--Tapferer Rentier-Siegel (m)
+		[52074] = { 20215,apply.DEF_GRADE_BONUS,150},	--Tapferer Rentier-Siegel (m)
+		[52075] = { 20215,apply.ATT_GRADE_BONUS,100}, 	--Tapferer Rentier-Siegel (m)
+		
+		[52076] = { 20216,'NO_SKILL',0}, 				--Junger Rentier-Siegel (w)
+		[52077] = { 20216,'NO_SKILL',0}, 				--Junger Rentier-Siegel (w)
+		[52078] = { 20216,'NO_SKILL',0}, 				--Junger Rentier-Siegel (w)
+		[52079] = { 20216,'NO_SKILL',0}, 				--Junger Rentier-Siegel (w)
+		[52080] = { 20216,'NO_SKILL',0}, 				--Junger Rentier-Siegel (w)
+		[52081] = { 20217,apply.ATTBONUS_MONSTER,3}, 	--Wilder Rentier-Siegel (w)
+		[52082] = { 20217,apply.EXP_DOUBLE_BONUS,3},	--Wilder Rentier-Siegel (w)
+		[52083] = { 20217,apply.MAX_HP,250}, 			--Wilder Rentier-Siegel (w)
+		[52084] = { 20217,apply.DEF_GRADE_BONUS,50},	--Wilder Rentier-Siegel (w)
+		[52085] = { 20217,apply.ATT_GRADE_BONUS,30}, 	--Wilder Rentier-Siegel (w)
+		[52086] = { 20218,apply.ATTBONUS_MONSTER,5}, 	--Tapferer Rentier-Siegel (w)
+		[52087] = { 20218,apply.EXP_DOUBLE_BONUS,5}, 	--Tapferer Rentier-Siegel (w)
+		[52088] = { 20218,apply.MAX_HP,500},		 	--Tapferer Rentier-Siegel (w)
+		[52089] = { 20218,apply.DEF_GRADE_BONUS,150},	--Tapferer Rentier-Siegel (w)
+		[52090] = { 20218,apply.ATT_GRADE_BONUS,100} 	--Tapferer Rentier-Siegel (w)
+		--20201	boar_0 --junger
+		--20202	dog_god_0 --junger
+		--20203	fire_tiger_0 --junger
+		--20204	lion_0 --junger
+
+		--20205	boar_2 --Wilder
+		--20206	dog_god_2 --Wilder
+		--20207	fire_tiger_2 --Wilder
+		--20208	lion_2 --Wilder
+
+		--20209	boar_3 --Tapfer
+		--20210	dog_god_3 --Tapfer
+		--20211	fire_tiger_3 --Tapfer
+		--20212	lion_3 --Tapfer --Tapfer
+
+		--20213	reindeer_male1  --junger
+		--20214	reindeer_male2 --Wilder
+		--20215	reindeer_male3
+
+		--20216	reindeer_female1  --junger
+		--20217	reindeer_female2 --Wilder
+		--20218	reindeer_female3 --Tapfer
+		}
+		local ride_npc = mounts_bonus[a][1]
+		local ride_time = 60*60*5 --item.get_socket(2)*60
+		local ride_skill = mounts_bonus[a][2]
+		local ride_value = mounts_bonus[a][3]
+		pc.mount(ride_npc,ride_time)
+	if vnum >= 52001 and vnum <= 52005
+		or vnum >= 52016 and vnum <= 52020
+		or vnum >= 52031 and vnum <= 52035
+		or vnum >= 52046 and vnum <= 52050
+		or vnum >= 52061 and vnum <= 52065
+		or vnum >= 52076 and vnum <= 52080	then --Junge Mounts (30+ Bewegungspeed)
+		pc.mount_bonus(apply.MOV_SPEED, 30, ride_time )
+		return true
+	elseif vnum >= 52006 and vnum <= 52010
+		or vnum >= 52021 and vnum <= 52025
+		or vnum >= 52036 and vnum <= 52040
+		or vnum >= 52051 and vnum <= 52055
+		or vnum >= 52066 and vnum <= 52070
+		or vnum >= 52081 and vnum <= 52085	then --Wilde Mounts (40+ Bewegungspeed)
+		pc.mount_bonus(apply.MOV_SPEED, 40, ride_time )
+		pc.mount_bonus(ride_skill, ride_value, ride_time)
+		return true
+	elseif vnum >= 52011 and vnum <= 52015
+		or vnum >= 52026 and vnum <= 52030
+		or vnum >= 52041 and vnum <= 52045
+		or vnum >= 52056 and vnum <= 52060
+		or vnum
+		>= 52071 and vnum <= 52075
+		or vnum >= 52086 and vnum <= 52090	then --Tapferere Mounts (50+ Bewegungspeed)
+		pc.mount_bonus(apply.MOV_SPEED, 50, ride_time)
+		pc.mount_bonus(ride_skill, ride_value, ride_time )
+		return true
+	else
+		syschat("Power Mount: FEHLERCODE #00123#")
+		return false
+	end
+	end
+	
+end
+end

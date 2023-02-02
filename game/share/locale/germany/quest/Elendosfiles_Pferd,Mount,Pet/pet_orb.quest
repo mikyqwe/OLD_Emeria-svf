@@ -1,0 +1,32 @@
+quest pet_orb begin
+	state start begin
+		when login begin
+			cmdchat("pet_type_index "..q.getcurrentquestindex())
+		end
+		when button or info begin
+			local pet_type = newpet.gettype()
+			if pet_type < 0 then
+				syschat("You have to summon your pet first")
+				return
+			end
+			
+			if pc.count_item(79280) > 0 then
+				local text = '|cFFff0000|H|h[PETTYPE '..pet_type..']|cFFffffff|H|h '
+				local text_table = {
+					"Clumsy. Not particularly strong. Over time you can improve his skills.",
+					"Curious. Not particularly strong. Faithful companion whose skills grow over time.",
+					"Courageous. Moderately strong. Over time you can improve his skills.",
+					"Brave. Moderately strong. Faithful companion whose skills will grow over time.",
+					"Foolhardy. Strong. Over time you can improve his skills further.",
+					"legendary. Strong. Faithful companion whose skills even grow over time.",
+					"Mythical. Very strong. Will reach its full potential over time.",
+					"Prismatic. Extremely strong. Faithful companion that you can rely on."
+				}
+				chat(text..text_table[pet_type])
+				pc.remove_item(79280, 1)
+			else
+				syschat("You need one pet orb for that.")
+			end
+		end
+	end
+end

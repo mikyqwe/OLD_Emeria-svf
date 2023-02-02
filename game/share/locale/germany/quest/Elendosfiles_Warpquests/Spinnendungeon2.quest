@@ -1,0 +1,25 @@
+quest spider_dungeon_2floor begin
+	state start begin
+		when login or levelup with pc.level >0 begin
+			set_state(to_spider_2floor)
+		end
+	end		
+	state to_spider_2floor begin
+		when 20089.chat."In the first floor" begin
+			say_title("Pung-Ho")
+			say("I'm responsible for the transport")
+			say("between the first and second floor.")
+			say("Do you want to go back to the first floor??")
+			local a= select("Yes","No")
+			if 1==a then
+				say_title("Pung-Ho")
+				say("Have fun with the weaker spiders")
+				wait()
+				pc.warp(91700, 525300)
+				return
+			end
+			say_title("Pung-Ho")
+			say("Let me know if you changed your mind")
+		end
+	end
+end

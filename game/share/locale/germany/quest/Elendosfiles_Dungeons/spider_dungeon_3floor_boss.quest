@@ -1,0 +1,61 @@
+define ENTRY_LEVEL 50
+define ENTRY_LEVEL_MAXIMUM 90
+
+
+
+quest spider_dungeon_third_floor begin
+	state start begin
+		when 30130.chat."Access to the brood cavity" begin
+			if pc.get_level()<ENTRY_LEVEL then
+				say("You can not enter yet")
+				say("because you are not level "..string.format("%d", ENTRY_LEVEL).." yet.")
+				return
+			end
+			if pc.get_level() >ENTRY_LEVEL_MAXIMUM then
+				say("You have exceeded the maximum level of the")
+				say("Dungeon. You must not be higher than 90")
+				say("")
+				return
+			end
+			if pc.getqf("can_access") > get_global_time() then
+				say("You cannot join yet, please wait:")
+				say("Remain: "..(string.format("%.0f", ((pc.getqf("can_access")-get_global_time())/60))).." min")
+				return
+			end
+			if pc.count_item("30324") < 1 then
+				say("This gate can only be opened with the")
+				say("arachnid key.")
+			elseif pc.count_item("30324") >= 1 then
+				say("You will now be teleported.")
+				wait()
+				pc.setqf("can_access", get_global_time() + 900)
+				pc.remove_item(30324, 1)
+				d.new_jump(217, 88113, 615227)
+				d.spawn_mob(2094, 367, 583)
+				d.spawn_mob(2095, 366, 599) 
+				d.spawn_mob(2095, 397, 595) 
+				d.spawn_mob(2095, 396, 571) 
+				d.spawn_mob(2095, 375, 562) 
+				d.spawn_mob(2095, 368, 555)  
+			end
+		end
+		
+		when login begin
+			pc.remove_item(30327, 200)
+		end
+		
+		when 30327.use with pc.get_map_index() >= 2170000 and pc.get_map_index() < 2180000 begin
+			item.remove()
+			d.spawn_mob(2092,367,588)
+		end
+		when 2092.kill with pc.get_map_index() >= 2170000 and pc.get_map_index() < 2180000 begin
+			d.clear_regen()
+			timer("bosskill", 60*1)
+			notice_all(" "..pc.get_name().." killed the Spider Baroness")
+			syschat("You will be teleported to your home village in 60 seconds.")
+		end
+		when bosskill.timer begin
+			d.exit_all_to_start_position()
+		end
+	end
+end

@@ -1,0 +1,27 @@
+quest rang_item begin
+	state start begin
+		when 71107.use begin
+			say_title("Jewel of Renewal")
+			say("You have 2 options. Choose between...")
+			say("- Positive rank points")
+			say("- Neutral rank points")
+			say("")
+			say_reward("What do you want to choose?")
+			local s = select("Positive rank points", "Neutral Rank Points" , "Cancel")
+			if s == 1 then
+				say_title("Jewel of Renewal")
+				say("Positive rank points:")
+				s = ({1000,4000,8000,20000})[select("Friendly", "Good", "Noble", "Chivalrous", "Cancel")]
+				pc.change_alignment(-pc.get_real_alignment())
+				pc.change_alignment(s)
+				pc.remove_item(71107, 1)
+			
+			elseif s == 2 then
+				s = ({0})
+				pc.change_alignment(-pc.get_real_alignment())
+				pc.change_alignment(s)
+				pc.remove_item(71107, 1)
+			end
+		end
+	end
+end

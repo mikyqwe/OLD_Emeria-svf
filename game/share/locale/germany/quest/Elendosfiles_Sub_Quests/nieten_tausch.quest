@@ -1,0 +1,34 @@
+quest nieten_tausch begin
+	state start begin
+		when 30286.take with item.vnum==48305 begin
+			if item.get_count()<20 then syschat("You can only exchange 20 Rivets.") return end
+			pc.remove_item(48305, 20)
+			local num = number(1, 5)
+			if num == 1 then
+				pc.give_item2(48300, 5)
+			elseif num == 2 then
+				pc.give_item2(48301, 5)
+			elseif num == 3 then
+				pc.give_item2(48302, 5)
+			elseif num == 4 then
+				pc.give_item2(48303, 5)
+			elseif num == 5 then
+				pc.give_item2(48304, 5)
+			end
+			syschat("Successfully exchanged!")
+		end
+		when 30286.chat."Exchange Rivets" begin
+			say_title("Exchange Guardian:")
+			say("I exchange 20 Rivets against")
+			say("one of the following Items randomly:")
+			say("")
+			say_reward("5x Lucky Chest (1)")
+			say_reward("5x Lucky Chest (2)")
+			say_reward("5x Lucky Chest (3)")
+			say_reward("5x Lucky Chest (4)")
+			say_reward("5x Lucky Chest (5)")
+			say("")
+			say("Just pull the Rivets on me!")
+		end
+	end
+end

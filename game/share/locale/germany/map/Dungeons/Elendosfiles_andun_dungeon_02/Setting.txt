@@ -1,0 +1,12 @@
+ScriptType	MapSetting
+
+CellScale	200
+HeightScale	0.500000
+
+ViewRadius	128
+
+MapSize	2	4
+BasePosition	3507200	2252800
+TextureSet	textureset\plechito_andundungeon_02.txt
+Environment	plechito_andun_dungeon02.msenv
+

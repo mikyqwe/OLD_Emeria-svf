@@ -1,0 +1,29 @@
+--[[
+	UPDATES:
+		02.08:	-PREMIUM KANN OHNE ITEM REIN
+		22.08:	-10 sek warten
+]]
+quest check_bloodstone begin 
+    state start begin 
+        when 20093.chat."In the Grotto of Exile" begin
+			say_title(mob_name(20093))
+            say("Hello "..pc.get_name()..",") 
+            say("I can take you to the grotto of exile") 
+            say("however, from then on you are on your own")
+			say("To pass you need to have enough")
+			say("experience and a bloodstone.")
+			say("If you have VIP, you can pass")
+			say("without a bloodstone.")
+            local s = select("Let me in", "Exit")
+			say_title(mob_name(20093))
+			if s==2 then say("I can understand that..") return end
+			if pc.count_item(30190)==0 and game.get_event_flag("premium_"..pc.get_account_id())==0 then say("As I said, I ask for a bloodstone [ENTER] or you need VIP.") return
+			elseif pc.get_level()<75 then say("You cant do this now![ENTER]Come back if you reached Level 75.") return end
+			say("Ok, Follow me..")			
+			wait()
+			if not pc.can_warp() then syschat("You have to wait 10 seconds..") return end
+			pc.remove_item(30190, 1)
+			pc.warp(10000,1213200)
+        end 
+    end 
+end  

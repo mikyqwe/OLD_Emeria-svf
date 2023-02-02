@@ -1,0 +1,449 @@
+--[[
+	UPDATES:
+		02.08:	-KRIEGSKEILER, BAO BAO UND KNUUD AUS TRUHE
+				-BEGLEITERTRUHE DROPCHANCE DRIN 1/50
+				-RICHTIGE KRÄUTER
+				-GLOBALE DROPRATE VON KRÄUTER UND ITEMS AUF 1/1000 (1/300 BEI TRUHE DER Engel)
+				-METINDROP FB'S AUF 1 PRO METIN, CHANCE 1/4 AUF EIN ZWEITES
+				-DROPCHANCE VON KRÄUTER UND ITEMS ÜBERARBEITET
+		03.08:	-POWERMOUNTDROP CHANCE AUF 1/250
+				-ROLLE DER EVOLUTION UND MUTATION IN ZEITRAUM IN LAND DER RIESEN CHANCE 1/500
+				-BEGLEITERTRUHE KANN NUR MIT 1 PLATZ IM INVI GEÖFFNET WERDEN
+				-BONI PACKET HINZUGEFÜGT
+		06.08:	-DROPCHANCE VON TRUHE DER VERBESSERUNG AUF 1/200
+				-METINDROP ZWEITES FB CHANCE AUF 50%
+				-UPPITEMDROPCHANCEN ANGEPASST
+				-POWERMOUNTSTUFF DROPCHANCE ANGEPASST
+				-SECHSECKIGE TRUHE ENTHÄLT TAUS UND DROPT ALTERNATIV
+				-KRIEGSKEILER IN BEGLEITERTRUHE
+		07.08:	-75ER WAFFEN AUS SPINNENBARONESS ENTFERNT
+				-KRÄUTER SIND WIEDER DROPBAR 1/500
+				-ZENBOHNEN CHANCE AUF 1/250
+				-DROPCHANCE VON UPPITEMS ERHÖHT AUF 1/50 
+				-UPPITEMS DROPPEN DIREKT 2
+				-DUNKLER PEINIGER DROPT FLUCHSAMMLUNG
+				-WASSERKRISTALLDROP BUG BEHOBEN
+		16.08:	-PROMOTIONSTRUHE EINGEBAUT
+		19.08:	-NEUE ZEIT FÜR POWERMOUNT
+		22.08:	-TRUHEN DROPEN ITEMS NICHT WENN INVI VOLL IST
+				-VWK EINGEFÜGT
+		25.08:	-VON LDR MOBS DIE CHANCE AUF UPPITEMS GESENKT
+				-SWITCHER KOMMEN 25x RAUS
+				-BLAUER DRACHE & AZRAEL TRUHE 75ER WAFFEN ANGEPASST
+				-DROPCHANCE VON SCHRUMPFKOPF ERHÖHT
+		28.08:	-TRUHE DES AZRAEL GEÄNDERT
+]]
+quest alternative_drop begin 
+	state start begin 
+		when kill with not npc.is_pc() begin
+			if pc.get_multifarmstate() == 1 then
+				return
+			end
+            if npc.get_level()+10<pc.get_level() then
+                return
+            end
+			--Monster
+			if npc.get_race()==2591 then
+				--Tartaros
+				local armor = {11294, 11494, 11694, 11894}
+				if number(1, 10)==1 then game.drop_item_with_ownership(armor[number(1,4)], 1) return end --66er Rüstung+4: Chance 10%
+			elseif npc.get_race()==2597 then
+				--Charon
+				if number(1, 10)==1 then game.drop_item_with_ownership(11494, 1) return end --Schwarzwindanzug+4: Chance 10%
+			elseif npc.get_race()==2598 then
+				--[[Azrael
+				game.drop_item_with_ownership(50186, 1) --Truhe des Azrael
+				local items = {14220, 16220, 17220, 13140, 11694}
+				for i=1, 6 do
+					if number(1, 5)==1 then game.drop_item_with_ownership(items[i], 1) end --Seelenkristallschmuck & Titanschild & Magieplattenpanzer: Chance 1/5
+				end]]
+				if number(1, 2)==1 then game.drop_item_with_ownership(27990+number(2,4), 1) end
+				return
+			elseif npc.get_race()==2490 then
+				--Beran-Setaou
+				game.drop_item_with_ownership(30190, number(2,4)) --Blutstein
+				local waffen = {190, 180, 1130, 2170, 3160, 5120}
+				for i=1, table.getn(waffen)  do
+					if number(1, 50)==1 then game.drop_item_with_ownership(waffen[i], 1) end --75er Waffe+0: Chance 10%
+				end
+				local helme = {12267, 12397, 12537, 12677}
+				for i=1, table.getn(helme) do
+					if number(1, 5)==1 then game.drop_item_with_ownership(helme[i]+number(1,5), 1) end --Helme +0-4: Chance 1/5
+				end
+				local schuhe = {15416, 15396, 15376, 15436}
+				for i=1, 4 do
+					if number(1, 5)==1 then game.drop_item_with_ownership(schuhe[i]+number(1,5), 1) end --Schuhe +0-4: Chance 1/5
+				end
+				game.drop_item_with_ownership(27990+number(2,4), 1) --Perlen
+				local drache = {71123, 71129}
+				for i=1, 2 do
+					if number(1, 2)==1 then game.drop_item_with_ownership(drache[i], 1) end --Drachenzeug: Chance 15/20
+				end
+				return
+			elseif npc.get_race()==2492 then
+				-- General Yonghan
+				game.drop_item_with_ownership(30190, 1) --Blutstein
+				game.drop_item_with_ownership(30179, number(1, 4)) --Gewundener Schlüssel
+				local sonstiges = {13066, 13086, 13126, 13106, 16186, 17186, 17206, 16206, 14206, 15166, 15206, 14144}
+				for i=1, table.getn(sonstiges) do
+					if number(1, 5)==1 then game.drop_item_with_ownership(sonstiges[i], 1) end --Schmuck, Schuhe: Chance 1/5
+				end
+				return
+			elseif npc.get_race()==2092 then
+				--Spinnenbaroness
+				local waffen = {195, 185, 1135, 2175, 3165, 5125}
+				for i=1, table.getn(waffen)  do
+					if number(1, 20)==1 then game.drop_item_with_ownership(waffen[i], 1) end --65er Waffe+5: Chance 1/20
+				end
+				game.drop_item_with_ownership(27990+number(2,4), 1) --Perlen
+				if number(1, 5)==1 then game.drop_item_with_ownership(13140, 1) end --Titanschild
+				local armor = {11296, 11496, 11696, 11896}
+				for i=1, 4 do
+					if number(1, 10)==1 then game.drop_item_with_ownership(armor[i], 1) end --66er Rüstung+0: Chance 1/10
+				end
+				local schild = {13064, 13084, 13124, 13104}
+				for i=1, 4 do
+					if number(1, 5)==1 then game.drop_item_with_ownership(schild[i], 1) end --61er Schild+4: Chance 1/5
+				end
+				local schmuck = {14166, 16166, 17166, 14186, 16186, 17186, 14206, 16206, 17206}
+				for i=1, table.getn(schmuck) do
+					if number(1, 5)==1 then game.drop_item_with_ownership(schmuck[i], 1) end --Schmuck: Chance 1/5
+				end
+				return
+			elseif npc.get_race()==706 then
+				-- Dunkler Peiniger -> Fluchsammlung
+				if number(1,50)==1 then game.drop_item_with_ownership(30047, 2) return end
+			-- elseif npc.get_race()==1104 or npc.get_race()==1134 then
+				-- Eislöwe & Unterwelt-Eislöwe -> Yetifell
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30014, 2) return end
+			elseif npc.get_race()==636 or npc.get_race()==637 then
+				if number(1,125)==1 then game.drop_item_with_ownership(30006, 1) return end --Orkzahn
+			elseif npc.get_race()==706 or npc.get_race()==756 then
+			-- if number(1,65)==1 then game.drop_item_with_ownership(30047, 1) return end --Fluchsammlung
+			elseif npc.get_race()>=1001 and npc.get_race()<=1003 then
+				-- Dämonen -> Dämonenandenken
+				-- if number(1,25)==1 then game.drop_item_with_ownership(30015, 2) return end
+				-- if npc.get_race()==1003 then
+					-- Dämonenedelstein
+					-- if number(1,50)==1 then game.drop_item_with_ownership(30016, 2) return end
+				-- end
+				-- if npc.get_race()==1002 then
+					-- Dämonenedelstein+
+					-- if number(1,50)==1 then game.drop_item_with_ownership(30087, 2) return end
+				-- end
+			-- elseif npc.get_race()==2203 then
+				-- Kampftiger -> Flammenmähne
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30019, 2) return end
+			-- elseif npc.get_race()==904 then
+				-- Plagenschwertkämpfer -> Stück Gewebe
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30039, 2) return end
+			-- elseif npc.get_race()==1301 or npc.get_race()==1303 then
+				-- -- Baumfrosch-Soldat, Buhmann -> Blatt
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30040, 2) return end
+				-- if npc.get_race()==1301 then
+					-- -- Forschzunge
+					-- if number(1,50)==1 then game.drop_item_with_ownership(30060, 2) return end
+				-- end
+			-- elseif npc.get_race()==2201 then
+				-- -- Kampftigersklave -> Reißzahn eines Tigers
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30042, 2) return end
+			elseif npc.get_race()==1101 or npc.get_race()==1131 or npc.get_race()==1171 then
+				-- -- Böses verzaubertes Eis, Verzaubertes Eis, Unterwelt-Eissplitter -> Eisstück
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30048, 2) return end
+				if npc.get_race()==1131 then
+					-- Wasserkristall
+					if number(1,150)==1 then game.drop_item_with_ownership(30198, 1) return end
+				end
+			-- elseif npc.get_race()==1102 or npc.get_race()==1132 then
+				-- -- Eiskillerwal, Unterwelt-Eiskillerwal -> Eiskillerwal-Horn
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30049, 2) return end
+			elseif npc.get_race()==1107 or npc.get_race()==1137 then
+				-- Eisgolem, Unterwelt-Eisgolem -> Eiskugel
+				if number(1,25)==1 then game.drop_item_with_ownership(30050, 2) return end
+				if npc.get_race()==1137 then
+					-- Wasserkristall
+					if number(1,150)==1 then game.drop_item_with_ownership(30198, 1) return end
+				end
+			-- elseif npc.get_race()==1302 or npc.get_race()==1332 then
+				-- -- Baumfrosch-Anführer, Gr. Baumfrosch-Anführer -> Froschschenkel
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30061, 2) return end
+			-- elseif npc.get_race()==2107 then
+				-- -- Schlangenbogenschütze -> Schlangenschwanz+
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30082, 2) return end	
+			-- elseif npc.get_race()==903 or npc.get_race()==933 then
+				-- -- Plagenmann, W. Plagenmann -> Unbekannte Medizin+
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30083, 2) return end
+			-- elseif npc.get_race()==905 then
+				-- -- Plagenspeerkämpfer -> Stück Gewebe+
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30085, 2) return end
+			elseif npc.get_race()==1004 or npc.get_race()==1035 then
+				-- Dämonenschamane, Geist des Grolls -> Dämonenandenken+
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30086, 2) return end
+				if npc.get_race()==1004 then
+					--Dämonenandenken
+					if number(1,50)==1 then game.drop_item_with_ownership(30015, 2) return end
+				end
+			-- elseif npc.get_race()==1103 then
+				-- -- Eisinsekt -> Eisstück+
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30088, 2) return end
+			-- elseif npc.get_race()==1105 or npc.get_race()==1135 then
+				-- -- Frostiger Eismann, Unterwelt-Eismann -> Yetifell+
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30089, 2) return end
+			-- elseif npc.get_race()==1106 or npc.get_race()==1136 then
+				-- -- Unterwelt-Yeti, Yeti -> Eiskugel+
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30090, 2) return end
+			-- elseif npc.get_race()==2205 then
+				-- -- Flammenkrieger -> Kriegersymbol
+				-- if number(1,50)==1 then game.drop_item_with_ownership(30091, 2) return end
+			-- elseif npc.get_race()==2302 or npc.get_race()==2303 then
+				-- Dryade und Baumstumpf -> Milchsaft
+				-- if number(1,150)==1 then game.drop_item_with_ownership(30192, 1) return end
+			-- elseif npc.get_race()==1601 or npc.get_race()==1602 then
+				-- Oger Schlächter, Oger Krieger -> Ork-Keule
+				-- if number(1,25)==1 then game.drop_item_with_ownership(30194, 1) return end
+			-- elseif npc.get_race()==2414 or npc.get_race()==2404 or npc.get_race()==2411 then
+				-- Setaou-Kommandant, Setaou-Anführer, Setaou-Soldat -> Dämonenasche
+				-- if number(1,150)==1 then game.drop_item_with_ownership(30196, 1) return end
+				-- if npc.get_race()==2414 or npc.get_race()==2411 then
+					-- Blauer Kristall
+					-- if number(1,150)==1 then game.drop_item_with_ownership(30199, 1) return end
+				-- end
+			elseif npc.get_race()==1501 or npc.get_race()==1502 or npc.get_race()==1503 then
+				-- Steinbeisser, Steingolem, Riesiger Felsengolem -> Quarzsand
+				if number(1,25)==1 then game.drop_item_with_ownership(30195, 1) return end
+			elseif npc.get_race()==2312 or npc.get_race()==2313 then
+				-- Roter Geisterbaumstumpf, Rote Dryade -> Magische Samen
+				if number(1,150)==1 then game.drop_item_with_ownership(30197, 1) return end
+			elseif npc.get_race()==1133 then
+				-- Eisinsekt -> Wasserkristall
+				if number(1,150)==1 then game.drop_item_with_ownership(30198, 1) return end
+			elseif npc.get_race()==2413 then
+				-- Setaou-Magistra -> Blauer Kristall
+				if number(1,150)==1 then game.drop_item_with_ownership(30199, 1) return end
+			elseif npc.get_race()>=1061 and npc.get_race()<=1064 then
+				-- Gemeine Geister -> Fingerknochen
+				if number(1,150)==1 then game.drop_item_with_ownership(30193, 1) return end
+			end
+			
+			--Event Items Fruhling Bosse drop
+			local boss_table = {691, 692, 591, 6408, 4455, 4456, 4457, 878, 879, 768, 6418, 289, 30217, 30210, 30212, 4136, 4407, 4408, 4429, 4430, 4406, 4137, 4138, 4380, 4381, 4382, 4383, 4384, 4385, 4386, 4387, 4388, 4154, 4155, 4156, 4157, 4158, 2996, 2997, 7773, 6790, 878, 879, 880, 6791, 4094, 4095, 4305, 4306, 4307, 6151, 274, 235, 236, 292, 283, 280, 4311, 6191, 6051, 6091, 5161, 5162, 5163, 3790, 3595, 3190, 3191, 3791, 3911, 3913, 3390, 3890, 3912, 3690, 3590, 3555, 3490, 3491, 3691, 3591, 3910, 2191, 3290, 3090, 3590, 3291, 3091, 2591, 2595, 2597, 2598, 2491, 2492, 2493, 2494, 2495, 2306, 2307, 2092, 2206, 2207, 2291, 2091, 2091, 2092, 2093, 2094, 1902, 1903, 1904, 1905, 1906, 1191, 1192, 1304, 1901, 1091, 1092, 1093, 1094, 1095, 1096, 693, 791, 792, 793, 794, 795, 796, 4061, 4517, 4506, 4507, 4508, 4455, 4456, 4457}
+				if table_is_in(boss_table, npc.get_race()) and game.get_event_flag("dropevent_fruhling")==1 then
+					if number(1,3)==1 then game.drop_item_with_ownership(37852, 1) return end
+			end
+			
+			--Event Items Fruhling Metins drop
+			local metinevent_table = {8001, 8002, 8003, 8004, 8005, 8006, 8007, 8008, 8009, 8010, 8011, 8012, 8013, 8014, 8015, 8016, 8017, 8018, 8019, 8020, 8021, 8022, 8023, 8024, 8025, 8026, 8027, 8028, 8029, 8030, 8031, 8032, 8033, 8034, 8035, 8036, 8037, 8038, 8039, 8040, 8051, 8052, 8053, 8054, 8055, 8056, 8057, 8101, 8102, 8103, 8104, 8105, 8106, 8107, 8108, 8109, 8110, 8111, 8112, 8113, 8114, 8406, 8407, 8802, 8469, 8470, 8471, 8709, 8710, 8711, 8716, 8717, 8718, 8719, 8720, 8721, 8472, 8473, 8474, 8475, 8494, 8495, 8496, 8497}
+				if table_is_in(metinevent_table, npc.get_race()) and game.get_event_flag("dropevent_fruhling")==1 then
+					if number(1,10)==1 then game.drop_item_with_ownership(37858, 1) return end
+			end
+			
+			--Global ohne Level
+			if number(1, 1000)==1 then pc.give_item2(items[number(1, table.getn(items))], 1) return end
+			--Muscheln
+			if number(1, 1000)==1 then pc.give_item2(27987, 1) return end
+			--Segenschriftrolle
+			if number(1, 3500)==1 then pc.give_item2(25040, 1) return end
+			
+			-- --Global Kräuter
+			-- local kraut = {50721, 50722, 50723, 50724, 50725, 50726, 50727, 50728}
+			-- if number(1, 1000)==1 then game.drop_item_with_ownership(kraut[number(1, table.getn(kraut))], 1) return end
+			
+			--Global mit Level
+			if pc.get_level()>=5 and pc.get_level()<250 then
+				if number(1, 400)==1 then game.drop_item_with_ownership(38056, 1) return end --Verbesserungstruhe I: Chance 3%
+			end
+			if pc.get_level()>=50 and pc.get_level()<250 then
+				if number(1, 400)==1 then game.drop_item_with_ownership(82120, 1) return end --Verbesserungstruhe II: Chance 3%
+			end
+			if pc.get_level()>=75 and pc.get_level()<250 then
+				if number(1, 400)==1 then game.drop_item_with_ownership(82121, 1) return end --Verbesserungstruhe III: Chance 3%		
+			end
+			if pc.get_level()>=100 and pc.get_level()<250 then
+				if number(1, 300)==1 then game.drop_item_with_ownership(82122, 1) return end --Verbesserungstruhe IIII: Chance 3%		
+			end
+			if pc.get_level()>=150 and pc.get_level()<250 then
+				if number(1, 250)==1 then game.drop_item_with_ownership(30903, 1) return end --Verbesserungstruhe IIIII: Chance 3%		
+			end
+			if pc.get_level()>=50 and pc.get_level()<250 then
+				if number(1, 300)==1 then game.drop_item_with_ownership(77760, 1) return end --Pet Futter (Jung)		
+			end
+			if pc.get_level()>=75 and pc.get_level()<250 then
+				if number(1, 400)==1 then game.drop_item_with_ownership(77761, 1) return end --Pet Futter (Wild)		
+			end
+			if pc.get_level()>=90 and pc.get_level()<250 then
+				if number(1, 600)==1 then game.drop_item_with_ownership(77762, 2) return end --Pet Futter (Tapfer)	
+			end
+			if pc.get_level()>=100 and pc.get_level()<250 then
+				if number(1, 700)==1 then game.drop_item_with_ownership(77763, 2) return end --Pet Futter (Heroisch)	
+			end
+			if pc.get_level()>=50 and pc.get_level()<250 then
+				if number(1, 300)==1 then game.drop_item_with_ownership(44827, 1) return end --Splitter der Wandlung
+			end
+			if pc.get_level()>=50 and pc.get_level()<250 then
+				if number(1, 300)==1 then game.drop_item_with_ownership(44828, 1) return end --Splitter der Freude
+			end
+			if pc.get_level()>=50 and pc.get_level()<250 then
+				if number(1, 300)==1 then game.drop_item_with_ownership(44826, 1) return end --Splitter der Moral
+			end
+			if pc.get_level()>=90 then
+				if number(1, 600)==1 then game.drop_item_with_ownership(49880, 1) return end --Dunkle Truhe		
+			end
+			if pc.get_level()>=65 and pc.get_level()<95 then
+				if number(1, 800)==1 then game.drop_item_with_ownership(30190, 1) return end --Blutstein
+			end
+			if pc.get_level()>=50 then
+				if number(1, 800)==1 then game.drop_item_with_ownership(25040, 1) return end --Segensschriftrolle		
+			end
+			if pc.get_level()>=75 then
+				local armor = {11280, 11480, 11680, 11880}
+				local waffen = {143, 153, 163, 243, 1103, 1113, 2133, 2143, 3133, 3143, 5093, 5103, 7133, 7143}
+				if number(1, 5000)==1 then game.drop_item_with_ownership(armor[number(1,4)], 1) return end --61er Rüstung+0: Chance 0.1%
+				if number(1, 5000)==1 then game.drop_item_with_ownership(schmuck[number(1,14)]+number(1,3), 1) return end --65er Waffen+4-6: Chance 0.1%
+			end
+			
+			-- --Schlangenfeld und Land der Riesen
+			-- if pc.get_map_index()==69 or pc.get_map_index()==70 then
+				-- if number(1, 1000)==1 then game.drop_item_with_ownership(50066+number(1,2), 1) return end
+			-- end
+			
+			--Ab DC Ebene 3
+			if (pc.get_map_index()>=2160000 and pc.get_map_index()<2170000) and d.getf("level")>=2 then				 
+				if number(1, 6000)==1 then game.drop_item_with_ownership(13140, 1) return end --Titanschild+0: Chance 0.1%				
+			end
+			
+			--DC Ebene 1
+			if pc.get_map_index() == 216 and pc.get_local_x() > 30 and pc.get_local_y() > 45 and pc.get_local_x() < 450 and pc.get_local_y() < 450 then			 
+				if number(1, 100)==1 then game.drop_item_with_ownership(30319, 1) return end --Schrumpfkopf: Chance 0.1%				
+			end
+			
+			--Roter Wald ab 86
+			if pc.get_level()>=86 and pc.get_map_index()==68 then
+				local armor = {11290, 11490, 11690, 11890}
+				local schmuck = {14203, 16203, 17203}
+				if number(1, 1000)==1 then game.drop_item_with_ownership(armor[number(1,4)], 1) return end --66er Rüstung+0: Chance 0.1%
+				if number(1, 1000)==1 then game.drop_item_with_ownership(schmuck[number(1,3)]+number(1,3), 1) return end --54er Schmuck+4-6: Chance 0.1%
+				if number(1, 1000)==1 then game.drop_item_with_ownership(27987, 1) return end --Muschel: Chance 0.1%				
+			end
+			
+			--Grotte der Verbannung 2 ab 75
+			if pc.get_level()>=75 and (pc.get_map_index()>=2070000 and pc.get_map_index()<2080000) or pc.get_map_index()==73 then 
+				if number(1, 1000)==1 then game.drop_item_with_ownership(27987, 1) return end --Muschel: Chance 0.1%
+				if number(1, 1000)==1 then game.drop_item_with_ownership(50124, 1) return end --Morsche Holzkiste: Chance 0.1%
+			end
+			
+			--Event
+			if game.get_event_flag("dropevent_mondi")==1 then
+				--Mondlicht-Event
+				if number(1, 550)==1 then game.drop_item_with_ownership(50011, 1) return end --Mondlicht-Schatztruhe: Chance 0.1%
+			end
+			if game.get_event_flag("dropevent_jub")==1 then
+				--Jubi-Event
+				if number(1, 530)==1 then game.drop_item_with_ownership(52769, 1) return end --Jubli-Schatztruhe: Chance 0.1%
+			end
+			if game.get_event_flag("dropevent_fruhling")==1 then
+				--Fruhlings Event-Event
+				if number(1, 300)==1 then game.drop_item_with_ownership(37857, 1) return end --Fruhlings Event: Sonnenblume
+			end
+			if game.get_event_flag("dropevent_fruhling")==1 then
+				--Fruhlings Event-Event
+				if number(1, 305)==1 then game.drop_item_with_ownership(37853, 1) return end --Fruhlings Event: Pinke Blume
+			end
+			if game.get_event_flag("dropevent_fruhling")==1 then
+				--Fruhlings Event-Event
+				if number(1, 310)==1 then game.drop_item_with_ownership(37851, 1) return end --Fruhlings Event: Gelbe Rose
+			end
+			if game.get_event_flag("dropevent_fruhling")==1 then
+				--Fruhlings Event-Event
+				if number(1, 315)==1 then game.drop_item_with_ownership(37855, 1) return end --Fruhlings Event: Rote Rose
+			end
+			if game.get_event_flag("dropevent_fruhling")==1 then
+				--Fruhlings Event-Event
+				if number(1, 320)==1 then game.drop_item_with_ownership(37856, 1) return end --Fruhlings Event: Schwarze Rose
+			end
+			if game.get_event_flag("dropevent_raetsel")==1 then
+				--Rätselhafte Truhe-Event
+				if number(1, 700)==1 then game.drop_item_with_ownership(50034, 1) return end --Rätselhafte Truhe: Chance 0.1%
+			end
+			if game.get_event_flag("weihnachtssocken")==1 then
+				--Sogge
+				if number(1, 1050)==1 then game.drop_item_with_ownership(50010, 1) return end --Sogge: Chance 0.1%
+			end
+			if game.get_event_flag("dropevent_schoko")==1 then
+				--Schoko-Event
+				if number(1, 550)==1 then game.drop_item_with_ownership(82123, 1) return end --Schokodrink: Chance 0.1%
+			end
+			if game.get_event_flag("cards_event")==1 then
+				--Okaycard-Event
+				if number(1, 500)==1 then game.drop_item_with_ownership(79505, 1) return end --Sammelkarte: Chance 0.1%
+			end
+			--if game.get_event_flag("dropevent_sechs")==1 then
+				--Sechseckige Truhe-Event
+			--	if number(1, 1000)==1 then game.drop_item_with_ownership(50037, 1) return end --Sechseckige Truhe: Chance 0.1%
+			--end
+		end 
+		
+		--Truhen
+		when 50186.use begin
+			--Truhe des Azrael
+			item.remove()
+			local waffen = {190, 180, 1130, 2170, 3160, 5120}
+			if number(1, 20)==1 then game.drop_item_with_ownership(waffen[number(1, 6)], 1) end --75er Waffe+0: Chance 10%
+			local armor = {11290, 11490, 11690, 11890}
+			for i=1, table.getn(armor) do
+				if number(1, 5)==1 then game.drop_item_with_ownership(armor[i]+number(1,2), 1) end --66er Rüstungen+1-2: Chance 1/2
+			end	
+			local weapon = {3152, 172, 252, 1122, 2182, 7152}
+			for i=1, table.getn(weapon) do
+				if number(1, 7)==1 then game.drop_item_with_ownership(weapon[i], 1) end --70er Waffen+4: Chance 1/2
+			end	
+			local schmuck = {14203, 16203, 17203}
+			for i=1, table.getn(schmuck) do
+				if number(1, 2)==1 then game.drop_item_with_ownership(schmuck[i]+number(1,3), 1) end --Schmuck+4-6: Chance 1/2
+			end
+			local schmuck2 = {14220, 16220, 17220}
+			for i=1, table.getn(schmuck2) do
+				if number(1, 5)==1 then game.drop_item_with_ownership(schmuck2[i], 1) end --Schmuck+0: Chance 1/5
+			end
+			local helme = {12260, 12280, 12670, 12680, 12530, 12540, 12390, 12400, 13140}
+			for i=1, table.getn(helme) do
+				if number(1, 4)==1 then game.drop_item_with_ownership(helme[i], 1) end --Helme+0 und +4: Chance 1/4
+			end						
+		end
+		when 38052.use begin
+			if pc.get_empty_inventory_count()<1 then syschat("You do not have enough space in your inventory.") return end
+			pc.remove_item(38052, 1)
+			local vnum = {70102, 71094, 71001}
+			pc.give_item2(vnum[number(1, 3)], 2)
+		end
+		when 50124.use begin
+			--Morsche Holzkiste
+			item.remove()
+			local mount = {71114,71116,71118,71120}
+			pc.give_item2(mount[number(1,table.getn(mount))], 5)
+		end
+		when 50137.use begin
+			--Boni Packet
+			item.remove()
+			pc.give_item2(71085, 200)
+		end
+		when 960009.use begin
+			if pc.get_empty_inventory_count()<4 then syschat("You do not have enough space in your inventory.") return end
+			item.remove()
+			pc.give_item2(71128, 1)
+			pc.give_item2(72001, 1)
+			pc.give_item2(71145, 1)
+			pc.give_item2(27987, 1)
+		end
+		when 38053.use begin
+			if pc.get_empty_inventory_count()<1 then syschat("You do not have enough space in your inventory.") return end
+			pc.remove_item(38053, 1)
+			local vnum = {71107, 27987, 22010, 72728, 72724, 25100, 71099, 71048, 70024}
+			pc.give_item2(vnum[number(1, 10)], 1)
+		end
+		when 50037.use begin
+			if pc.get_empty_inventory_count()<1 then syschat("You do not have enough space in your inventory.") return end
+			pc.remove_item(50037, 1)
+			pc.give_item2(50820+number(1,6), 10)
+		end
+	end 
+end  

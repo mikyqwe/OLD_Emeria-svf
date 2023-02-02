@@ -1,0 +1,20 @@
+quest guild_ranking begin
+    state start begin
+		when 11000.chat."View your own guild rank" or 11002.chat."View your own guild rank" or 11004.chat."View your own guild rank" with pc.hasguild() begin
+			say_title("Guardian")
+			say("Here you can see your guild rank.")
+			say(guild.around_ranking_string().."[/DELAY]")
+		end
+		when 11000.chat."Show Best Guilds" or 11002.chat."Show Best Guilds" or 11004.chat."Show Best Guilds" with pc.hasguild() begin
+			say_title("Guardian")
+			say("Here you can see the best guilds.")
+			say(guild.high_ranking_string().."[/DELAY]")
+		end
+		when 11000.chat."View Guild" or 11002.chat."View Guild" or 11004.chat."View Guild" with pc.hasguild() begin
+			say_title("Guardian")
+			say("Your guild is located on:")
+			say_reward("Place: "..guild.get_rank()..", with "..guild.get_ladder_point().." Points!")
+		end		
+    end
+end
+

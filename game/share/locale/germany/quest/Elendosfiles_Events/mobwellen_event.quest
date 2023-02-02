@@ -1,0 +1,118 @@
+quest mobwellen_event begin
+	state start begin
+		when 20011.chat."Mobinvasion" with game.get_event_flag("mobwellen_status")==1 and game.get_event_flag("mobwellen_reich")==pc.get_empire() and pc.get_map_index()~=242 begin
+			say_title(mob_name(20011))			
+			say("The registration for the mob invasion is open.")
+			say("There you strike at the side of your empire.")
+			say("the monster threat back.")
+			say("But you are not allowed to die!")
+			say("If you should die, you will be immediately")
+			say("teleported to your empire.")
+			say("The empire which fastest kills all the monsters wins.")
+			if pc.get_level()<50 then
+                say("")
+				say("Unfortunately you can only participate")
+				say("at level 50 and above.")
+				return
+			end
+			say("Would you like to participate?")
+			if select("Yes", "No")==2 then return end
+			pc.warp(83200, 0)
+            pc.setqf("warp", 1)
+		end
+		when 20011.chat."GM: Mobinvasion" with isAdmin() begin
+			if game.get_event_flag("mobwellen_status")==0 then
+				say("For which Empire?")
+				local s = select("Red", "Yellow", "Blue", "None")
+				if s==4 then return end
+				kill_all_in_map(242)
+				game.set_event_flag("mobwellen_count", 0)
+				game.set_event_flag("mobwellen_reich", s)
+				game.set_event_flag("mobwellen_status", 1)
+				local t = {"rote", "gelbe", "blaue"}
+				notice_all("The "..t[s].." empire can participate the mob invasion.")
+				notice_all("Talk to Uriel for that.")
+			elseif game.get_event_flag("mobwellen_status")==1 then
+				say("Registration open")
+				if select("Close", "Leave open")==2 then return end
+				game.set_event_flag("mobwellen_status", 2)
+				server_timer("mobwellen_refresh", 10, 242)
+				pc.give_item2(70023, 1)
+				game.set_event_flag("mobwellen_zeit"..game.get_event_flag("mobwellen_reich"), get_time())
+				notice_in_map("The registration is closed.")
+				notice_in_map("In ten seconds the first wave appears.")
+				npc.purge()
+			elseif game.get_event_flag("mobwellen_status")==2 then
+				say("Cancel event?")
+				if select("Cancel", "More")==2 then return end
+				local r = {"red", "yellow", "blue"}
+				notice_in_map("The "..r[game.get_event_flag("mobwellen_reich")].." empire was disqualified.")
+				game.set_event_flag("mobwellen_reich", 0)
+				game.set_event_flag("mobwellen_status", 0)
+				game.set_event_flag("mobwellen_count", 0)
+				kill_all_in_map(242)
+				warp_all_to_village(242, 2)
+			end
+		end
+		when 20011.chat."GM: Evaluate mob invasion" with isAdmin() begin
+			local tab, r = {}, {"red", "yellow", "blue"}
+			for i=1, 3 do				
+				if game.get_event_flag("mobwellen_zeit_fin"..i)==0 then
+					say(r[i].." Empire: disqualified")
+					table.insert(tab, "disqualified")
+				else
+					table.insert(tab, game.get_event_flag("mobwellen_zeit_fin"..i).." Minutes")
+					say(r[i].." Empire: "..tab[i])
+				end
+			end
+			if select("Announce and Delete", "Cancel")==2 then return end
+			notice_all("The data of the mob invasion were evaluated.")
+			notice_all("Red Empire: "..tab[1])
+			notice_all("Yellow Empire: "..tab[2])
+			notice_all("Blue Empire: "..tab[3])
+			for i=1, 3 do
+				game.set_event_flag("mobwellen_zeit_fin"..i, 0)
+			end
+		end
+		when login with not pc.is_gm() begin
+			if pc.get_map_index()==242 then
+				if (game.get_event_flag("mobwellen_reich")~=pc.get_empire() or game.get_event_flag("mobwellen_status")~=1) or pc.getqf("warp")==0 then warp_to_village() return end
+                notice_big("!Attention! If you die, you will be teleported back to your empire.")
+                pc.setqf("warp", 0)
+				loop_timer("mobwellen_deathcheck", 1)
+			elseif pc.getqf("tot")==1 then
+				notice_big("You died and were teleported into your empire.")
+				pc.delqf("tot")
+			end
+		end
+		when mobwellen_deathcheck.timer begin
+			if pc.get_hp()<=0 then
+				pc.setqf("tot", 1)
+				warp_to_village()
+			end
+		end
+		when mobwellen_refresh.server_timer begin
+			local next_wave = game.get_event_flag("mobwellen_count")+1
+			regen_in_map(get_server_timer_arg(), "data/dungeon/mob_wellen/mobwelle"..next_wave..".txt")
+			game.set_event_flag("mobwellen_count", next_wave)
+		end
+		when 70023.use with pc.get_map_index()==242 and isAdmin() begin
+			if game.get_event_flag("mobwellen_count")==10 then				
+				local t = math.floor((get_time()-game.get_event_flag("mobwellen_zeit"..game.get_event_flag("mobwellen_reich")))/60)
+				notice_in_map("You killed all Monsters in "..t.." minutes!")
+				game.set_event_flag("mobwellen_zeit_fin"..game.get_event_flag("mobwellen_reich"), t)
+				game.set_event_flag("mobwellen_zeit"..game.get_event_flag("mobwellen_reich"), 0)
+				game.set_event_flag("mobwellen_reich", 0)
+				game.set_event_flag("mobwellen_status", 0)
+				game.set_event_flag("mobwellen_count", 0)
+				kill_all_in_map(242)
+				warp_all_to_village(242, 30)
+				item.remove()
+			else
+				notice_in_map("You have defeated the "..game.get_event_flag("mobwellen_count")..". wave.")
+				notice_in_map("In five seconds comes the next.")
+				server_timer("mobwellen_refresh", 5, 242)
+			end
+		end
+	end
+end

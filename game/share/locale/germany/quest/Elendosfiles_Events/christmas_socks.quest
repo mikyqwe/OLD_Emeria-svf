@@ -1,0 +1,46 @@
+quest christmas_socks begin
+	state start begin
+		when letter with  game.get_event_flag("weihnachtssocken")==1 begin
+			send_letter("Christmas tree")
+		end
+		
+		when button or info begin
+			if game.get_event_flag("weihnachtssocken")==1 then
+				say_title("Christmas tree")
+				say("During this special time of the year, special")
+				say("things happen when you hang your stockings on me.")
+				say("Come and find me in your home town.")
+				wait()
+			
+				send_letter("Christmas tree")
+			end
+		end
+		
+		when 20384.take with item.get_vnum() == 50010 and game.get_event_flag("weihnachtssocken")==1 begin
+			pc.remove_item(50010, 1)
+			local r = number(1,2)
+			if r==1 then
+				pc.give_item2(50035)
+			else
+				pc.give_item2(50036)
+			end
+		end
+		
+		when 26273.chat."Gifts" with game.get_event_flag("weihnachtssocken")==1 begin
+			say_title("Santa claus")
+			if pc.count_item(50035) >= 50 and pc.count_item(50036) >= 50 then
+				say("You have 50 gifts of each color. Would you")
+				say("like to trade them with me?")
+				if select("Yes", "No") == 2 then return end
+				pc.remove_item(50035, 50)
+				pc.remove_item(50036, 50)
+				pc.give_item2(90044)
+			else
+				say("I have really nice gifts this christmas!")
+				say("Those are only for the really nice people, though.")
+				say("Prove to me that you are nice by giving me 50 pink")
+				say("and 50 yellow presents.")
+			end
+		end
+	end
+end

@@ -1,0 +1,66 @@
+quest metin_drop begin
+	state start begin
+		when kill with npc.get_level()>=pc.get_level()-10 and not npc.is_pc() begin
+			if pc.get_multifarmstate() == 1 then
+				return
+			end
+			local vnum = npc.get_race()
+			if not (vnum>=8001 and vnum<=33315) then return end
+			
+			if vnum>=8001 and vnum<=8004 then
+				metin_drop.random_skillbook()
+				metin_drop.random_stone()
+			elseif vnum>=8005 and vnum<=8010 then
+				metin_drop.random_skillbook()
+				metin_drop.random_stone()
+				if number(1,2)==1 then
+					metin_drop.random_skillbook()
+				end
+			elseif vnum>=8011 and vnum<=8014 then
+				metin_drop.random_skillbook()
+				metin_drop.random_skillbook()
+				metin_drop.random_stone()
+			elseif vnum>=8024 and vnum<=8027 then
+				metin_drop.random_skillbook()
+				metin_drop.random_skillbook()
+				metin_drop.random_skillbook()
+				metin_drop.random_stone()
+			elseif vnum>=8051 and vnum<=8056 then
+				metin_drop.random_skillbook()
+				metin_drop.random_skillbook()
+				metin_drop.random_skillbook()
+				metin_drop.random_stone()
+				metin_drop.random_stone()
+			elseif vnum == 8060 or vnum == 8155 or vnum == 8156 then
+				metin_drop.random_skillbook()
+				metin_drop.random_skillbook()
+				metin_drop.random_skillbook()
+				metin_drop.random_stone()
+				metin_drop.random_stone()
+			elseif vnum == 33313 or vnum == 33314 or vnum == 33315 then
+				metin_drop.random_skillbook()
+				metin_drop.random_skillbook()
+				metin_drop.random_skillbook()
+				metin_drop.random_stone()
+				metin_drop.random_stone()
+			end
+		end
+		
+		function random_skillbook()
+			local vnum = {50401, 50416, 50431, 50446, 50461, 50476, 50491, 50506}
+			local n = number(0, 7)
+			local p = 4
+			if n>3 then p = 5 end
+			
+			game.drop_item_with_ownership(50401 + n*15 + number(0, p), 1)
+		end
+		
+		function random_stone()
+			if number(1, 100) <= 50 then
+				game.drop_item_with_ownership(28000 + number(1, 4)*100 + number(30, 43), 1)
+			else
+				game.drop_item_with_ownership(28000 + number(1, 3)*100 + number(30, 43), 1)
+			end
+		end
+	end
+end

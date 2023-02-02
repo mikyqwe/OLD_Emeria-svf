@@ -1,0 +1,9 @@
+quest halloweendrop begin
+    state start begin
+        when kill begin
+            if npc.get_race() == 35563 and pc.get_map_index() == 50 then
+                game.drop_item_with_ownership(38723,5)
+            end
+        end
+    end
+end

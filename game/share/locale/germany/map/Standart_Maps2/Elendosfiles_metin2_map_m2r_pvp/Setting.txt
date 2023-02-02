@@ -1,0 +1,12 @@
+ScriptType	MapSetting
+
+CellScale	200
+HeightScale	0.500000
+
+ViewRadius	128
+
+MapSize	1	1
+BasePosition	410000	610000
+TextureSet	textureset\fanta.txt
+Environment	A1.msenv
+

@@ -1,0 +1,66 @@
+quest reset_scroll begin
+    state start begin
+        when 71002.use begin
+            say_title("Status Reset")
+            say("This Scroll lets you forget everything")
+            say("that you have learned, until now.")
+            say("So that you can begin again.")
+            say("Do you want to use it?")
+            local s = select("Yes", "No")
+            if 2 == s then return end
+			say_title("Status Reset confirmation")
+            say("All of your Statuspoints,")
+            say("will be set to zero.")
+            say("Are you sure to forget about everything?")
+			say("")
+			say_reward("THIS ITEM DOES NOT RESET YOUR SKILLS!")
+            local c = select("Yes", "No")
+            if 2 == c then
+                return
+            end
+			pc.remove_item(71002)
+            pc.reset_point()
+        end
+		when 70103.use begin
+			say_title("Lehre Zurücksetzen")
+			say("Mit diesem Item kannst du deine")
+			say("Lehre zurücksetzen.")
+			say("Möchtest du das machen?")
+			local s = select("Zurücksetzen", "Abbrechen")
+			if s==2 then return end
+			pc.remove_item(70103)			
+			pc.set_skill_group(0)		
+		end
+        when 71003.use begin
+            say_title("Skill Reset Document")
+            say("With this role you can reallocate")
+            say("your skill points up to")
+            say("a maximum of 17 points.")
+            local result = BuildSkillList(pc.get_job(), pc.get_skill_group())
+            local vnum_list = result[1]
+            local name_list = result[2]
+            if table.getn(vnum_list) < 2 then
+                say("There are no skills")
+                say("that you can reset.")
+                return
+            end 
+            local i = select_table(name_list)
+            if table.getn(name_list) == i then
+                return
+            end
+            local name = name_list[i]
+            local vnum = vnum_list[i]
+            say_title("Skill Reset Document")
+            say(string.format("Are you sure you want %s reset?", name))
+            local s = select("Yes", "No")
+            if 2 == s then
+                return
+            end
+			pc.remove_item(71003)
+            pc.clear_one_skill(vnum)
+            pc.setqf("force_to_master_skill", 1)
+            say_title("Skill Reset Document")
+            say(string.format("%s was successfully reset.", name))
+        end
+    end
+end

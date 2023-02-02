@@ -1,0 +1,12 @@
+quest undeaddragon_anouce begin
+    state start begin
+        when 2996.kill with pc.get_map_index() == 367 begin
+            notice_all(pc.get_name() .." killed the Undead Dragon World Boss. He will reappear in 24 hours.")
+			server_timer("worldboss_spawn", 60*60*24, pc.get_map_index())
+        end
+		
+		when worldboss_spawn.server_timer begin
+			notice_all("The Undead Dragon World Boss has appeared again... Get ready!")
+		end
+    end
+end

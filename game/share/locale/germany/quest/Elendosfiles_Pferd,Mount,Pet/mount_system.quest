@@ -1,0 +1,180 @@
+--[[
+	UPDATE:
+		06.08:
+			- EVENTPFERDSIEGEL BEARBEITET FÜR ITEMSHOP
+			- KRIEGSKEILER MONSTER AUF 10
+]]
+quest reittier_quest begin
+	state start begin
+		function reiten(vnum)
+			ride_info = {
+				[71114] = { 20110,	5*60,					apply.DEF_GRADE_BONUS,	75,		1,		true	}, -- Keilersiegel (gelb)!
+				[71115] = { 20110,	5*60,					apply.DEF_GRADE_BONUS,	100,	1,	true	}, -- Keilersiegel (blau)
+				[71116] = { 20111,	5*60,					apply.DEF_GRADE_BONUS,	100,	1,		true	}, -- Streitwolf (gelb)!
+				[71117] = { 20111,	5*60,					apply.DEF_GRADE_BONUS,	150,	1,	true	}, -- Streitwolf (blau) 
+				[71118] = { 20112,	5*60,					apply.DEF_GRADE_BONUS,	125,	1,		true	}, -- Sturmtiger (gelb)!
+				[71119] = { 20112,	5*60,					apply.DEF_GRADE_BONUS,	200,	1,	true	}, -- Sturmtiger (blau)
+				[71120] = { 20113,	5*60,					apply.ATT_GRADE_BONUS,	200,	1,		true	}, -- Schlachtlöwe (gelb)!
+				[71121] = { 20113,	5*60,					apply.ATT_GRADE_BONUS,	400,	1,	true	}, -- Schlachtlöwe (blau)
+				
+				[71124] = { 20114,	item.get_socket(2)*60,	apply.EXP_DOUBLE_BONUS,	50,		1,		false	}, -- Weißer Löwe!
+				
+				[71125] = { 20115,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	20,	1,	false	}, -- Dunkler Kriegskeiler!
+				[71126] = { 20116,	item.get_socket(2)*60,	apply.ATT_GRADE_BONUS,	50,	1,	false	}, -- Dunkler Streitwolf!
+				[71127] = { 20117,	item.get_socket(2)*60,	apply.DEF_GRADE_BONUS,	50,	1,	false	}, -- Dunkler Sturmtiger!
+				[71128] = { 20118,	item.get_socket(2)*60,	apply.ITEM_DROP_BONUS,	25,		1,	false	}, -- Dunkler Schlachtlöwe!
+				
+				[71131] = { 20121,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,		1,		false	}, -- Horse_event
+				[71132] = { 20122,	item.get_socket(2)*60,	apply.MAX_HP,			3500,	1,		false	}, -- Horse_event
+				[71133] = { 20123,	item.get_socket(2)*60,	apply.DEF_GRADE_BONUS,	200,	1,		false	}, -- Horse_event
+				[71134] = { 20124,	item.get_socket(2)*60,	apply.ATT_GRADE_BONUS,	200,	1,		false	}, -- Horse_event
+				[50268] = { 20120,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,	1,		false	}, -- DrachenmountDE
+				[34365] = { 20265,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,	1,		false	}, -- Christmaspferd
+				[34367] = { 20266,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	5,	1,		false	}, -- Mannistart
+				[34368] = { 20267,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,	1,		false	}, -- Manniitemshop
+				
+				[53220] = { 27733,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	5,	1,		false	}, -- Elendosfiles Anfangsmount (Weißer Drache)
+				[53221] = { 27734,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	15,	1,		false	}, -- Flottki
+				[53222] = { 27735,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,	1,		false	}, -- Miepsen
+				[34117] = { 20263,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	15,	1,		false	}, -- offimounthallowen1
+				[34118] = { 20264,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,	1,		false	}, -- offimounthallowen2
+				
+				
+				[60126] = { 20221,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,		1,		false	}, -- Polarprädator
+				[60127] = { 20222,	item.get_socket(2)*60,	apply.CRITICAL_PCT,		8,		1,		false	}, -- Panzerpanda
+				[50271] = { 20127,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	30,		1,		false	}, -- Nachtmahr
+				[50272] = { 20128,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	30,		1,		false	}, -- Weißes Einhorn
+				[50273] = { 34082,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,		1,		false	}, -- Hund
+				[78804] = { 34082,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,		1,		false	}, -- Twitch Hund
+				[50274] = { 34083,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,		1,		false	}, -- China Pferd
+				[50275] = { 34084,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	5,		1,		false	}, -- Konigs Pferd
+				[59398] = { 20238,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	10,		1,		false	}, -- Kronas
+				[34377] = { 20268,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	35,		1,		false	}, -- Katzen Mount
+				[34378] = { 20269,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	8,		1,		false	}, -- Katzen Mount
+				[34379] = { 20270,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	8,		1,		false	}, -- Lama
+				[34380] = { 20271,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	40,		1,		false	}, -- Mystical Drache
+				[34381] = { 20272,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	40,		1,		false	}, -- Robot Drache
+				[34382] = { 20273,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	40,		1,		false	}, -- Pikachu Mount
+				[33720] = { 20274,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	40,		1,		false	}, -- Crazy Lama
+				[33721] = { 20275,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	40,		1,		false	}, -- Fight Lion
+				[33722] = { 20276,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	40,		1,		false	}, -- Magic Horse
+				[33723] = { 20277,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	40,		1,		false	}, -- Rocky
+				[33724] = { 20278,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	40,		1,		false	}, -- Underworld Rayzon
+				[33725] = { 20279,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,	40,		1,		false	}, -- Faithful Hasso
+
+				
+				[71161] = { 20125,	item.get_socket(2)*60,	apply.ATTBONUS_MONSTER,			25,		1,		false	}, -- Equus Purpur
+				
+				[52031] = { pc.getf("powermount_system", "powermount_value"),	item.get_socket(2)*60,	0,	0,	1,	false	}, -- Junges Powermount
+				[52041] = { pc.getf("powermount_system", "powermount_value"),	item.get_socket(2)*60,	pc.getf("powermount_system", "powermount_boni"),	pc.getf("powermount_system", "powermount_amount"),	1,	false	}, -- Wildes Powermount
+				[52051] = { pc.getf("powermount_system", "powermount_value"),	item.get_socket(2)*60,	pc.getf("powermount_system", "powermount_boni"),	pc.getf("powermount_system", "powermount_amount"),	1,	false	}, -- Tapferes Powermount
+			}
+			
+			if pc.get_level() < ride_info[vnum][5] then
+				syschat("Dieses Tier kann erst mit Level "..ride_info[vnum][5].." geritten werden.")
+				return
+			elseif pc.is_polymorphed() then
+				syschat("Das kannst du nicht verwenden, während du verwandelt bist.")
+				return
+			elseif pc.is_mount() then
+				syschat("Das kannst du nicht verwenden, während du reitest.")
+				return
+			end
+			pc.mount(ride_info[vnum][1], ride_info[vnum][2])
+			pc.mount_bonus(ride_info[vnum][3], ride_info[vnum][4], ride_info[vnum][2])
+			if ride_info[vnum][6] then
+				pc.remove_item(vnum, 1)
+			end
+		end
+		
+		when 71114.use or 71115.use or 71116.use or 71117.use or 71118.use or 71119.use or 71120.use or 71161.use or 50268.use or 71121.use	-- normale Siegel 
+		or 71124.use or 71125.use or 71126.use or 71127.use or 71128.use											-- 48H Reittiersiegel
+		or 80110.use or 80111.use or 80112.use or 80113.use or 80114.use											-- Anfangs Siegel Starterse
+		or 71131.use or 71132.use or 71133.use or 71134.use	or 52016.use or 52017.use or 52018.use or 52041.use		-- Rappensiegel
+		or 71137.use or 71138.use or 71139.use or 71140.use or 52010.use or 52061.use or 52070.use or 52071.use 	-- Königstiger
+		or 52031.use or 52041.use or 52051.use or 61014.use or 61015.use or 60126.use or 60127.use or 60128.use
+		or 60129.use or 60130.use or 60131.use or 60132.use or 60133.use or 59398.use or 59434.use or 59435.use or 59436.use or 59437.use or 59439.use or 59440.use or 59441.use or 52011.use or 52026.use or 10030.use or 10031.use or 10032.use or 10033.use or 10034.use or 37100.use or 37101.use or 10035.use or 10036.use or 52042.use or 52056.use or 50271.use or 50272.use or 50273.use or 50274.use or 50275.use or 34377.use or 34382.use or 34378.use or 33720.use or 33721.use or 33722.use or 33723.use or 33724.use or 33725.use or 78804.use or 53220.use or 53221.use or 34379.use or 34380.use or 53222.use or 34117.use or 34118.use or 34381.use or 34365.use or 34367.use or 34368.use or 34296.use begin 																-- Powermounts
+			if table_is_in({113, 26}, pc.get_map_index()) and not pc.is_gm() then
+				syschat("Das darfst du hier nicht verwenden.")
+				return
+			end
+			reittier_quest.reiten(item.get_vnum())
+		end
+		
+		when login begin
+			if table_is_in({113, 26}, pc.get_map_index()) and not pc.is_gm() then
+				syschat("Das darfst du hier nicht verwenden.")
+				return
+			end
+			local vnum, remain_time = pc.get_special_ride_vnum()
+			if vnum==0 or pc.is_polymorphed() or pc.is_mount() then return end
+			reittier_quest.reiten(vnum, remain_time)
+		end
+	end
+end
+
+-- apply = {
+-- 	 	["MAX_HP"]				= 1,
+-- 	 	["MAX_SP"]				= 2,
+-- 		["CON"]					= 3,
+-- 		["INT"]					= 4,
+-- 	 	["STR"]					= 5,
+-- 		["DEX"]					= 6,
+-- 	 	["ATT_SPEED"]			= 7,
+-- 	 	["MOV_SPEED"]			= 8,
+-- 	 	["CAST_SPEED"]			= 9,
+-- 	 	["HP_REGEN"]			= 10,
+-- 		["SP_REGEN"]			= 11,
+-- 	 	["POISON_PCT"]			= 12,
+-- 	 	["STUN_PCT"]			= 13,
+-- 	 	["SLOW_PCT"]			= 14,
+-- 	 	["CRITICAL_PCT"]		= 15,
+-- 	 	["PENETRATE_PCT"]		= 16,
+-- 	 	["ATTBONUS_HUMAN"]		= 17,
+-- 	 	["ATTBONUS_ANIMAL"]		= 18,
+-- 	 	["ATTBONUS_ORC"]		= 19,
+-- 	 	["ATTBONUS_MILGYO"]		= 20,
+-- 	 	["ATTBONUS_UNDEAD"]		= 21,
+-- 	 	["ATTBONUS_DEVIL"]		= 22,
+-- 	 	["STEAL_HP"]			= 23,
+-- 	 	["STEAL_SP"]			= 24,
+-- 	 	["MANA_BURN_PCT"]		= 25,
+-- 	 	["DAMAGE_SP_RECOVER"]	= 26,
+-- 	 	["BLOCK"]				= 27,
+-- 	 	["DODGE"]				= 28,
+-- 	 	["RESIST_SWORD"]		= 29,
+-- 	 	["RESIST_TWOHAND"]		= 30,
+-- 	 	["RESIST_DAGGER"]		= 31,
+-- 	 	["RESIST_BELL"]			= 32,
+-- 	 	["RESIST_FAN"]			= 33,
+-- 	 	["RESIST_BOW"]			= 34,
+-- 	 	["RESIST_FIRE"]			= 35,
+-- 	 	["RESIST_ELEC"]			= 36,
+-- 	 	["RESIST_MAGIC"]		= 37,
+-- 	 	["RESIST_WIND"]			= 38,
+-- 	 	["REFLECT_MELEE"]		= 39,
+-- 	 	["REFLECT_CURSE"]		= 40,
+-- 	 	["POISON_REDUCE"]		= 41,
+-- 	 	["KILL_SP_RECOVER"]		= 42,
+-- 	 	["EXP_DOUBLE_BONUS"]	= 43,
+-- 	 	["GOLD_DOUBLE_BONUS"]	= 44,
+-- 	 	["ITEM_DROP_BONUS"]		= 45,
+-- 	 	["POTION_BONUS"]		= 46,
+-- 	 	["KILL_HP_RECOVER"]		= 47,
+-- 	 	["IMMUNE_STUN"]			= 48,
+--	 	["IMMUNE_SLOW"]			= 49,
+--	 	["IMMUNE_FALL"]			= 50,
+-- 	 	["SKILL"]				= 51,
+-- 	 	["BOW_DISTANCE"]		= 52,
+-- 	 	["ATT_GRADE_BONUS"]		= 53,
+-- 	 	["DEF_GRADE_BONUS"]		= 54,
+-- 	 	["MAGIC_ATT_GRADE"]		= 55,
+-- 	 	["MAGIC_DEF_GRADE"]		= 56,
+-- 	 	["CURSE_PCT"]			= 57,
+-- 	 	["MAX_STAMINA"]			= 58,
+-- 	 	["ATTBONUS_WARRIOR"]	= 59,
+-- 	 	["ATTBONUS_ASSASSIN"]	= 60,
+-- 	 	["ATTBONUS_SURA"]		= 61,
+-- 	 	["ATTBONUS_SHAMAN"]		= 62,
+-- 	 	["ATTBONUS_MONSTER"]	= 63,
+-- }

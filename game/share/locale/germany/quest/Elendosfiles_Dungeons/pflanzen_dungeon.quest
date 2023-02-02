@@ -1,0 +1,188 @@
+define DUNGEON_MAP_INDEX 241
+define DUNGEON_INDEX_MIN 2410000
+define DUNGEON_INDEX_MAX 2420000
+define DUNGEON_LEVEL 75
+define DUNGEON_ITEM 77453 -- KEVIN HEIR ITEM EINTRAGEN ODER SOWAS
+
+-------------------------------------------
+-- EBENE 0 CONSTANTS
+-------------------------------------------
+define NPC1 22738
+define METIN_STONE 8073
+define METIN_AMOUNT 10
+
+-------------------------------------------
+-- EBENE 1 CONSTANTS
+-------------------------------------------
+define BOSS1 232
+
+-------------------------------------------
+-- EBENE 2 CONSTANTS
+-------------------------------------------
+define BOSS2 235
+
+-------------------------------------------
+-- EBENE 3 CONSTANTS
+-------------------------------------------
+define MOBS_TO_KILL 500
+
+-------------------------------------------
+-- EBENE 4 CONSTANTS
+-------------------------------------------
+define BOSS4 236
+
+quest pflanzen_dungeon begin
+	state start begin
+		-------------------------------------------
+		-- FUNKTIONEN
+		-------------------------------------------
+		function is_in_dungeon()
+			return (pc.in_dungeon() and pc.get_map_index() >= DUNGEON_INDEX_MIN and pc.get_map_index() < DUNGEON_INDEX_MAX)
+		end
+		
+		function modulo(a, b)
+			return (a - math.floor(a/b)*b)
+		end
+		
+		function is_in_first_floor()			
+			return (pc.get_local_x() > 180 and pc.get_local_x() < 380) and (pc.get_local_y() > 100 and pc.get_local_y() < 300)
+		end
+	
+		-------------------------------------------
+		-- EBENE 0
+		-------------------------------------------
+		when login begin
+			if pflanzen_dungeon.is_in_dungeon() then
+				pc.set_warp_location(DUNGEON_MAP_INDEX, 21270, 1144)
+				--if party.is_leader() then					
+					d.set_regen_file("data/dungeon/Wald_Dungeon/regen1.txt")
+					d.notice("Defeat the earth. Plant at the end of the room to move on.")
+				--end
+			elseif pc.get_map_index() == DUNGEON_MAP_INDEX then
+				--[[
+				if party.is_party() and party.is_leader() then
+					party.setf("leader_pid", pc.get_player_id())
+				end
+				]]
+				if not pflanzen_dungeon.is_in_first_floor() then
+					pc.warp(2127000, 114400)
+				else--if party.is_party() then
+					notice("You can enter the cursed forest when you have defeated 10 cursed mushrooms.")
+				end
+			else
+				--[[
+				if party.is_party() and party.is_leader() then
+					party.setf("leader_pid", 0)
+				end
+				]]
+			end
+		end
+		
+		--[[
+		when logout with party.is_party() and party.is_leader() and pc.get_map_index() == DUNGEON_MAP_INDEX begin
+			party.setf("leader_pid", 0)
+		end
+		]]
+		
+		-- party.is_party() and
+		when METIN_STONE.kill with pc.get_map_index() == DUNGEON_MAP_INDEX begin
+			--[[
+			if party.getf("leader_pid") == 0 then
+				local pids = {party.get_member_pids()}
+				for i = 1, table.getn(pids), 1 do
+					q.begin_other_pc_block(pids[i])
+					if party.is_leader() and pc.get_map_index() == DUNGEON_MAP_INDEX then
+						party.setf("leader_pid", pc.get_player_id())
+					end
+					q.end_other_pc_block()
+				end
+			end
+			]]
+			
+			--if party.getf("leader_pid") != 0 then
+				pc.setqf("pflanzen_dungeon_metins", pc.getqf("pflanzen_dungeon_metins") + 1)
+				chat("You have defeated "..pc.getqf("pflanzen_dungeon_metins").." mushrooms.")
+				if pc.getqf("pflanzen_dungeon_metins") >= METIN_AMOUNT then
+					pc.setqf("pflanzen_dungeon_metins", 0) 
+					chat("You will now be teleported into the dungeon.")
+					d.new_jump(DUNGEON_MAP_INDEX, 2177900, 114900)
+					d.setf("floor", 1)	
+				end
+			--else
+			--	party.chat("It only counts if the group leader is on the map.")
+			--end
+		end
+	
+		-------------------------------------------
+		-- EBENE 1
+		-------------------------------------------
+		when BOSS1.kill with pflanzen_dungeon.is_in_dungeon() begin
+			d.kill_all()
+			d.clear_regen()
+			d.notice("You have defeated the Earth. Plant! In 10 seconds you will be teleported to the next room.")
+			server_timer("pflanzen_dungeon_warp2", 10, pc.get_map_index())
+		end
+		
+		when pflanzen_dungeon_warp2.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				d.jump_all(21207, 1751)
+				d.setf("floor", 2)
+				d.set_regen_file("data/dungeon/Wald_Dungeon/regen2.txt")
+				d.notice("Defeat the king of the dryads at the end of the room to move on.")
+			end
+		end
+		
+		-------------------------------------------
+		-- EBENE 2
+		-------------------------------------------
+		when BOSS2.kill with pflanzen_dungeon.is_in_dungeon() begin
+			d.kill_all()
+			d.clear_regen()
+			d.notice("You have defeated the King of the Dryads! In 10 seconds you will be teleported to the next room.")
+			server_timer("pflanzen_dungeon_warp3", 10, pc.get_map_index())
+		end
+		
+		when pflanzen_dungeon_warp3.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				d.jump_all(21470, 1582)
+				d.setf("floor", 3)
+				d.set_regen_file("data/dungeon/Wald_Dungeon/regen3.txt")
+				d.notice(string.format("Defeat %d monsters to lure the Queen of the Woods out of hiding.", MOBS_TO_KILL))
+				d.setf("mobs_to_kill", MOBS_TO_KILL)
+			end
+		end
+		
+		-------------------------------------------
+		-- EBENE 3
+		-------------------------------------------
+		when kill with pflanzen_dungeon.is_in_dungeon() and d.getf("floor") == 3 and not npc.is_pc() begin
+			d.setf("mobs_to_kill", d.getf("mobs_to_kill") - 1)
+			if d.getf("mobs_to_kill") == 0 then
+				d.notice(string.format("You have killed %d monsters! The Queen of the Woods has appeared at the end of the room.", MOBS_TO_KILL))
+				d.setf("floor", 4)
+				d.spawn_mob(BOSS4, 741, 802)
+			elseif pflanzen_dungeon.modulo(d.getf("mobs_to_kill"), 50) == 0 then
+				d.notice("You still have to defeate "..d.getf("mobs_to_kill").." monsters.")
+			end			
+		end
+		
+		-------------------------------------------
+		-- EBENE 4
+		-------------------------------------------
+		
+		when BOSS4.kill with pflanzen_dungeon.is_in_dungeon() begin
+			notice_all(" "..pc.get_name().." killed the The Queen of the Woods!")
+			d.notice("The Queen of the Woods is defeated! In 60 seconds you will be teleported to the beginning of the Forest of horror.")
+			d.notice("You can do the Dungeon over and over again... Have fun Adventurer!")
+			d.kill_all()
+			d.clear_regen()
+			server_timer("pflanzen_dungeon_out", 60, pc.get_map_index())
+		end
+
+		when pflanzen_dungeon_out.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				d.exit_all()
+			end
+		end
+	end
+end

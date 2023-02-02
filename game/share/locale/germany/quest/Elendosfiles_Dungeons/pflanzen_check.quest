@@ -1,0 +1,34 @@
+--[[
+	UPDATES:
+		02.08:	-PREMIUM KANN OHNE ITEM REIN
+		22.08:	-10 sek warten
+]]
+quest pflanzen_check begin 
+    state start begin 
+		when login with pc.get_map_index()==241 and pc.get_level()<75 begin
+			pc.warp(957900, 264000)
+		end
+        when 22738.chat."The Forest of Horror" with table_is_in({134}, pc.get_map_index()) begin
+			say_title(mob_name(22738))
+            say("Hello "..pc.get_name()..",") 
+            say("It is rumoured that many warriors from") 
+            say("this dark forest have not returned.")
+            say("At night, by listening, you can hear how")
+			say("the trees and monsters talk to each other.")
+			say("Bring me the mushroom seal")
+			say("and I will take you to the entrance of the forest.")
+			say("If you are a user of the premium function, I don't")
+			say("require a mushroom seal from you and let you pass that way.")
+            local s = select("Take me inside", "I prefer to go")
+			say_title(mob_name(22738))
+			if s==2 then say("I can understand that..") return end
+			if pc.count_item(77453)==0 and game.get_event_flag("premium_"..pc.get_account_id())==0 then say("As I said, I require a mushroom seal[ENTER]in exchange.") return
+			elseif pc.get_level()<75 then say("I can't put you through that![ENTER]Come back when you reach level 75.") return end
+			say("Ok, then follow me..")			
+			wait()
+			if not pc.can_warp() then syschat("You have to wait 10 seconds.") return end
+			pc.remove_item(77453, 1)
+			pc.warp(2127000,114400)
+        end 
+    end 
+end

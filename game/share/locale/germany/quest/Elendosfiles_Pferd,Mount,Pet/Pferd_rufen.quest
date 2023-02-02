@@ -1,0 +1,163 @@
+quest horse_summon begin
+	state start begin		
+		when 20349.chat."Lost Horse Picture" with horse.get_grade()==1 and pc.countitem("50051")<1 begin
+			say_title("Stableboy")
+			say("You are not careful enough...")
+			say("You should not lose your horse picture this often!")
+			say("")
+			say_reward("Do you want to buy a new")
+			say_reward("one for 100.000 Yang?")
+			local b=select("Buy", "Dont Buy")
+			if 1==b then
+				say_title("Stableboy")
+				if pc.money>=100000 then
+					pc.changemoney(-100000)
+					say("There you go.")
+					say("Dont lose it as quickly this time!")
+					pc.give_item2("50051", 1)
+				else
+					say("You dont have enough yang...")
+				end			
+			end
+		end
+		when 20349.chat."Lost Battle Horse Picture" with horse.get_grade()==2 and pc.countitem("50052")<1 begin
+			say_title("Stableboy")
+			say("You are not careful enough...")
+			say("You should not lose your horse picture this often!")
+			say("")
+			say_reward("Do you want to buy a new one")
+			say_reward("for 500.000 Yang?")
+			local b=select("Buy", "Dont Buy")
+			if 1==b then
+				say_title("Stableboy")
+				if pc.money>=500000 then
+					pc.changemoney(-500000)
+					say("There you go.")
+					say("Dont lose it as quickly this time!")
+					pc.give_item2("50052", 1)
+				else
+					say("You dont have enough yang...")
+				end
+			end
+		end
+		when 20349.chat."Lost Military Horse Picture" with horse.get_grade()==3 and pc.countitem("50053")<1 begin
+			say_title("Stableboy")
+			say("You are not careful enough...")
+			say("Getting a new Military Horse Picture")
+			say("is not cheap nor easy!")
+			say("")
+			say_reward("Do you want to buy a new one")
+			say_reward("for 10.000.000 Yang?")
+			local b=select("Buy", "Dont Buy")
+			if 1==b then
+				say_title("Stableboy")
+				if pc.money>=10000000 then
+					pc.changemoney(-10000000)
+					say("There you go.")
+					say("Dont lose it as quickly this time!")
+					pc.give_item2("50053", 1)
+				else
+					say("You dont have enough yang...")
+				end			
+			end
+		end
+		when 50051.use with horse.get_level()==0 begin
+			chat("You dont have a Horse!")
+		end
+		when 50051.use with horse.get_level()==1 begin
+			if pc.getsp()>=100 then									
+				horse.summon()
+				chat("Horsecalling successful")
+				pc.change_sp(-100)
+			else
+				chat("You dont have enough mana, to call your horse")
+				chat("You need 100 Mana")
+			end
+		end
+		when 50051.use with horse.get_level()==11 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50051.use with horse.get_level()==30 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50051.use with horse.get_level()==21 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50052.use with horse.get_level()==0 begin
+			chat("You dont have a Horse!")
+		end
+		when 50052.use with horse.get_level()==1 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50052.use with horse.get_level()==30 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50052.use with horse.get_level()==11 begin
+			if pc.getsp()>=200 then				
+				chat("Horsecalling successful")
+				horse.summon()				
+				pc.change_sp(-200)
+			else
+				chat("You dont have enough mana, to call your horse")
+				chat("You need 200 Mana")
+			end
+		end
+		when 50052.use with horse.get_level()==21 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50053.use with horse.get_level()==0 begin
+			chat("You dont have a Horse!")
+		end
+		when 50053.use with horse.get_level()==1 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50053.use with horse.get_level()==30 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50053.use with horse.get_level()==11 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50053.use with horse.get_level()==21 begin
+			if pc.getsp()>=300 then				
+				chat("Horsecalling successful")
+				horse.summon()
+				pc.change_sp(-300)
+			else
+				chat("You dont have enough mana, to call your horse")
+				chat("You need 300 Mana")
+			end
+		end
+		when 50053.use with horse.get_level()==22 begin
+			if pc.getsp()>=300 then				
+				chat("Horsecalling successful")
+				horse.summon()
+				pc.change_sp(-300)
+			else
+				chat("You dont have enough mana, to call your horse")
+				chat("You need 300 Mana")
+			end
+		end		
+		when 50063.use with horse.get_level()==0 begin
+			chat("You dont have a Horse!")
+		end
+		when 50063.use with horse.get_level()==1 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50063.use with horse.get_level()==21 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50063.use with horse.get_level()==11 begin
+			chat("You are using the wrong Horse Picture.")
+		end
+		when 50063.use with horse.get_level()==30 begin
+			if pc.getsp()>=500 then				
+				chat("Horsecalling successful")
+				horse.summon()
+				pc.change_sp(-500)
+			else
+				chat("You dont have enough mana, to call your horse")
+				chat("You need 500 Mana")
+			end
+		end
+	end	
+end

@@ -1,0 +1,28 @@
+quest guild_war_observer begin
+    state start begin
+		when guild_war_observer1.chat."Ongoing Guild Wars"
+			or guild_war_observer2.chat."Ongoing Guild Wars" 
+			or guild_war_observer3.chat."Ongoing Guild Wars" begin
+			local g = guild.get_warp_war_list()
+			local gname_table = {}
+			table.foreachi(g,
+				function(n, p) 
+					gname_table[n] = guild.get_name(p[1]).." vs "..guild.get_name(p[2])
+				end
+			)
+			if table.getn(g) == 0 then
+				say_title("Guild Organizer")
+				say("There are no guild wars currently taking place.")
+				return
+			end
+			say_title("Guild Organizer")
+			gname_table[table.getn(g)+1] = locale.confirm
+			local s = select_table(gname_table)
+			say_reward("Which one would you like to join?")
+			if s != table.getn(gname_table) then
+				pc.warp_to_guild_war_observer_position(g[s][1], g[s][2])
+			end
+		end	
+    end
+end
+

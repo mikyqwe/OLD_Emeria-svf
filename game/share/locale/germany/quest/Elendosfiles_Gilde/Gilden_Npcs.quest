@@ -1,0 +1,45 @@
+quest guild_building_npc begin
+    state start begin
+		when 20044.click begin
+			if npc.get_guild() == pc.get_guild() then
+				say("Ah! Greetings!")
+				say("I can improve weapons 10% better than the")
+				say("Village Blacksmith. As a guild member,")
+				say("you will receive a 5% discount")
+			else
+				say("I am the blacksmith responsible for weapons!")
+				say("The village blacksmith doesn't get it so well")
+				say("but is also much cheaper than me.")
+				say("But I manage 10% more than he does.")
+			end
+		end
+		when 20045.click begin
+			if npc.get_guild() == pc.get_guild() then
+				say("Ah! Greetings!")
+				say("I can improve armors 10% better than the")
+				say("Village Blacksmith. As a guild member,")
+				say("you will receive a 5% discount")
+				say("same with Shields and Helmets!")
+			else
+				say("I am the blacksmith responsible for armors!")
+				say("The village blacksmith doesn't get it so well")
+				say("but is also much cheaper than me.")
+				say("But I manage 10% more than he does.")
+			end
+		end
+		when 20046.click begin
+			if npc.get_guild() == pc.get_guild() then
+				say("Ah! Greetings!")
+				say("I can improve jewelry 10% better than the")
+				say("Village Blacksmith. As a guild member,")
+				say("you will receive a 5% discount")
+				say("same with shoes, earrings, necklace, bracelet!")
+			else
+				say("I am the blacksmith responsible for jewelry!")
+				say("The village blacksmith doesn't get it so well")
+				say("but is also much cheaper than me.")
+				say("But I manage 10% more than he does.")
+			end
+		end
+    end
+end

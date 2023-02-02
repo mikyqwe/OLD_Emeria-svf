@@ -1,0 +1,985 @@
+#Eisvogelschuhe
+#section
+#npc	20091
+#category	ACCESSOIRES
+#item	15229	1
+#item	71123	2
+#item	71129	2
+#reward	15430	1
+#gold	15000000
+#allow_copy	15229
+#percent	100
+#end
+
+Porki
+section
+npc	34089
+item	11720	25
+item	27994	10			
+item	27993	10
+item	27992	10
+reward	53008	1
+gold	2000000
+percent	100
+category	PETS
+end
+
+Khan
+section
+npc	34089
+item	11720	25
+item	82139	2
+item	82133	2
+item	82134	2
+reward	53009	1
+gold	2000000
+percent	100
+category	PETS
+end
+
+Puzzlek
+section
+npc	34090
+item	40530	1
+item	40531	1
+item	37274	80
+reward	33490	1
+gold	180000000
+percent	80
+category	PVMARMOR
+end
+
+Puzzlenn
+section
+npc	34090
+item	40532	1
+item	40533	1
+item	37274	80
+reward	33590	1
+gold	180000000
+percent	80
+category	PVMARMOR
+end
+
+Puzzlens
+section
+npc	34090
+item	40534	1
+item	40535	1
+item	37274	80
+reward	33690	1
+gold	180000000
+percent	80
+category	PVMARMOR
+end
+
+Puzzlensa
+section
+npc	34090
+item	40536	1
+item	40537	1
+item	37274	80
+reward	33790	1
+gold	180000000
+percent	80
+category	PVMARMOR
+end
+
+Dreikaiserschild
+section
+npc	34090
+item	27992	5
+item	27993	5
+item	27994	5
+item	82101	50
+item	82108	30
+reward	13160	1
+gold	150000000
+percent	90
+category	PVMSHIELD
+end
+
+Dunkeldrachenschild
+section
+npc	34090
+item	27992	8
+item	27993	8
+item	27994	8
+item	82113	100
+item	82114	100
+reward	37700	1
+gold	200000000
+percent	90
+category	PVMSHIELD
+end
+
+Schildderrache
+section
+npc	34090
+item	27992	10
+item	27993	10
+item	27994	10
+item	82116	100
+item	82119	100
+reward	13290	1
+gold	250000000
+percent	90
+category	PVMSHIELD
+end
+
+ZodiacSchwert
+section
+npc	34090
+item	27992	10
+item	27993	10
+item	27994	10
+item	11720	25
+item	82135	80
+reward	34270	1
+gold	180000000
+percent	80
+category	PVMWEAPON
+end
+
+ZodiacKlinge
+section
+npc	34090
+item	27992	10
+item	27993	10
+item	27994	10
+item	11720	25
+item	82136	80
+reward	34280	1
+gold	180000000
+percent	80
+category	PVMWEAPON
+end
+
+ZodiacDolch
+section
+npc	34090
+item	27992	10
+item	27993	10
+item	27994	10
+item	11720	25
+item	82134	80
+reward	34300	1
+gold	180000000
+percent	80
+category	PVMWEAPON
+end
+
+ZodiacBogen
+section
+npc	34090
+item	27992	10
+item	27993	10
+item	27994	10
+item	11720	25
+item	82138	80
+reward	34290	1
+gold	180000000
+percent	80
+category	PVMWEAPON
+end
+
+ZodiacFacher
+section
+npc	34090
+item	27992	10
+item	27993	10
+item	27994	10
+item	11720	25
+item	82133	80
+reward	34320	1
+gold	180000000
+percent	80
+category	PVMWEAPON
+end
+
+ZodiacGlocke
+section
+npc	34090
+item	27992	10
+item	27993	10
+item	27994	10
+item	11720	25
+item	82139	80
+reward	34310	1
+gold	180000000
+percent	80
+category	PVMWEAPON
+end
+
+Leinengürtel
+section		
+npc	34087	
+item	82105	25
+item	50628	5
+item	27992	5
+reward	18000	1
+gold	5000000	
+percent	50
+category	BELT
+end	
+
+Prunkvoller Gürtel
+section		
+npc	34087	
+item	82104	25
+item	50632	5
+item	27993	5
+reward	18020	1
+gold	7500000	
+percent	50
+category	BELT
+end	
+
+Gürtel der Weisheit
+section		
+npc	34087	
+item	82114	25
+item	50630	5
+item	27994	5
+reward	18030	1
+gold	5000000	
+percent	50
+category	BELT
+end	
+
+Seelengürtel
+section		
+npc	34087	
+item	82118	25
+item	50634	5
+item	27991	20
+reward	18080	1
+gold	20000000	
+percent	50
+category	BELT
+end
+
+Schlachtengurtel
+section		
+npc	34087	
+item	27992	200
+item	27993	200
+item	27994	200
+item	18009	1
+reward	19920	1
+gold	100000000	
+percent	100
+category	BELT
+end
+
+MagischerUmhang
+section
+npc	34086
+item	82113	20
+item	82115	50
+item	27987	100
+reward	90027	1
+gold	50000000
+percent	100
+category	OTHER
+end
+
+Trankderweisheit
+section
+npc	34086
+item	82117	50
+item	27992	4
+item	27993	5
+item	27994	6
+reward	71153	1
+gold	50000000
+percent	100
+category	OTHER
+end
+
+ShiningWaffe
+section
+npc	34086
+item	82109	150
+item	82113	50
+item	27993	20
+item	27994	20
+reward	60028	1
+gold	800000000
+percent	50
+category	SHININGS
+end
+
+ShiningRustung
+section
+npc	34086
+item	82108	150
+item	82114	50
+item	27993	20
+item	27994	20
+reward	60029	1
+gold	800000000
+percent	50
+category	SHININGS
+end
+
+ShiningFlugel
+section
+npc	34086
+item	82107	150
+item	82116	50
+item	27993	20
+item	27994	20
+reward	60030	1
+gold	800000000
+percent	50
+category	SHININGS
+end
+
+Kaiserring
+section
+npc	34086
+item	27992	15
+item	27993	25
+item	27994	35
+item	50638	80
+reward	71994	1
+gold	800000000
+percent	80
+category	RINGS
+end
+
+Demonenring
+section
+npc	34086
+item	27992	15
+item	27993	25
+item	27994	35
+item	50637	80
+reward	71995	1
+gold	800000000
+percent	80
+category	RINGS
+end
+
+Erze1
+section
+npc	34086
+item	50623	3
+item	50628	3
+item	50629	3
+reward	50636	1
+gold	10000000
+percent	100
+category	ORES
+end
+
+Erze2
+section
+npc	34086
+item	50624	3
+item	50625	3
+item	50626	3
+reward	50635	1
+gold	10000000
+percent	100
+category	ORES
+end
+
+Erze3
+section
+npc	34086
+item	50634	3
+item	50630	3
+item	50627	3
+reward	50637	1
+gold	10000000
+percent	100
+category	ORES
+end
+
+Erze4
+section
+npc	34086
+item	50631	3
+item	50632	3
+item	50633	3
+reward	50638	1
+gold	10000000
+percent	100
+category	ORES
+end
+
+Rubinarmband		
+section		
+npc	34085	
+item	14209	1
+item	50635	50
+item	82100	40
+reward	14500	1
+gold	100000000
+allow_copy	14209
+percent	100
+category	BRACELETS
+end		
+		
+Granatarmband		
+section		
+npc	34085	
+item	14209	1
+item	50636	50
+item	82101	40
+reward	14520	1
+gold	100000000
+allow_copy	14209
+percent	100
+category	BRACELETS
+end		
+		
+Smaragdarmband		
+section		
+npc	34085	
+item	14209	1
+item	50637	50
+item	82102	40
+reward	14540	1
+gold	100000000
+allow_copy	14209
+percent	100
+category	BRACELETS
+end		
+		
+Saphirarmband	
+section		
+npc	34085	
+item	14209	1
+item	50638	50
+item	82103	40
+reward	14560	1
+gold	100000000
+allow_copy	14209
+percent	100
+category	BRACELETS
+end		
+
+Diamantarmband	
+section		
+npc	34085	
+item	14209	1
+item	50621	85
+item	82104	40
+reward	78000	1
+gold	100000000
+allow_copy	14209
+percent	100
+category	BRACELETS
+end	
+	
+Rubinkette		
+section		
+npc	34085	
+item	16209	1
+item	50635	50
+item	82100	40
+reward	16500	1
+gold	100000000
+allow_copy	16209
+percent	100
+category	NECKLACES
+end		
+	
+Granatkette		
+section		
+npc	34085	
+item	16209	1
+item	50636	50
+item	82101	40
+reward	16520	1
+gold	100000000
+allow_copy	16209
+percent	100
+category	NECKLACES
+end			
+	
+Smaragdkette		
+section		
+npc	34085	
+item	16209	1
+item	50637	50
+item	82102	40
+reward	16540	1
+gold	100000000
+allow_copy	16209
+percent	100
+category	NECKLACES
+end		
+	
+Saphirkette		
+section		
+npc	34085	
+item	16209	1
+item	50638	50
+item	82103	40
+reward	16560	1
+gold	100000000
+allow_copy	16209
+percent	100
+category	NECKLACES
+end
+
+Diamantkette
+section
+npc	34085
+item	16209	1
+item	50621	85
+item	82104	40
+reward	78010	1
+gold	100000000
+allow_copy	16209
+percent	100
+category	NECKLACES
+end	
+
+Rubinohrringe		
+section		
+npc	34085	
+item	17209	1
+item	50635	50
+item	82100	40
+reward	17500	1
+gold	100000000
+allow_copy	17209
+percent	100
+category	EARRINGS
+end		
+
+Granatohrringe		
+section		
+npc	34085	
+item	17209	1
+item	50636	50
+item	82101	40
+reward	17520	1
+gold	100000000
+allow_copy	17209
+percent	100
+category	EARRINGS
+end	
+
+Smaragdohrringe	
+section		
+npc	34085	
+item	17209	1
+item	50637	50
+item	82102	40
+reward	17540	1
+gold	100000000
+allow_copy	17209
+percent	100
+category	EARRINGS
+end	
+
+Saphirohrringe
+section		
+npc	34085	
+item	17209	1
+item	50638	50
+item	82103	40
+reward	17560	1
+gold	100000000
+allow_copy	17209
+percent	100
+category	EARRINGS
+end	
+
+Diamantohrringe
+section
+npc	34085
+item	17209	1
+item	50621	85
+item	82104	40
+reward	78020	1
+gold	100000000
+allow_copy	17209
+percent	100
+category	EARRINGS
+end
+
+Schleimticket
+section
+npc	34088
+item	70102	30
+item	25040	100
+reward	30723	1
+gold	5000000
+percent	100
+category	TICKETS
+end
+
+AntikeMuenze
+section
+npc	34088
+item	38051	200
+reward	30862	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+Schriftweisheit
+section
+npc	34088
+item	82105	10
+reward	30811	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+Pilzsiegel
+section
+npc	34088
+item	82101	10
+reward	77453	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+Archniedenschlussel
+section
+npc	34088
+item	82109	10
+reward	30324	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+Gewundschlussel
+section
+npc	34088
+item	82107	10
+reward	30179	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+Schrumpfkopf
+section
+npc	34088
+item	82102	10
+reward	30319	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+Langguste
+section
+npc	34088
+item	82108	10
+reward	30807	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+SteinderDryaden
+section
+npc	34088
+item	82103	10
+reward	90028	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+HydraPassierschein
+section
+npc	34088
+item	82100	10
+reward	50342	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+Passierschein
+section
+npc	34088
+item	82104	10
+reward	71095	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+Nemereticket
+section
+npc	34088
+item	82210	10
+reward	72052	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+MagischerKristall
+section
+npc	34088
+item	82135	10
+reward	30781	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+AnkhBuch
+section
+npc	34088
+item	82136	10
+reward	30799	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+SteinderSchatten
+section
+npc	34088
+item	82134	10
+reward	30844	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+SkorpionGegenmittel
+section
+npc	34088
+item	82138	10
+reward	30877	1
+gold	20000000
+percent	100
+category	TICKETS
+end
+
+RottenSeele
+section
+npc	34088
+item	64340	100
+item	64337	100
+item	64331	100
+reward	30897	1
+gold	100000000
+percent	100
+category	TICKETS
+end
+
+EventMount
+section
+npc	9928
+item	37855	2000
+item	37856	2000
+item	37851	2000
+reward	33724	1
+percent	100
+category	SPRINGEVENT
+end
+
+EventPet
+section
+npc	9928
+item	37855	500
+item	37856	500
+item	37851	500
+reward	34373	1
+percent	100
+category	SPRINGEVENT
+end
+
+EventTrankderWeisheit
+section
+npc	9928
+item	37852	20
+item	37858	200
+reward	71153	1
+percent	100
+category	SPRINGEVENT
+end
+
+EventKisteFruhling
+section
+npc	9928
+item	37857	25
+item	37853	25
+reward	52760	1
+percent	100
+category	SPRINGEVENT
+end
+
+EventKisteWald
+section
+npc	9928
+item	37852	10
+item	37858	40
+item	52760	4
+reward	52761	1
+percent	100
+category	SPRINGEVENT
+end
+
+EventOkaykart1
+section
+npc	22811
+item	79505	10
+reward	79506	1
+percent	100
+category	OTHEREVENTS
+end
+
+EventOkaykart2
+section
+npc	22811
+item	79506	3
+reward	71195	1
+percent	100
+category	OTHEREVENTS
+end
+
+EventOkaykart2
+section
+npc	22811
+item	79506	10
+reward	71194	1
+percent	100
+category	OTHEREVENTS
+end
+
+RingdesFruhlings
+section
+npc	30129
+item	50160	25
+item	50161	25
+item	50162	25
+reward	30913	1
+percent	100
+category	EASTEREVENT
+end
+
+MagischesEi
+section
+npc	30129
+item	50163	25
+item	50164	25
+item	50161	25
+reward	30787	1
+percent	100
+category	EASTEREVENT
+end
+
+OsterMount1
+section
+npc	30129
+item	50163	500
+item	50164	500
+item	50161	500
+reward	33737	1
+percent	100
+category	EASTEREVENT
+end
+
+OsterMount2
+section
+npc	30129
+item	50162	500
+item	50163	500
+item	50164	500
+reward	33738	1
+percent	100
+category	EASTEREVENT
+end
+
+OsterMount3
+section
+npc	30129
+item	50160	500
+item	50161	500
+item	50164	500
+reward	33739	1
+percent	100
+category	EASTEREVENT
+end
+
+OsterSash1
+section
+npc	30129
+item	50162	100
+item	50161	100
+item	50164	100
+reward	86070	1
+percent	100
+category	EASTEREVENT
+end
+
+OsterSash2
+section
+npc	30129
+item	50163	100
+item	50164	100
+item	50160	100
+reward	86075	1
+percent	100
+category	EASTEREVENT
+end
+
+Goldenticket
+section
+npc	30129
+item	50025	5000
+item	50163	500
+item	50164	500
+item	50160	500
+item	50162	500
+reward	61150	1
+percent	100
+category	EASTEREVENT
+end
+
+SummerEventPet
+section
+npc	22821
+item	38723	1500
+item	30322	2000
+item	77250	3000
+item	77251	3500
+reward	22822	1
+percent	100
+category	SUMMEREVENT
+end
+
+SummerEventMount
+section
+npc	22821
+item	38723	2500
+item	30322	2500
+item	77250	2500
+item	77251	2500
+reward	33740	1
+percent	100
+category	SUMMEREVENT2
+end
+
+SummerEventMount2
+section
+npc	22821
+item	38723	5000
+item	30322	5000
+item	77250	5000
+item	77251	5000
+reward	33741	1
+percent	100
+category	SUMMEREVENT2
+end

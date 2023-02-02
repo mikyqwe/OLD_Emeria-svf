@@ -1,0 +1,123 @@
+quest pet_system begin
+    state start begin
+        function get_pet_info(itemVnum)
+            pet_info_map = {
+            --  [ITEM VNUM] MOB_VNUM, DEFAULT NAME, buff_idx, spawn_effect_idx
+                [53001]     = { 34001, "'s Feuer Phönix", 0},
+                [53002]     = { 34002, "'s Baby Rentier", 0},
+                [53003]     = { 34003, "'s Eis Phönix", 0},
+                [53005]     = { 34004, "'s Baby Azrael", 0},
+                [53006]     = { 34006, "'s Rufus", 0},
+                [53007]     = { 34008, "'s Leonidas", 0},
+                [53008]     = { 34005, "´s Porkie", 0},
+                [53009]     = { 34007, "´s Khan", 0},
+				[53010]     = { 34010, "´s Bambi", 0},
+				[53011]     = { 34011, "´s Knuud", 0},
+				[53012]     = { 34012, "´s BaoBao", 0},
+				[53013]     = { 34006, "´s Rufus", 0},
+				[53014]     = { 34013, "´s Henkerchen", 0},
+				[53015]     = { 34014, "´s G. Henkerchen", 0},
+				[53016]     = { 34015, "´s Boney", 0},
+				[53017]     = { 34016, "'s Jadephönix", 0},
+                [53018]     = { 34020, "´s Schnee-Leonidas", 0},
+                [53019]     = { 34019, "´s Arktis-Khan", 0},
+				[53020]     = { 34017, "´s Polar-Porkie", 0},
+				[53021]     = { 34018, "´s Frost-Rufus", 0},
+				[53022]     = { 34021, "´s Sheldon", 0},
+				[53023]     = { 34022, "´s Cooper", 0},
+				[53024]     = { 34023, "´s Panther", 0},
+				[53025]     = { 34024, "´s Leopard", 0},
+				[53026]     = { 34025, "´s Pepita", 0},
+				[34020]     = { 34028, "´s Meleys Baby", 0},
+				[34021]     = { 34029, "´s Meleys Baby2", 0},
+				[34022]     = { 34030, "´s Fußballerischer Wolf", 0},
+				[34023]     = { 34031, "´s Fußballerischer Wolf(Rot)", 0},
+				[34032]     = { 27004, "´s Eevee", 0},
+				[34033]     = { 27005, "´s Espeon", 0},
+				[34034]     = { 27006, "´s Flareon", 0},
+				[34035]     = { 27007, "´s Jolteon", 0},
+				[34037]     = { 27009, "´s Umbreon", 0},
+				[34038]     = { 27010, "´s Vaporeon", 0},
+				[34039]     = { 27011, "´s Pikachu", 0},
+				[34040]     = { 27012, "´s Charizard", 0},
+				[34041]     = { 27013, "´s Glaceon", 0},
+				[34042]     = { 27014, "´s Gyarados", 0},
+				[34043]     = { 27015, "´s Leafeon", 0},
+				[34044]     = { 27016, "´s Serperior", 0},
+				[34045]     = { 27017, "´s Sylveon", 0},
+				[33507]     = { 34033, "´s Harry Haselnuss", 0},
+				[33508]     = { 34034, "´s Wally Walnuss", 0},
+				[33514]     = { 8514, "´s Son Goku", 0},
+				[33515]     = { 8515, "´s Vegeta", 0},
+				[50267]     = { 20416, "´s Ritter", 0},
+				[78803]     = { 20416, "´s Ritter", 0},
+				[53223]     = { 27730, "´s Baby Skeleton", 0},
+				[53224]     = { 27731, "´s Pumpkin Ghost", 0},
+				[53225]     = { 27732, "´s Baby Wizard", 0},
+				[34366]     = { 34117, "´s Christmas Pet", 0},
+				[34014]     = { 34281, "'s Captive Owl", 0},
+				[34369]     = { 34369, "'s Piggy", 0},
+				[34370]     = { 34370, "'s Piggy", 0},
+				[34371]     = { 34371, "'s Mystic Wolf", 0},
+				[34372]     = { 34372, "'s Mystic Wolf", 0},
+				[34373]     = { 34373, "'s Koala", 0},
+				[34374]     = { 34374, "'s Pinguin", 0},
+				[34375]     = { 34375, "'s Magic Fish", 0},
+				[34376]     = { 34376, "'s Papagei", 0},
+				[33570]     = { 33830, "'s Iron Man", 0},
+				[33571]     = { 33831, "'s Spider Man", 0},
+				[33572]     = { 33832, "'s Black Spider Man", 0},
+				[33573]     = { 33833, "'s Little Dragon", 0},
+				[33574]     = { 33834, "'s King Devil", 0},
+				[33575]     = { 33835, "'s Baby Panda", 0},
+				[33576]     = { 33836, "'s Little Rexi", 0},
+				[33577]     = { 33837, "'s Small robot", 0},
+				[33578]     = { 33838, "'s Fire Dragon", 0},
+				[33579]     = { 33839, "'s Magic Penguin", 0},
+				[33580]     = { 33840, "'s Merikan Dragon", 0},
+				[33581]     = { 33841, "'s Crazy cat", 0},
+				[33582]     = { 33842, "'s Blue Dragon", 0},
+				[55260]     = { 34102, "'s Little White Dragon", 0},
+            }
+
+            itemVnum = tonumber(itemVnum)
+
+            return pet_info_map[itemVnum]
+        end
+		function get_spawn_effect_file(idx)
+			effect_table = {
+				[0] = nil,
+				[1] = "d:\\\\ymir work\\\\effect\\\\etc\\\\appear_die\\\\npc2_appear.mse",
+			}
+			return effect_table [idx]
+		end
+        when 34020.use or 34021.use or 34022.use or 34023.use or 34032.use or 34033.use or 34034.use or 33570.use or 33571.use or 33572.use or 33573.use or 33574.use or 33575.use or 33576.use or 33577.use or 33578.use or 33579.use or 33580.use or 33581.use or 33582.use or 34035.use or 34037.use or 34038.use or 34039.use or 34040.use or 34041.use or 34042.use or 34043.use or 34044.use or 34045.use or 33507.use or 33508.use or 33514.use or 33515.use or 53009.use or 53008.use or 53007.use or 53006.use or 53005.use or 53004.use or 53003.use or 34372.use or 53002.use or 53001.use or 53010.use or 53011.use or 53012.use or 53013.use or 53014.use or 53015.use or 53016.use or 53017.use or 53018.use or 53019.use or 53020.use or 53021.use or 53022.use or 53023.use or 53024.use or 53025.use or 50267.use or 78803.use or 34369.use or 34370.use or 55260.use or 34373.use or 34374.use or 34375.use or 34376.use or 53223.use or 53224.use or 53225.use or 34371.use or 34366.use or 34014.use or 53026.use begin
+            local pet_info = pet_system.get_pet_info(item.vnum)
+
+            if null != pet_info then
+
+                local mobVnum = pet_info[1]
+                local petName = pet_info[2]
+				local spawn_effect_file_name = pet_system.get_spawn_effect_file(pet_info[3])
+
+                if true == pet.is_summon(mobVnum) then
+					if spawn_effect_file_name != nil then
+						pet.spawn_effect (mobVnum, spawn_effect_file_name)
+					end
+                    pet.unsummon(mobVnum)
+		      syschat("Du hast dein Haustier weggeschickt.")
+                else
+                    if pet.count_summoned() < 1 then
+                        pet.summon(mobVnum, petName, false)
+			   syschat("Du hast dein Haustier erfolgreich gerufen.")
+                    else
+                        syschat("Du hast schon ein Haustier gerufen.")
+                    end
+					if spawn_effect_file_name != nil then
+						pet.spawn_effect(mobVnum, spawn_effect_file_name)
+					end
+                end -- if pet.is_summon
+            end  -- if null != pet_info
+        end -- when
+    end -- state
+end -- quest

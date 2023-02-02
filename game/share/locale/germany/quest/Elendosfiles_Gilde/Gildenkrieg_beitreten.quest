@@ -1,0 +1,28 @@
+quest guild_war_join begin
+    state start begin
+		when letter begin
+			local e = guild.get_any_war()
+			if e != 0 and pc.get_war_map() == 0 then
+				setskin(NOWINDOW)
+				send_letter("Join Guild War")
+			end
+		end
+		when button begin
+			local e = guild.get_any_war()
+			say_title("Guild War")
+			if e == 0 then				
+				say("The guild war is already over.")
+			else
+				say("Want to join the Guild War?")
+				local s = select("Join", "Exit")
+				if s == 1 then
+					guild.war_enter(e)
+				else
+					setskin(NOWINDOW)
+					makequestbutton("Join Guild War")
+				end
+			end
+		end
+    end
+end
+

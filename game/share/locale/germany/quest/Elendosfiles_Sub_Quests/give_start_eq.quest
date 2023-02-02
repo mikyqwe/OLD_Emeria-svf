@@ -1,0 +1,8 @@
+quest give_start_eq begin
+	state start begin
+		when login with pc.getqf("first_login") == 0 begin
+			pc.setqf("first_login", 1)
+			pc.give_start_equipment()
+		end
+	end
+end

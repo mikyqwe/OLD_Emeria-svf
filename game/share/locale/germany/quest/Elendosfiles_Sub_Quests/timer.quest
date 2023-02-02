@@ -1,0 +1,71 @@
+quest tt begin
+	state start begin
+		when login begin
+		timer("1", 60*15) 
+		end
+	
+		when 1.timer begin
+			notice("You recognize a gamemaster by the square brackets in front of the name!")
+			notice("When a gamemaster writes to you, convince yourself if he is really a gamemaster")
+			notice("you recognize it by the GM sign in the chat or above the head!")
+			notice("")
+			notice("The Elendosfiles -  Team wish you a lot of fun.")
+			timer("3", 60*30)
+		end
+		
+		when 2.timer begin
+			notice("A gamemaster never asks you for your login details!")
+			notice("Don't give your account details to anyone else, even if it's your friend!")
+			notice("Stolen items will not be refunded by us!")
+			notice("")
+			notice("The Elendosfiles -  Team wish you a lot of fun.")
+			timer("4", 60*30)
+		end
+		
+		when 3.timer begin
+			notice("If you see hackers or are offended, make a video of it and post it to us in the Discord")
+			notice("https://discord.gg/2MReSVUfyY and we will take care of it.")
+			notice("")
+			notice("The Elendosfiles -  Team wish you a lot of fun.")
+			timer("5", 60*30)
+		end
+		
+		when 4.timer begin
+			notice("Support us and vote for us to keep growing.")
+			notice("The link to vote can be found on our homepage at:")
+			notice("www.elendos.shop")
+			notice("Click on Vote and you will be directed to a new page.")
+			notice("You press for access with vote and you have successfully voted.")
+			notice("")
+			notice("The Elendosfiles-  Team wish you a lot of fun.")
+			timer("6", 60*30)
+		end
+		
+		when 5.timer begin
+			notice("Hacking is forbidden & is punished with a permanent ban")
+			notice("Any rule break is severely punished by the team!")
+			notice("Adhere to this rule and play together harmoniously and peacefully!")
+			notice("")
+			notice("The Elendosfiles -  Team wish you a lot of fun.")
+			timer("1", 60*30)
+		end
+		
+		when 6.timer begin
+			notice("Stay up-to-date and come to our Discord")
+			notice("https://discord.gg/2MReSVUfyY")
+			notice("The Elendosfiles -  Team wish you a lot of fun.")
+			timer("1", 60*30)
+		end
+		
+		when 7.timer begin
+			notice("You can find our Teleport Panel under the Minimap (T).")
+			notice("However, it can also be opened with the F10 Key.")
+			notice("")
+			notice("You can find the Biologist under the Minimap (B).")
+			notice("")
+			notice("You can find our Ingame Wiki on the left side in the sidebar!")
+			notice("The Elendosfiles -  Team wish you a lot of fun.")
+			timer("1", 60*30)
+		end
+	end
+end

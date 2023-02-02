@@ -1,0 +1,63 @@
+define ENTRY_LEVEL 100
+define ENTRY_LEVEL_MAXIMUM 150
+
+
+
+quest razador_neu begin
+	state start begin
+		when 20394.chat."Razadors Boss Chamber" begin
+			if pc.get_level()<ENTRY_LEVEL then
+				say("You can not enter yet")
+				say("because you are not level "..string.format("%d", ENTRY_LEVEL).." yet.")
+				return
+			end
+			if pc.get_level() >ENTRY_LEVEL_MAXIMUM then
+				say("You have exceeded the maximum level of the")
+				say("Dungeon. You must not be higher than 150")
+				say("")
+				return
+			end
+			if pc.getqf("can_access_razador") > get_global_time() then
+				say("You cannot join yet, please wait:")
+				say("Remain: "..(string.format("%.0f", ((pc.getqf("can_access_razador")-get_global_time())/60))).." min")
+				return
+			end
+			if pc.count_item("71095") < 1 then
+				say_title("Fireland Guardian:")
+				say("Hello... So you want to go to Razador?")
+				say("Many have already tried and failed...")
+				say("If you want to try, bring me a")
+				say("Passage Ticket! This looks like this:")
+				say_item_vnum(71095)
+			elseif pc.count_item("71095") >= 1 then
+				say_title("Fireland Guardian:")
+				say("Great you have one!")
+				say_item_vnum(71095)
+				say_reward("I will now teleport you to the Razador.")
+				pc.remove_item(71095, 1)
+				wait()
+				pc.setqf("can_access_razador", get_global_time() + 1800)
+				d.new_jump(351, 810900, 680500)
+				d.spawn_mob(8057, 685, 639)
+			end
+		end
+		
+		when login begin
+			pc.remove_item(55962, 200)
+		end
+		
+		when 55962.use with pc.get_map_index() >= 3510000 and pc.get_map_index() < 3515000 begin
+			item.remove()
+			d.spawn_mob(6091,686,620)
+		end
+		when 6091.kill with pc.get_map_index() >= 3510000 and pc.get_map_index() < 3515000 begin
+			d.clear_regen()
+			timer("bosskill_razador", 60*1)
+			notice_all(" "..pc.get_name().." killed Razador!")
+			syschat("You will be teleported to your home village in 60 seconds.")
+		end
+		when bosskill_razador.timer begin
+			d.exit_all_to_start_position()
+		end
+	end
+end

@@ -1,0 +1,37 @@
+--[[
+	UPDATES:
+		02.08:	-PREMIUM KANN OHNE ITEM REIN
+		22.08:	-10 sek warten
+]]
+quest premiumnephircave begin 
+    state start begin 
+        when 37263.chat."Nephrite Cave" begin
+			say_title(mob_name(37263))
+            say("Hello "..pc.get_name()..",") 
+            say("I can take you to the Nephrite Cave.") 
+            say("You need a ticket to enter otherwise")
+			say("you can enter with premium for free!")
+			say("Shall I take you there?")
+            local s = select("Let me in", "Exit")
+			say_title(mob_name(37263))
+			if s==2 then say("I can understand that..") return end
+			if pc.get_level()<85 then say("You cant do this now![ENTER]Come back if you reached Level 85.") return end
+			
+			if pc.count_item(90031)==0 and game.get_event_flag("premium_"..pc.get_account_id())==0 then
+				say("As I said, You need premium to pass") 
+				return
+			end
+			say("Ok, Follow me..")			
+			wait()
+			if not pc.can_warp() then syschat("You have to wait 10 seconds..") return end			
+			if game.get_event_flag("premium_"..pc.get_account_id())==0 then
+				if pc.count_item(90031)==0 then
+					syschat("Nix da")
+					return
+				end
+				pc.remove_item(90031, 1)
+			end
+			pc.warp(2131200,2022300)
+        end 
+    end 
+end  

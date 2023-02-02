@@ -1,0 +1,46 @@
+quest horse_revive begin
+	state start begin
+		when 50059.use begin
+			if not horse.is_dead() then
+				chat("You horse is alive, you dont need the herb yet.")
+				return
+			end
+			if horse.get_level()==21 then
+				chat("Your Military Horse has been revived!")
+				pc.removeitem("50059", 1)
+				horse.revive()
+			else
+				chat("You have the wrong herb")
+				return
+			end
+		end
+		when 50058.use begin
+			if not horse.is_dead() then
+				chat("You horse is alive, you dont need the herb yet.")
+				return
+			end
+			if horse.get_level()==11 then
+				chat("Your Battle horse has been revived!")
+				pc.removeitem("50058", 1)
+				horse.revive()
+			else
+				chat("You have the wrong herb")
+				return
+			end
+		end
+		when 50057.use begin
+			if not horse.is_dead() then
+				chat("You horse is alive, you dont need the herb yet.")
+				return
+			end
+			if horse.get_level()==1 then
+				chat("Your pony has been revived!")
+				pc.removeitem("50057", 1)
+				horse.revive()
+			else
+				chat("You have the wrong herb")
+				return
+			end
+		end
+	end
+end

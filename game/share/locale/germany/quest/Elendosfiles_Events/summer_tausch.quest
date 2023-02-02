@@ -1,0 +1,37 @@
+quest summer_tausch begin
+	state start begin
+		when 22819.take with item.vnum==30322 begin
+			if item.get_count()<100 then syschat("You can only exchange 100 Strawberrys.") return end
+			pc.remove_item(30322, 100)
+			local num = number(1, 6)
+			if num == 1 then
+				pc.give_item2(73923, 1)
+			elseif num == 2 then
+				pc.give_item2(71522, 1)
+			elseif num == 3 then
+				pc.give_item2(25041, 3)
+			elseif num == 4 then
+				pc.give_item2(63720, 1)
+			elseif num == 5 then
+				pc.give_item2(55033, 2)
+			elseif num == 6 then
+				pc.give_item2(71035, 2)
+			end
+			syschat("Successfully exchanged!")
+		end
+		when 22819.chat."Exchange Strawberrys" begin
+			say_title("Summer Girl")
+			say("I exchange 100 Strawberrys against")
+			say("one of the following Items randomly:")
+			say("")
+			say_reward("1x Skill Costume Chest")
+			say_reward("1x Premium Potion White")
+			say_reward("3x Magic stone")
+			say_reward("1x Angels Power")
+			say_reward("2x Pet Enchantment")
+			say_reward("2x Researchers Elixir")
+			say("")
+			say("Just pull the Strawberrys on me!")
+		end
+	end
+end

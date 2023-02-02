@@ -1,0 +1,3 @@
+b	245	261	1	292	22t
+
+#b  x   y   z   mobvnum time (for example on 1st line, he spawns at 10 clock / at 16 clock and 21 clock)

@@ -1,0 +1,70 @@
+quest skill_group_new begin 
+    state start begin 
+         
+        when login or levelup with pc.get_level() >= 5 begin 
+            set_state(teacher_information) 
+        end 
+    end 
+     
+    state teacher_information begin 
+        when letter begin 
+            send_letter('The training') 
+        end 
+         
+        when button or info begin 
+             
+            if pc.get_skill_group()!=0 then 
+                set_state(quest_completed) 
+            end 
+             
+            local skill_group_name_list = {} 
+             
+            local skill_group_list = { 
+                [0] = {'Body-Force training','Mental-Fight training'}, 
+                [1] = {'Blade Fight training','Archery training'}, 
+                [2] = {'Weaponry training','Black Magic training'}, 
+                [3] = {'Dragon Force training','Healing Force training'} 
+            } 
+             
+            for a = 1, table.getn(skill_group_list[pc.get_job()]) do 
+                table.insert(skill_group_name_list, skill_group_list[pc.get_job()][a]) 
+            end 
+             
+            table.insert(skill_group_name_list, 'Cancel') 
+             
+             
+            say_title('Training') 
+            say('[ENTER]You have the opportunity to start an apprenticeship.[ENTER]Please choose an education:[ENTER]') 
+             
+            local select_job = select2(skill_group_name_list) if skill_group_name_list[select_job] == 'Cancel' then return end 
+             
+            if pc.get_skill_group()!=0 then 
+                syschat('You have already started an education!') 
+                set_state(quest_completed) 
+                return 
+            end 
+             
+            pc.set_skill_group(select_job) -- ! 
+            pc.clear_skill() 
+            char_log(0, "CLEAR_SKILL", "Fertigkeit nach Fertigkeitsmeister löschen") 
+			pc.set_buffi_skill()
+             
+            setdelay(0) 
+            say_title(gameforge.skill_group._310_sayTitle) 
+             
+            say(gameforge.skill_group._320_say) 
+            if not pc.is_clear_skill_group() then 
+                setdelay(0) 
+                say(gameforge.skill_group._330_say) 
+                say_title(gameforge.buy_fishrod._210_sayTitle) 
+                say_reward(gameforge.skill_group._340_sayReward) 
+            else 
+                setdelay(0) 
+                say_reward(gameforge.skill_group._350_sayReward) 
+            end 
+            set_state(quest_completed) 
+        end 
+    end 
+    state quest_completed begin 
+    end 
+end  

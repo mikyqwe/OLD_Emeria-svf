@@ -1,0 +1,7 @@
+quest auto_pull begin
+	state start begin
+		when 70038.use begin
+			pc.aggregate_monster()
+		end
+	end
+end

@@ -1,0 +1,44 @@
+quest no_port_maps begin
+	state start begin
+		when login begin
+			local maps = {
+			-- {map_index, level, premium}
+				{73, 75, false},
+				{72, 75, false},
+				{217, 50, false},
+				{153, 150, false},
+				{154, 95, false},
+				{405, 105, false},
+				{320, 110, false},
+				{270, 95, false},
+				{271, 120, false},
+				{272, 120, false},
+				{401, 90, false},
+				{404, 90, false},
+				{402, 90, false},
+				{403, 90, false},
+				{57, 135, false},
+				{58, 50, false},
+				{368, 50, false},
+				{274, 60, false},
+				{145, 180, false},
+				{275, 120, false},
+				{156, 180, false},
+				{273, 255, false},
+				{157, 180, false}
+			}
+			
+			table.foreach(maps, function(_, val)
+				if pc.get_map_index() == val[1] then
+					if (pc.get_level() < val[2]) or (val[3] and (game.get_event_flag("premium_"..pc.get_account_id()) == 0 and pc.count_item(90031) == 0)) then
+						warp_to_village()
+					else
+						if val[3] and game.get_event_flag("premium_"..pc.get_account_id()) == 0 then
+							pc.remove_item(90031, 1)
+						end
+					end
+				end
+			end)
+		end
+	end
+end

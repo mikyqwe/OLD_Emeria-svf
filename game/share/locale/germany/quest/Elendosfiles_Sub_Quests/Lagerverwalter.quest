@@ -1,0 +1,38 @@
+quest warehouse begin
+    state start begin
+		when 9005.click begin			
+			if pc.getqf("pw")==0 then
+				say_title("Warehouse Manager")
+				say("Hello Stranger,")
+				say("I can store your items")
+				say("however, I need a bit Yang")
+				say("not much, just 500 Yang.")
+				say_reward("Do you want to pay for this?")
+				local s=select("Pay", "Dont Pay")
+				if s==2 then
+					return
+				end
+				if pc.get_gold()<500 then
+					say_title("Warehouse Manager")
+					say("You dont have enough Yang.")
+					return
+				end
+				say_title("Warehouse Manager")
+				say("You have successfully")
+				say("opened a warehouse.")
+				say_reward("Your password is 000000")
+				pc.change_gold(-500)
+				game.set_safebox_level(1)
+				pc.setqf("pw", 1)
+			elseif pc.getqf("pw")==1 then 
+				say_title("Warehouse Manager")
+				say("How can i help you?")
+				local f = select("Open Warehouse", "Exit")
+				if f == 1 then
+					game.open_safebox()
+					setskin(NOWINDOW)
+				end
+			end
+		end
+	end
+end	

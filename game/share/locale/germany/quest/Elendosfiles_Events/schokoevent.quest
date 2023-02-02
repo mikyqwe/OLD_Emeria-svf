@@ -1,0 +1,49 @@
+quest schokoevent begin
+	state start begin
+		when letter with game.get_event_flag("dropevent_schoko")==1 begin
+			send_letter("Chocolate Drink?")
+		end
+		
+		when button or info begin
+			if game.get_event_flag("dropevent_schoko")==1 then
+				say_title("Chocolate Dealerin")
+				say("Everyone loves Chocolate Drinks.")
+				say("Come to me and learn more.")
+				say("You find me in your home town.")
+				wait()
+			
+				send_letter("Chocolate Drink?")
+			end
+		end
+		
+		when 62730.take with item.get_vnum() == 82123 and game.get_event_flag("dropevent_schoko")==1 begin
+			pc.remove_item(82123, 1)
+			local r = number(1,2)
+			if r==1 then
+				pc.give_item2(82124)
+			else
+				pc.give_item2(82125)
+			end
+		end
+		
+		when 62730.chat."Chocolate Cake" with game.get_event_flag("dropevent_schoko")==1 begin
+			say_title("Chocolate Dealerin")
+			if pc.count_item(82124) >= 25 and pc.count_item(82125) >= 25 then
+				say("You have 25 Chocolate Fountain (1) and")
+				say("25 Chocolate Fountain (2). Would you")
+				say("like to trade them with me?")
+				if select("Yes", "No") == 2 then return end
+				pc.remove_item(82124, 25)
+				pc.remove_item(82125, 25)
+				pc.give_item2(82126)
+			else
+				say("I baked a delicious cake!")
+				say("If you want, I'll give you some of my cake...")
+				say("But I would like a little something in return.")
+				say("Bring me 25 Chocolate Fountain (1)")
+				say("and 25 Chocolate Fountain (2).")
+				say("And you get a delicious Chocolate Cake")
+			end
+		end
+	end
+end

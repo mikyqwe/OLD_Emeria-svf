@@ -1,0 +1,92 @@
+quest event_activate begin
+	state start begin
+        when login begin
+            local announce_flags = {"dropevent_mondi_an", "dropevent_fruhling_an", "oxevent_an", "mobwellen_an", "item_an", "cards_event_1"}
+            local text = {"Mondlicht-Schatztruhen Dropevent", "Rätselhafte Truhen Dropevent", "OX-Wettbewerb", "Monsterinvasion Event", "Itemsammel Event", "Okay Event"}
+            for i=1, 5 do
+				if game.get_event_flag(announce_flags[i])>0 and math.ceil((game.get_event_flag(announce_flags[i])-get_time())/60)>0 then
+                    notice_big("In "..math.ceil((game.get_event_flag(announce_flags[i])-get_time())/60).." Minutes finds a "..text[i].." statt!")
+                end
+			end
+            loop_timer("test_event", 60*15)
+			
+			if game.get_event_flag("wheel_of_fortune") == 1 then
+				notice("The Wheel of Fortune is open! Press the F12 Key. Good luck!")
+			end
+			
+			if game.get_event_flag("dungeon_info_an2") == 1 then
+				notice("Info! - All Elendosfiles Dungeons have a cooldown of 30 minutes!")
+			end
+			
+			if game.get_event_flag("coins_event_an2") == 1 then
+				notice("At the moment there is a Coins Event. From 14.03.2022 to 18.03.2022 30% more Coins.")
+			end
+			
+			local event_flags = {"promotion_pet", "dropevent_mondi", "dropevent_fruhling", "dropevent_jub", "cards_event"}
+			local event_text = {"", "Moonlight treasure chest drop Event is currently running!", "The Spring Event is currently running!", "The christmas event is currently running!", "The Okaycard event is currently running!"}
+			table.foreach(event_flags, function(i,p)
+				if game.get_event_flag(p) == 1 and event_text[i] != "" then
+					notice(event_text[i])
+				end
+			end)
+        end
+        when test_event.timer begin
+            local flags = {"dropevent_mondi_an", "dropevent_fruhling_an", "oxevent_an", "mobwellen_an", "item_an", "cards_event_1"}
+            local text = {"Mondlicht-Schatztruhen Dropevent", "fruhlings Truhen Dropevent", "OX-Wettbewerb", "Monsterinvasion Event", "Itemsammel Event", "Okaycard Event"}
+            for i=1, 5 do
+				if game.get_event_flag(flags[i])>0 and math.ceil((game.get_event_flag(flags[i])-get_time())/60)>0 then
+                    notice_big("In "..math.ceil((game.get_event_flag(flags[i])-get_time())/60).." Minuten findet ein "..text[i].." statt!")
+                end
+			end
+        end
+		when 33002.chat."Events aktivieren/deaktivieren" with isAdmin() begin
+            say("ankündigen oder machen?")
+            local t = select("ankündigen", "machen", "nichts")
+            if t==3 then return end
+            if t==1 then
+                say("welches event?")
+                local q = select("mondlicht", "fruhlings", "ox", "mobwellen", "item abgeben", "dropevent_jub", "Okaycard Event", "nichts")
+                if q==7 then return end
+                local flags = {"dropevent_mondi_an", "dropevent_fruhling_an", "oxevent_an", "mobwellen_an", "item_an", "dropevent_jub", "cards_event_1"}
+                if game.get_event_flag(flags[q])==0 then
+                    say("in wie viel stunden?")
+                    local stu = input()
+                    if tonumber(stu)==false then return end
+                    game.set_event_flag(flags[q], get_time()+(stu*60*60))
+                    chat("ankündigung an")
+                else
+                    game.set_event_flag(flags[q], 0)
+                    chat("ankündigung aus")
+                end
+                return
+            end
+			say("welches event?")
+			local s = select("promotion", "mondlicht", "fruhlings", "dropevent_jub", "Okaycard Event", "entschädigung", "nichts")--"sechseck", "nichts")			
+			if s==6 then return end			
+			local flags = {"promotion_pet", "dropevent_mondi", "dropevent_fruhling", "dropevent_jub", "cards_event", "entschaedigung"}--, "dropevent_sechs"}
+			local text = {
+				{"",""},
+				{"The Moonlight treasure chest drop Event has started!", " The Moonlight treasure chest drop Event has ended."},
+				{"The Spring Event has started!", "The Spring Event has ended."},				
+				{"The Anniversary event has started!", "The Anniversary event has ended."},
+				{"The Okaycard event has started!", "The Okaycard event has ended."}
+				--{"The Hexagonal treasure Chest drop Event has started!", "The Hexagonal treasure Chest drop Event has ended."}
+			}
+			if game.get_event_flag(flags[s])==1 then
+				say("soll das event DEAKTIVIERT werden?")
+				if select("Ja", "Nein")==2 then return end
+				game.set_event_flag(flags[s], 0)
+				if text[s][2]~="" then
+					notice_all(text[s][2])
+				end
+				return
+			end
+			say("soll das event AKTIVIERT werden?")
+			if select("Ja", "Nein")==2 then return end
+			game.set_event_flag(flags[s], 1)
+			if text[s][1]~="" then
+				notice_all(text[s][1])
+			end
+		end
+	end
+end

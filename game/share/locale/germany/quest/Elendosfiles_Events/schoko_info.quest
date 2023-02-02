@@ -1,0 +1,16 @@
+quest schoko_info begin
+	state start begin
+		when 62730.chat."Chocolate Drink?" begin
+			say_title("Chocolate Dealerin:")
+			say("You can swap your chocolate drinks with me")
+			say("Just pull the chocolate drink on me:")
+			say("In return you will receive:")
+			say("")
+			say("Chocolate Fountain (1)")
+			say("or")
+			say("Chocolate Fountain (2)")
+			say("")
+			say("We hope you have fun on the Elendosfiles!")
+		end
+	end
+end

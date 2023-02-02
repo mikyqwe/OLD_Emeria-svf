@@ -1,0 +1,195 @@
+define MAP_INDEX 358
+define ENTRY_NPC 22820
+define ENTRY_LEVEL 150
+define ENTRY_METIN 8119
+define KEYSTONE_NPC 37298
+define KEYSTONE_ITEM 43342
+define REWARD_ITEM 53920
+
+quest deviltower2 begin
+	state start begin
+		when login begin
+			if pc.get_map_index() == MAP_INDEX then
+				pc.set_warp_location(50, 6158, 2892)
+			elseif pc.get_map_index() >= MAP_INDEX *10000 and pc.get_map_index() < ( MAP_INDEX +1)* 10000 then
+				pc.set_warp_location(50, 6158, 2892)
+			end
+			
+			pc.remove_item(KEYSTONE_ITEM, pc.count_item(KEYSTONE_ITEM))
+		end
+
+		when ENTRY_NPC.chat."Summer Event Dungeon" with pc.get_map_index()==50 begin
+			say_title(mob_name(ENTRY_NPC))
+			say("")
+			say_reward("A new Tower has been found.")
+			say_reward("Elendos has formed this with the Dragon God.")
+			say_reward("Are you ready for some fun?")
+			say_reward("When you reach the top of the Tower you get a Reward!")
+			say_reward("I wish you Good Luck!")
+			say("")
+			if pc.get_level()<ENTRY_LEVEL then
+				say("You can not enter yet")
+				say("because you are not level "..string.format("%d", ENTRY_LEVEL).." yet.")
+				return
+			end
+			say("Do you want to enter the Sommer Event Dungeon?")
+			local s = select ("Enter", "Exit") 
+			if s == 1 then 
+				pc.warp(9980300, 9959600) 				
+			end
+		end
+		
+		when kill with npc.get_race()==ENTRY_METIN begin
+			timer("devil2_stone1", 6)
+		end
+		
+		when devil2_stone1.timer begin
+			d.new_jump_all(MAP_INDEX, 99803, 99596)
+			d.notice("Defeat all the Event Demons on this Floor.")
+			d.setf("level", 1)
+			d.regen_file("data/dungeon/DT2/Spawn1.txt")
+			server_loop_timer('devil2_floor1_update', 5, d.get_map_index())
+		end
+		
+		when devil2_floor1_update.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				if d.count_monster()==0 then
+					clear_server_timer("devil2_floor1_update", get_server_timer_arg())
+					d.setf("level", 2)
+					d.setf("stone_count", 5)
+					d.notice("You're now on Floor 2.")
+					d.notice("To get to the next Floor you need to find")
+					d.notice("Five Event Keys to open the Seals.")
+					d.notice("You only got 20 minutes to find all Five Keys.")
+					d.jump_all(99803, 99596)
+					server_timer('devil2_floor2_fail1', 5*60, get_server_timer_arg())
+					d.set_regen_file("data/dungeon/DT2/schlussel.txt")
+					d.spawn_mob(KEYSTONE_NPC, 505, 325)
+					d.spawn_mob(KEYSTONE_NPC, 477, 312)
+					d.spawn_mob(KEYSTONE_NPC, 478, 271)
+					d.spawn_mob(KEYSTONE_NPC, 525, 261)
+					d.spawn_mob(KEYSTONE_NPC, 535, 311)
+				end
+			end
+		end
+		
+		when devil2_floor2_fail1.server_timer begin
+			if d.select(get_server_timer_arg()) and d.getf("level")==2 then
+				d.notice("You only got 15 minutes left.")
+				server_timer('devil2_floor2_fail2', 5*60, get_server_timer_arg())
+			end
+		end
+
+		when devil2_floor2_fail2.server_timer begin
+			if d.select(get_server_timer_arg()) and d.getf("level")==2 then
+				d.notice("You only got 10 minutes left.")
+				server_timer('devil2_floor2_fail3', 5*60, get_server_timer_arg())
+			end
+		end
+
+		when devil2_floor2_fail3.server_timer begin
+			if d.select(get_server_timer_arg()) and d.getf("level")==2 then
+				d.notice("You only got 5 minutes left.")
+				server_timer('devil2_floor2_fail', 5*60, get_server_timer_arg())
+			end
+		end
+
+		when devil2_floor2_fail.server_timer begin
+			if d.select(get_server_timer_arg()) and d.getf("level")==2 then
+				d.notice("The time is over.")
+				d.notice("You will get teleported out now.")
+				d.exit_all()
+			end
+		end
+		
+		when kill with npc.get_race()==30402 and pc.in_dungeon() and d.getf("level") == 2 begin
+			local n = d.getf("count")+1
+			d.setf("count", n)
+			if n == 10 then
+				game.drop_item(KEYSTONE_ITEM, 1)
+				d.setf("count", 0)
+			end
+		end
+		
+		when KEYSTONE_NPC.take with item.vnum == KEYSTONE_ITEM and pc.get_map_index() >= MAP_INDEX *10000 and pc.get_map_index() < ( MAP_INDEX +1)* 10000 begin
+			npc.purge()
+			item.remove()
+			d.setf("stone_count", d.getf("stone_count")-1)
+			if d.getf("stone_count") <= 0 then
+				d.setf("level", 3)
+				d.clear_regen()
+				d.kill_all()
+				d.kill_all()
+				d.notice("You have opened all the Seals.")
+				d.notice("Now you can Enter the third Floor.")
+				d.notice("You need to defeat a powerful foe here.")
+				d.notice("Defeat all the enemies on this floor.")
+				clear_server_timer('devil2_floor2_fail1', pc.get_map_index())
+				clear_server_timer('devil2_floor2_fail2', pc.get_map_index())
+				clear_server_timer('devil2_floor2_fail3', pc.get_map_index())
+				clear_server_timer('devil2_floor2_fail', pc.get_map_index())
+				server_timer("devil2_floor3_warp", 10, pc.get_map_index())
+			else
+				d.notice("You opened a Seal. There are "..d.getf("stone_count").." left.")
+			end
+		end
+		
+		when devil2_floor3_warp.server_timer begin
+			if d.select(get_server_timer_arg()) and d.getf("level")==3 then
+				d.regen_file("data/dungeon/DT2/Spawn2.txt")
+				d.spawn_mob(30410, 492, 263)				
+				d.jump_all(99803, 99596)
+			end
+		end
+		
+		when kill with npc.get_race()==30410 and pc.in_dungeon() and d.getf("level") == 3 begin
+			d.kill_all()
+			d.kill_all()
+			server_timer("devil2_floor3_kill", 10, pc.get_map_index())
+		end
+		
+		when devil2_floor3_kill.server_timer begin
+			if d.select(get_server_timer_arg()) and d.getf("level")==3 then
+				d.setf("level", 4)
+				d.notice("Defeat the Enemy on this Floor.")
+				d.jump_all(99803, 99596)
+				d.regen_file("data/dungeon/DT2/Spawn2.txt")
+				d.spawn_mob(30412, 492, 263)
+			end
+		end
+		
+		when kill with npc.get_race()==30412 and pc.in_dungeon() and d.getf("level") == 4 begin
+			d.kill_all()
+			d.kill_all()
+			notice_all(pc.get_name() .." Mastered the Summer Event Dungeon!")
+			server_timer("devil2_floor4_kill", 10, pc.get_map_index())
+		end
+		
+		when devil2_floor4_kill.server_timer begin
+			if d.select(get_server_timer_arg()) and d.getf("level")==4 then
+				d.notice("You succeeded and did defeat all the Enemies.")
+				d.notice("Talk to the "..mob_name(ENTRY_NPC))
+				d.notice("within three Minutes to receive your Reward.")
+				d.setf("level", 5)
+				d.spawn_mob_dir(ENTRY_NPC, 497, 280, 6)
+				server_timer("devil2_floor4_end", 60*3, get_server_timer_arg())
+			end
+		end
+		
+		when ENTRY_NPC.chat."Reward" with pc.get_map_index() >= MAP_INDEX *10000 and pc.get_map_index() < ( MAP_INDEX +1)* 10000 begin
+			say_title(mob_name(ENTRY_NPC))
+			say_reward("You have completed the Summer Event Dungeon!")
+			say_reward("Here is your Reward. Now Elendos can sleep peacefully.")
+			say_item_vnum(REWARD_ITEM)
+			pc.give_item2(REWARD_ITEM)
+			wait()
+			pc.warp(615800, 289200)
+		end		
+		
+		when devil2_floor4_end.server_timer begin
+			if d.select(get_server_timer_arg()) and d.getf("level")==5 then
+				d.exit_all()
+			end
+		end
+	end
+end

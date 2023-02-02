@@ -1,0 +1,101 @@
+-- Quest File written by Kilroy.
+-- Function: AnyShop Lua/Python/Sql
+-- Questpart: 1/1
+quest AnyShop begin
+	state start begin
+		when login begin
+			cmdchat(string.format("AnyShop index/%d", q.getcurrentquestindex()))
+		end
+		when button begin
+			cmdchat("getinputbegin")
+			local INPUT = AnyShop.stringSplit(input(cmdchat("AnyShop input/")), "/")
+			cmdchat("getinputend")
+			if INPUT[1]=="open" then
+				if not AnyShop.AntiFlood_(1, 3) then return end
+
+				local stringTable, tableItems = {}, mysql_query("SELECT shopitems.vnum, shops.shop_id, categories.name as category, shopitems.preis, shopitems.rabatt, IFNULL(TIMESTAMPDIFF(second, NOW(), shopitems.angebot),0) as seconds, shops.suffix, categories.cat_id FROM anyshop.shopitems JOIN anyshop.shops ON shops.shop_id = shopitems.shop_id JOIN anyshop.categories ON categories.cat_id = shopitems.cat_id ORDER BY verkauft DESC;")
+				if (tableItems==nil or tableItems[1]==nil) then syschat("Abbruch. Bitte fülle die Tabelle korrekt! Error:1") return end
+				local tableCount = table.getn(tableItems)
+				cmdchat("AnyShop ClearBoard/")
+
+
+				local moneyQuery, moneyColumns = "", mysql_query("SELECT coin_column, suffix, name, shop_id FROM anyshop.shops;")
+				if (moneyColumns==nil or moneyColumns[1]==nil) then syschat("Abbruch. Bitte fülle die Tabelle korrekt! Error:2") return end 
+				for i=1, table.getn(moneyColumns), 1 do moneyQuery = moneyQuery..(i==1 and "" or ",")..moneyColumns[i][1] end
+				local money = mysql_query("SELECT "..moneyQuery.." FROM account.account WHERE id = "..pc.get_account_id()..";")
+				if (money==nil or money[1]==nil) then syschat("Abbruch. Bitte fülle die Tabelle korrekt! Error:3") return end 
+				local moneyCMD = "AnyShop config/"
+				for i=1, table.getn(money[1]), 1 do moneyCMD = moneyCMD..(i==1 and "" or "|")..money[1][i]..","..moneyColumns[i][2]..","..moneyColumns[i][3]..","..moneyColumns[i][4] end
+				cmdchat(moneyCMD)
+
+
+				if tableCount==0 then return end
+				for i=1, tableCount, 1 do table.insert(stringTable, string.format("%d,%d,%s,%d,%d,%d,%s,%d", unpack(tableItems[i]))) end
+				local AddToListCMD = "AnyShop AddToList/"..stringTable[1]
+				for i=2, tableCount, 1 do
+					if string.len(AddToListCMD)+string.len(stringTable[i])>=490 then
+						cmdchat(AddToListCMD)
+						AddToListCMD = "AnyShop AddToList/"..stringTable[i]
+					else
+						AddToListCMD = AddToListCMD.."|"..stringTable[i]
+					end
+					if i==tableCount then
+						cmdchat(AddToListCMD)
+						break
+					end
+				end
+				cmdchat("AnyShop FinishSending/")
+
+			elseif INPUT[1]=="buy" then
+				if not AnyShop.AntiFlood_(2, 3) then return end
+
+				local itemVnum = tonumber(INPUT[2])
+				local itemCount = tonumber(INPUT[3])
+				local shopId = tonumber(INPUT[4])
+				if (itemVnum==nil or itemVnum<10) or (itemCount==nil or itemCount<1) then return end
+
+				local choosenItem = mysql_query("SELECT shopitems.vnum, shopitems.preis, shopitems.rabatt, IFNULL(TIMESTAMPDIFF(second, NOW(), shopitems.angebot),0) as seconds, shops.coin_column, shops.suffix, shops.shop_id FROM anyshop.shopitems JOIN anyshop.shops ON shops.shop_id = shopitems.shop_id WHERE shopitems.vnum="..itemVnum.." and shopitems.shop_id="..shopId..";")
+				if (choosenItem[1]~=nil or table.getn(choosenItem[1]))==0 then syschat("Das Item ist nicht (mehr) vorhanden!") return end
+				local sqlVnum, itemPrice, itemRabatt, itemAngebotSek, moneyColumn, Suffix, sqlShopId = tonumber(choosenItem[1][1]),tonumber(choosenItem[1][2]),tonumber(choosenItem[1][3]),tonumber(choosenItem[1][4]),choosenItem[1][5],choosenItem[1][6],tonumber(choosenItem[1][7])
+				if (sqlVnum~=itemVnum) or (sqlShopId~=shopId) then return end
+
+				itemPrice = itemPrice * itemCount
+				if (itemAngebotSek>=0 and itemRabatt>0) then
+					itemPrice = itemPrice-math.floor(itemPrice*(itemRabatt/100))
+				end
+
+				local money = mysql_query("SELECT "..moneyColumn.." FROM account.account WHERE id = "..pc.get_account_id()..";")[1][1]
+				if money<itemPrice then syschat("<Shop> Du hast nicht genug "..Suffix.." für dieses Item.") return end
+
+				mysql_query("UPDATE account.account, anyshop.shopitems SET account."..moneyColumn.." = account."..moneyColumn.."-"..itemPrice..", shopitems.verkauft = shopitems.verkauft+1 WHERE account.id = "..pc.get_account_id().." AND (shopitems.vnum="..itemVnum.." AND shopitems.shop_id="..shopId..") ;")
+				money = mysql_query("SELECT "..moneyColumn.." FROM account.account WHERE id = "..pc.get_account_id()..";")[1][1]
+				cmdchat("AnyShop setmoney/"..shopId.."/"..money)
+
+				pc.give_item2_select(itemVnum, 1)
+				itemCount = itemCount - 1
+				if item.has_flag(4) and itemCount>0 then
+					for i=1, math.floor(itemCount/200), 1 do
+						pc.give_item2(itemVnum, 200)
+					end
+					pc.give_item2(itemVnum, (itemCount - math.floor(itemCount/200)*200))
+				else
+					for i=1, itemCount, 1 do pc.give_item2(itemVnum) end
+				end
+			end
+		end
+		function stringSplit(str, sep)
+			local sep, fields = sep or ",", {}
+			local pattern = string.format("([^%s]+)", sep)
+			string.gsub(str, pattern, function(c) table.insert(fields, c) end)
+			return fields
+		end
+		function AntiFlood_(n, t)
+			if pc.getqf("AntiFlood"..n)>get_time() then
+				syschat(string.format("Deine nächste Anfrage geht erst in %d Sekunden!", pc.getqf("AntiFlood"..n)-get_time()))
+				return false
+			end
+			pc.setqf("AntiFlood"..n, get_time()+t)
+			return true
+		end
+	end
+end

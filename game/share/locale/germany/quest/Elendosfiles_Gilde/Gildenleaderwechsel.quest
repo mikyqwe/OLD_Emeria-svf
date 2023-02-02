@@ -1,0 +1,68 @@
+quest change_guild_master_item begin
+	state start begin
+		function change_master( name , level_limit , time_resign_limit , time_be_other_leader , time_be_other_member , iscacheitem )
+			local ret = guild.change_master_with_limit( name , level_limit , time_resign_limit , time_be_other_leader , time_be_other_member, iscacheitem)
+			local result = false
+			if ret == 0 then
+				say("You entered a wrong name.")
+			elseif ret == 1 then
+				say("Only guild leaders can use the ring.")
+			elseif ret == 2 then
+				say("The guild member was not found.")
+			elseif ret == 3 then
+				say("You have successfully relinquished your position as leader.")
+				result = true
+			elseif ret == 4 then
+				say("You're not in any guild.")
+			elseif ret == 5 then
+				say("The character to which the leader posters are to be delivered")
+				say("is not online.")
+			elseif ret == 6 then
+				say("The character to which the leader posters are to be delivered")
+				say("has a too low level.")
+			elseif ret == 7 then
+				say("The character to whom the Leaderposters are to be handed over")
+				say("already had a guild.")
+			end
+			return result
+		end
+		when 71099.use begin
+			say_title("Ring of Succession")
+			if pc.is_guild_master() == false then
+				say("Only guild leaders can use the ring.")
+				return
+			end
+			say("Please enter the name of the new")
+			say("guild leader.")
+			local s = input()
+			say_title("Ring of Succession")
+			if s == pc.name then
+				say("You can't enter your name.")
+				return
+			elseif s == "" then
+				say("Please enter a name.")
+				return
+			end
+			if not pc.is_near_vid( find_pc_by_name( s ) , 10 ) then
+				say("The other character must be ")
+				say("near you.")
+				return
+			end
+			if change_guild_master_item.change_master( s , 40 , 0 , 0 , 0 ,true) == true then
+				pc.remove_item(71099)
+			elseif ret == 5 then
+				say("error: 1")
+				say("Please contact the administration.")
+			elseif ret == 6 then
+				say("The character to which the leader posters are to be delivered")
+				say("has a too low level..")
+			else
+				say("error: 2")
+				say("Please the number:")
+				say(ret)
+				say("Report to the Administration.")				
+			end
+		end
+	end
+end
+

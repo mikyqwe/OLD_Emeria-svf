@@ -1,0 +1,79 @@
+define NORMAL_ITEM 78727
+define PREMIUM_ITEM 78728
+define BATTLE_PASS_ITEM 72820
+define BATTLE_PASS_ITEM_WAFFE 72821
+define Rad_Item_COSTUME_ARMOR 79920
+define Rad_Item_COSTUME_WEAPON 79921
+define STREAMER_VOUCHER 79922
+
+define Beta_Item_COSTUME_ARMOR 79923
+define Beta_Item_COSTUME_WEAPON 79924
+
+quest costume_voucher begin
+	state start begin
+		when NORMAL_ITEM.use or PREMIUM_ITEM.use or BATTLE_PASS_ITEM.use or BATTLE_PASS_ITEM_WAFFE.use or Rad_Item_COSTUME_ARMOR.use or Rad_Item_COSTUME_WEAPON.use or STREAMER_VOUCHER.use or Beta_Item_COSTUME_ARMOR.use or Beta_Item_COSTUME_WEAPON.use begin
+			local costumes = ({
+				[NORMAL_ITEM] = {
+					[0] = {52350, 52352}, --[[ Männlich ]]--
+					[1] = {52351, 52353}  --[[ Weiblich ]]--
+				},
+				[PREMIUM_ITEM] = {
+					[0] = {41137, 45075, 41139, 45076}, --[[ Männlich ]]--
+					[1] = {41138, 45075, 41140, 45076}  --[[ Weiblich ]]--
+				},
+				[BATTLE_PASS_ITEM] = {
+					[0] = {35640, 35642}, --[[ Männlich ]]--
+					[1] = {35641, 35643}  --[[ Weiblich ]]--
+				},
+				[BATTLE_PASS_ITEM_WAFFE] = {
+					[0] = {35644, 35645, 35646, 35647, 35648, 35649}, --[[ Männlich ]]--
+					[1] = {35644, 35645, 35646, 35647, 35648, 35649}  --[[ Weiblich ]]--
+				},
+				[Rad_Item_COSTUME_ARMOR] = {
+					[0] = {37720, 37722}, --[[ Männlich ]]--
+					[1] = {37721, 37723}  --[[ Weiblich ]]--
+				},
+				[Rad_Item_COSTUME_WEAPON] = {
+					[0] = {37724, 37725, 37726, 37727, 37728, 37729, 37730}, --[[ Männlich ]]--
+					[1] = {37724, 37725, 37726, 37727, 37728, 37729, 37730}, --[[ Weiblich ]]--
+				},
+				[STREAMER_VOUCHER] = {
+					[0] = {47792, 47790}, --[[ Männlich ]]--
+					[1] = {47793, 47791}  --[[ Weiblich ]]--
+				},
+				[Beta_Item_COSTUME_ARMOR] = {
+					[0] = {37740, 37742}, --[[ Männlich ]]--
+					[1] = {37741, 37743}  --[[ Weiblich ]]--
+				},
+				[Beta_Item_COSTUME_WEAPON] = {
+					[0] = {37744, 37745, 37746, 37747, 37748, 37749, 37750}, --[[ Männlich ]]--
+					[1] = {37744, 37745, 37746, 37747, 37748, 37749, 37750}, --[[ Weiblich ]]--
+				}
+			})[item.get_vnum()][pc.get_sex()]
+			
+			local costume_names = {}
+			table.foreach(costumes, function(i,p)
+				table.insert(costume_names, item_name(p))
+			end)
+			table.insert(costume_names, "Cancel")
+			
+			say_title("Costume Voucher")
+			say("Choose your costume.")
+			local s = select_table(costume_names)
+			if s == table.getn(costume_names) then 
+				return
+			end
+			
+			say_title("Costume Voucher")
+			say("Do you want to choose ".. costume_names[s] .."?")
+			say("")
+			say_item_vnum(costumes[s])
+			say("")
+			say("")
+			if select("Confirm", "Cancel") == 2 then return end
+			
+			pc.give_item2(costumes[s], 1)
+			pc.remove_item(item.get_vnum(), 1)
+		end
+	end
+end

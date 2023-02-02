@@ -1,0 +1,12 @@
+ScriptType	MapSetting
+
+CellScale	200
+HeightScale	0.500000
+
+ViewRadius	128
+
+MapSize	4	4
+BasePosition	2920000	2929200
+TextureSet	textureset\halloween_2016.txt
+Environment	halloween2016.msenv
+

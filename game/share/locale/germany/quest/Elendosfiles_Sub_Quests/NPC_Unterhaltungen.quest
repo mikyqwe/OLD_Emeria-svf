@@ -1,0 +1,125 @@
+quest npc_talk begin
+    state start begin
+        when 20354.click begin
+            say_title("City Guardian")
+            say("Be calm and show discipline.")
+            say("Be silence and do not get into trouble.")
+            say("You should respect the other players.")
+            say("Understood?")
+        end
+        when 20008.chat."Welcome" begin
+            say_title("Octavio")
+            say("Welcome! Our restaurant")
+            say("is known all over the world.")
+            say("Come in and convince yourself.")       
+        end
+        when 20005.chat."My Vases" begin
+            say_title("Yonah")
+            say("Helloooo")
+            say("Do you see my beautiful vases?")
+            say("I find them divine.")
+            say("Especially those with the flowers. Nice!.")
+        end
+        when 20017.chat."The Secret Spy.." begin
+            say_title("Yu-Hwan")
+            say("Psst!!! I am no longer secret,")
+            say("if you ruminate it like this!")
+            say("so please be quiet.")
+        end
+        when 20023.chat."Oh, Adventurer" begin
+            say_title("Soon,")
+            say("Adventurer!")
+            say("Train towards the day you")
+            say("want to be the best.")
+            say("Without enough training it will be bad for you!")
+        end
+        when 20020.chat."At that time.." begin
+            say_title("Balso")
+            say("Everything used to be fine...")
+            say("Green meadows, blue water, children playing.")
+            say("But now... i dont know..")        
+        end
+        when 20011.chat."The Great Wide World" begin
+            say_title("Uriel")
+            say("Hello, I am Uriel")
+            say("From time to time I start competitions,")
+            say("so that I can prove that I am the greatest")
+            say("striving in the village.")
+        end
+        when 20018.chat."In the Dangerous World" begin
+            say_title("Baek-Go:")
+            say("You want potions?")
+            say("Go to General Store and get some.")
+        end
+        when 20019.chat."Hmm, since the Metin Stones fell.." begin
+            say_title("Yang-Shin")
+            say("Hmm since the Metin Stones fall, all animals")
+            say("were cursed and aggressive. I hope it's over soon.")
+        end
+        when 20006.chat."At this time of year" begin
+            say_title("Mirine")
+            say("At this time of year, my brother travels")
+            say("much... i love him.")
+        end
+        when 20012.chat."Because of the war" begin
+            say_title("Yu-Rang")
+            say("Because of the war it has become more difficult")
+            say("Rice cake for sale. The Bandits,")
+            say("have scared away all my customers.")
+            say("I don't know what to live on anymore.")
+        end
+        when 20021.chat."Newly married.." begin
+            say_title("Ariyoung")
+            say("Where my husband is just stuck?")
+        end
+        when 20003.chat."Sleep child sleep..." begin
+            say_title("Ah-Yu:")
+            say("Sleep child sleep, the mother guards the sheep..")
+			say("Never heard of privacy?")
+        end
+        when 9012.chat."Would you like to Travel?" begin
+            say_title("Teleporter:")
+            say("Adventurer!")
+            say("Use our Teleportation Panel to")
+            say("each the places you want to visit.")
+            say("You can find it on the Minimap with the keys T")
+			say("I wish you a good journey.")
+        end
+        when 20091.chat."You want to improve stones?" begin
+            say_title("Stone Managerin Dasha:")
+            say_reward("Dear Adventurer!")
+            say_reward("My Name is Dasha from Russia!.")
+            say_reward("I´m a Stone Upgrader! I came here to make my own")
+            say_reward("Buisness. Russia wasn´t nice to me, so i went to")
+			say_reward("other Country!")
+			say("")
+			say_reward("I wish you good luck!")
+			say_reward("You can upgrade your stones +4 to +5.")
+			say_reward("That makes you stronger!")
+			say_reward("And strong people are attractive!")
+			say("")
+			say_reward("So how many Stones you can upgrade here?")
+        end
+        when 20009.chat."Would you like to Travel?" begin
+            say_title("Old Man:")
+            say("Adventurer!")
+            say("Use our Teleportation Panel to")
+            say("each the places you want to visit.")
+            say("You can find it on the Minimap with the keys T")
+			say("I wish you a good journey.")
+        end
+        when 9928.chat."The Spring Event" begin
+            say_title("Welcome adventurer,")
+            say("")
+            say("I wish you a wonderful beginning of spring.")
+            say("I have a few orders for you to go with it!")
+            say("There are beautiful flowers growing in this region.")
+            say("I'd like some for my flower shop.")
+            say("I can make good money abroad...")
+            say("I'm here for 1 week, so if you'd like...")
+            say("I mean I can offer you helpful items for that.")
+            say("")
+            say_reward("Talk to me again to find out more Information!")
+        end
+    end
+end

@@ -1,0 +1,400 @@
+define DUNGEON_MAP_INDEX 240
+define DUNGEON_INDEX_MIN 2400000
+define DUNGEON_INDEX_MAX 2410000
+define DUNGEON_LEVEL 85
+define DUNGEON_ITEM 77200 -- KEVIN HEIR ITEM EINTRAGEN ODER SOWAS
+
+-------------------------------------------
+-- EBENE 1 CONSTANTS
+-------------------------------------------
+define NPC1 30289
+define NEPHIR_MAP_INDEX 50
+define METIN_STONE 8157
+define ITEM1_VALUE 77201
+define ITEM1_AMOUNT 4
+define ITEM1_DROP_CHANCE 2
+
+-------------------------------------------
+-- EBENE 2 CONSTANTS
+-------------------------------------------
+define MINI_BOSS 278
+
+-------------------------------------------
+-- EBENE 3 CONSTANTS
+-------------------------------------------
+define NPC31 37264
+define NPC32 30227
+define NPC_PET 34281
+define ITEM2_MOB_DROP 274
+define ITEM2_VALUE 77202
+define PET_ITEM 34014
+
+-------------------------------------------
+-- EBENE 4 CONSTANTS
+-------------------------------------------
+define NPC4 37265
+define BOSS 283
+define GUESS_TIME 30
+
+quest hoehle_des_schreckens begin
+	state start begin
+		-------------------------------------------
+		-- FUNKTIONEN
+		-------------------------------------------
+		function is_in_dungeon()
+			return (pc.in_dungeon() and pc.get_map_index() >= DUNGEON_INDEX_MIN and pc.get_map_index() < DUNGEON_INDEX_MAX)
+		end
+		
+		function floor3_pos()
+			return ({{680, 825}, {669, 853}, {667, 873}, {677, 892}})
+		end
+		
+		function modulo(a, b)
+			return (a - math.floor(a/b)*b)
+		end
+		
+		function remove_pets()
+			local pids = {party.get_member_pids()}
+			for i = 1, table.getn(pids), 1 do
+				q.begin_other_pc_block(pids[i])
+				if hoehle_des_schreckens.is_in_dungeon() then
+					if pet.is_summon(34281) then -- eulen item
+						item.select_cell(213) -- pet item cell
+						item.remove()
+					else
+						pc.remove_item(PET_ITEM, 1)
+					end
+				end
+				q.end_other_pc_block()
+			end
+		end
+		
+		function remove_items(num)
+			if pc.count_item(num) > 0 then
+				for i = 1, pc.count_item(num) do
+					pc.remove_item(num)
+				end
+			end
+		end
+	
+		-------------------------------------------
+		-- EBENE 0
+		-------------------------------------------
+		when login begin
+			if hoehle_des_schreckens.is_in_dungeon() then
+				pc.set_warp_location(NEPHIR_MAP_INDEX, 21309, 20225)
+				if party.is_leader() then
+					d.notice("You reach the Demon cave and find at the end")
+					d.notice("of the passage a cursed metin stone. This")
+					d.notice(string.format("may contain Demon Head Seals, of which I have %d piece", ITEM1_AMOUNT))
+					d.notice("to teleport you to the next plane.")
+				end
+			else
+				hoehle_des_schreckens.remove_items(ITEM1_VALUE)
+				hoehle_des_schreckens.remove_items(ITEM2_VALUE)
+				hoehle_des_schreckens.remove_items(PET_ITEM)
+				
+				if pc.get_map_index() == DUNGEON_MAP_INDEX then
+					pc.warp(2130900, 2022500)
+				end
+			end
+		end
+		
+		when logout begin
+			if hoehle_des_schreckens.is_in_dungeon() then
+				hoehle_des_schreckens.remove_pets()
+			end
+		end
+		
+		when NPC1.chat."Into the Demon Cave..." with pc.get_map_index() == NEPHIR_MAP_INDEX begin
+			say_title("Dungeon Guardian")
+			say("I heard a call for help from the")
+			say("Demon Cave. Animals were")
+			say("kidnapped by the Angels.")
+			say("")
+			
+			if pc.get_level() < DUNGEON_LEVEL then
+				say("I would gladly risk letting")
+				say("you pass there, however")
+				say("with your experience it would be suicide.")
+				say(string.format("Come with level %d again.", DUNGEON_LEVEL))
+				return
+			elseif not party.is_party() then
+				say("This task cannot be done alone.")
+				say("Come back with a group.")
+				return
+			elseif not party.is_leader() then
+				say("Only the leader of your group")
+				say("can make me let")
+				say("you pass.")
+				return
+			elseif pc.count_item(DUNGEON_ITEM) == 0 then
+				say("To enter the cave I need")
+				say("a Cave Seal, which you can get from the")
+				say("Green Dragon.")
+				return
+			end
+			
+			say("Would you like to take on")
+			say("the task with your group?")
+			if select("Yes", "No") == 2 then return end
+			
+			if pc.count_item(DUNGEON_ITEM) > 0 then
+				pc.remove_item(DUNGEON_ITEM, 1)
+				d.new_jump_party(DUNGEON_MAP_INDEX, 21142, 17108)
+				d.setf("floor", 1)
+				d.setf("items_left", ITEM1_AMOUNT)
+				-- regen file 1 (mobs, METIN_STONEs, NPC1)
+				d.set_regen_file("data/dungeon/Demo_Dungeon/regen1.txt")				
+			end
+		end
+	
+		-------------------------------------------
+		-- EBENE 1
+		-------------------------------------------
+		when NPC1.chat."The Demon Head Seals" with hoehle_des_schreckens.is_in_dungeon() begin
+			say_title("Dungeon Guardian")
+			say("The cursed Metinstone has the chance to")
+			say(string.format("one from %d to contain Demon Head Seal. Bring", ITEM1_AMOUNT))
+			say("all of them to me and I can put you")
+			say("teleport to the next plane.")
+		end
+	
+		when NPC1.take with hoehle_des_schreckens.is_in_dungeon() and item.vnum == ITEM1_VALUE begin
+			d.setf("items_left", d.getf("items_left") - 1)
+			pc.remove_item(ITEM1_VALUE, 1)
+			if d.getf("items_left") == 0 then
+				d.kill_all()
+				d.clear_regen()
+				d.notice("I have it all together! In 5 seconds I'll teleport you")
+				d.notice("to the next plane. From here on you have to take care of yourself!")
+				d.setf("floor", 2)
+				server_timer("hoehle_des_schreckens_warp1", 5, pc.get_map_index())
+			else
+				d.notice("I still need "..d.getf("items_left").." more Demon Head Seals to teleport you!")
+			end
+		end
+		
+		when METIN_STONE.kill with hoehle_des_schreckens.is_in_dungeon()  begin
+			if number(1, ITEM1_DROP_CHANCE) == 1 then
+				game.drop_item_with_ownership(ITEM1_VALUE, 1)
+			end
+		end
+		
+		when hoehle_des_schreckens_warp1.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				d.jump_all(21717, 17166)
+				-- regen file 2 (mobs, MINI_BOSS)
+				d.spawn_mob(MINI_BOSS, 662, 498)
+				d.set_regen_file("data/dungeon/Demo_Dungeon/regen2.txt")
+				d.notice("In this plane you will find the Gorilla Demon")
+				d.notice("at the end of the corridor. From him you have")
+				d.notice("to beat out the way to the cages in")
+				d.notice("which the animals are hold.")
+			end
+		end
+		
+		-------------------------------------------
+		-- EBENE 2
+		-------------------------------------------
+		when MINI_BOSS.kill with hoehle_des_schreckens.is_in_dungeon() begin
+			d.kill_all()
+			d.clear_regen()
+			d.notice("You have the way to the cages! In 10 seconds")
+			d.notice("you will be teleported!")
+			
+			local positions = hoehle_des_schreckens.floor3_pos()
+			d.spawn_mob(NPC_PET, 660, 848)
+			d.spawn_mob(NPC_PET, 659, 887)
+			for i = 1, table.getn(positions) do
+				d.spawn_mob(NPC31, positions[i][1], positions[i][2])
+			end
+			d.setf("npcs", table.getn(positions))
+			
+			server_timer("hoehle_des_schreckens_warp2", 10, pc.get_map_index())
+		end
+		
+		when hoehle_des_schreckens_warp2.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				d.jump_all(21856, 17853)
+				d.setf("floor", 3)
+				-- regen file 3 (mobs)
+				d.set_regen_file("data/dungeon/Demo_Dungeon/regen3.txt")
+				d.notice("Arrived at the cages you will see 4 Guards. The monsters")
+				d.notice("you find with them can contain an item")
+				d.notice("that will help you.")
+			end
+		end
+		
+		-------------------------------------------
+		-- EBENE 3
+		-------------------------------------------
+		when ITEM2_MOB_DROP.kill with hoehle_des_schreckens.is_in_dungeon() and d.getf("floor") == 3 begin
+			game.drop_item_with_ownership(ITEM2_VALUE, 1)
+		end
+		
+		when NPC31.take with hoehle_des_schreckens.is_in_dungeon() and item.vnum == ITEM2_VALUE begin
+			pc.remove_item(ITEM2_VALUE, 1)
+			d.notice("You have defeated one!")
+			npc.kill()
+			
+			d.setf("npcs", d.getf("npcs") - 1)
+			if d.getf("npcs") == 0 then
+				d.notice("With the defeat of the last Guardian appears a")
+				d.notice("Angel who frees the animals.")
+				d.clear_regen()
+				d.kill_all()
+				d.spawn_mob(NPC32, 679, 868)
+			else
+				d.notice("Remaining "..d.getf("npcs").." more...")				
+			end
+		end
+		
+		when NPC32.chat."The animals" with hoehle_des_schreckens.is_in_dungeon() begin
+			setskin(NOWINDOW)
+			npc.purge()
+			
+			local pids = {party.get_member_pids()}
+			for i = 1, table.getn(pids), 1 do
+				q.begin_other_pc_block(pids[i])
+				if hoehle_des_schreckens.is_in_dungeon() then
+					pc.give_item2(PET_ITEM, 1)
+				end
+				q.end_other_pc_block()
+			end
+			
+			d.notice("Thank you very much for your help! I take the liberated animals again. In")
+			d.notice("In order to prevent this from happening again, you must slay the")
+			d.notice("the leader of the Demon Cave. Of course, the animals will help you with this.")
+			d.notice("They have found the demons' weak points, which should make it easier")
+			d.notice("for you to defeat them. Therefore, do not lose the seals to call them!")
+			d.setf("floor", 4)
+			server_timer("hoehle_des_schreckens_warp3", 10, pc.get_map_index())
+		end
+		
+		when hoehle_des_schreckens_warp3.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				d.jump_all(21386, 17813)
+				d.set_unique("npc4", d.spawn_mob(NPC4, 323, 871))
+				d.notice("You see a Monument where you actually expected the leader of the demons.")
+			end
+		end
+		
+		-------------------------------------------
+		-- EBENE 4
+		-------------------------------------------
+		when NPC4.chat."To the leader" with hoehle_des_schreckens.is_in_dungeon() begin
+			say_title("Monument of truth")
+			
+			if not party.is_leader() then
+				say("I only talk to the group leaders.")
+				return
+			end
+			
+			if d.getf("raetsel") == 0 then
+				say("You want to see the leader? He is already here.")
+				say("but the demons have noticed that")
+				say("the animals have studied them. They ordered me")
+				say("to take the seals away from you.")
+				say("However, I am fair. If you manage to answer this")
+				say(string.format("question in %d seconds to answer, you can", GUESS_TIME))
+				say("you keep the seals and I")
+				say("lie to the leader.")
+				wait()
+				
+				d.setf("raetsel", 1)
+				local q = hoehle_des_schreckens.get_question(-1)
+				d.setf("question", q[3])
+				d.notice("The Monument of truth asks you a question. If you answer it wrongly, he will take away your seals..")
+				d.notice(string.format("You have %d seconds to answer this question. The question is:", GUESS_TIME))
+				d.notice(q[1])
+				d.setf("time", GUESS_TIME)
+				loop_timer("hoehle_des_schreckens_antwort", 1)
+				server_timer("hoehle_des_schreckens_out", GUESS_TIME+2, pc.get_map_index())
+			else
+				local q = hoehle_des_schreckens.get_question(d.getf("question"))
+				say("Do you want to give me the answer? You")
+				say("have only one chance.")
+				if select("Yes", "No") == 2 then return end
+				local answer = input()
+				
+				if d.getf("fail") == 1 then
+					say_title("Monument of truth")
+					say("Unfortunately, the time has already expired.")
+					return
+				end
+				
+				if string.lower(answer) != string.lower(q[2]) then
+					d.notice("You have answered incorrectly. Your seals have disappeared.")
+					d.notice("Your answer was "..answer..". However, the correct answer was "..q[2])
+					hoehle_des_schreckens.remove_pets()
+				else
+					d.notice("You have answered the question correctly!")
+				end
+				
+				cleartimer("hoehle_des_schreckens_antwort")
+				server_timer("hoehle_des_schreckens_boss", 2, pc.get_map_index())
+				npc.purge()
+			end
+		end
+			
+		when hoehle_des_schreckens_antwort.timer begin
+			d.setf("time", d.getf("time") - 1)
+			if d.getf("time") == 0 then
+				d.purge_unique("npc4")
+				d.notice("You did not answer fast enough. Your seals have disappeared.")
+				cleartimer("hoehle_des_schreckens_antwort")
+				clear_server_timer("hoehle_des_schreckens_out")
+				hoehle_des_schreckens.remove_pets()
+				server_timer("hoehle_des_schreckens_boss", 2, pc.get_map_index())
+				d.setf("fail", 1)
+			elseif d.getf("time") < 5 or hoehle_des_schreckens.modulo(d.getf("time"), 5) == 0 then
+				d.notice("You still have "..d.getf("time").." Seconds")
+			end
+		end
+		
+		when hoehle_des_schreckens_boss.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				-- regen file 4 (mobs, BOSS)
+				d.spawn_mob(BOSS, 273, 841)
+				d.set_regen_file("data/dungeon/Demo_Dungeon/regen4.txt")
+				d.notice("The leader of the demons appears. Defeat him to avenge the animals!")
+			end
+		end
+		
+		when BOSS.kill with hoehle_des_schreckens.is_in_dungeon() begin
+			d.notice("You have defeated him! However, my gut tells me that")
+			d.notice("a new leader will be crowned soon... In 60 seconds I will")
+			d.notice(" teleport you out again.")
+			d.kill_all()
+			d.clear_regen()
+			server_timer("hoehle_des_schreckens_out", 60, pc.get_map_index())
+		end
+
+		when hoehle_des_schreckens_out.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				d.exit_all()
+			end
+		end
+		
+		-------------------------------------------
+		-- FRAGEN UND ANTWORTEN FÜR EBENE 4
+		-------------------------------------------
+		function get_question(i)
+			local tab = {
+				{"How much is 1928-736?", "1192"},
+				{"Is Elendos the best Developer?", "Yes"},
+				{"At how many degrees water freezes (only the number)?", "0"},
+				{"How many bits has an IPv4 address?", "32"},
+				{"How many bits has an IPv6 address?", "128"},
+				{"Where did Corona break out?", "China"},
+				{"Who started the 3rd world war?", "Germany"},
+				{"Who is the next US President?", "Biden"}
+			}
+			local n = number(1, table.getn(tab))
+			if i ~= -1 then n = i end
+			table.insert(tab[n], n)
+			return tab[n]
+		end
+	end
+end

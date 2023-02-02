@@ -1,0 +1,91 @@
+quest horse_menu begin
+    state start begin
+		function horse_menu()
+			if horse.is_mine() then
+				say_title("Horse Handbook")
+				say("The Handbook for Horses")
+				say("")
+				local s = 6
+				if horse.is_dead() then
+					s = select( "Reviving the Horse", "Take the Horse back", "Close")
+					if s == 1 then s = 0
+					elseif s == 2 then s = 3
+					elseif s == 3 then return
+					end
+				else
+					s = select(
+					"Feed Horse", "Ride Horse", "Take the Horse back", "Show status of Horse", 
+					"Name your Horse", "Close")
+				end
+				if s == 0 then
+					horse.revive()
+				elseif s == 1 then
+					local food = horse.get_grade() + 50054 - 1
+					if pc.countitem(food) > 0 then
+						pc.removeitem(food, 1)
+						horse.feed()
+					else
+						say("The item "..item_name(food).." is needed.")
+						say("")
+					end
+				elseif s == 2 then
+					horse.ride()
+				elseif s == 3 then
+					horse.unsummon()
+				elseif s == 4 then
+					say_title("Horse Status")
+					say("Current Life Points of the Horse: "..horse.get_health_pct().."%")
+					say("Current Stamina of the Horse: "..horse.get_stamina_pct().."%")
+					say("")
+				elseif s == 5 then					
+					local old_horse_name = horse.get_name() ;
+					say_title("Horse Name")
+					say("You can give your Horse a new name")
+					say("to make it more unique")
+					say("and to make it stronger.")
+					if string.len(old_horse_name) == 0 then
+						say_reward("Your Horse doesnt have a name yet.")
+					else
+						say_reward("The current name of your Horse is "..old_horse_name..".")
+					end
+					say("Type the new name of your Horse.")
+					local horse_name = input()
+					if string.len(horse_name) < 2 then
+						say_title("Horse Name")
+						say("This name is too short.")
+						say("")
+						return
+					elseif string.len(horse_name) > 12 then
+						say_title("Horse Name")
+						say("This name is too long.")
+						say("")
+						return
+					end
+					local ret = horse.set_name(horse_name)
+					say_title("Horse Name")
+					if ret == 0 then
+						say_reward("You dont have a Horse!")
+						say("")
+					elseif ret == 1 then
+						say_reward("You cant use that name!")
+						say("")
+					elseif ret == 2 then
+						pc.remove_item("71110")
+						say("You gave your Horse a new name!")
+						say("")
+					end
+				end
+			end
+		end
+		when 20030.click begin horse_menu.horse_menu() end
+		when 20101.click begin horse_menu.horse_menu() end
+		when 20102.click begin horse_menu.horse_menu() end
+		when 20103.click begin horse_menu.horse_menu() end
+		when 20104.click begin horse_menu.horse_menu() end
+		when 20105.click begin horse_menu.horse_menu() end
+		when 20106.click begin horse_menu.horse_menu() end
+		when 20107.click begin horse_menu.horse_menu() end
+		when 20108.click begin horse_menu.horse_menu() end
+		when 20109.click begin horse_menu.horse_menu() end
+    end
+end

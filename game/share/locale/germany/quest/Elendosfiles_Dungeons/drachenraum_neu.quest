@@ -1,0 +1,65 @@
+define ENTRY_LEVEL 75
+define ENTRY_LEVEL_MAXIMUM 130
+
+
+
+
+
+quest drachenraum_neu begin
+	state start begin
+		when 30121.chat."The Dragon Room" begin
+			if pc.get_level()<ENTRY_LEVEL then
+				say("You can not enter yet")
+				say("because you are not level "..string.format("%d", ENTRY_LEVEL).." yet.")
+				return
+			end
+			if pc.get_level() >ENTRY_LEVEL_MAXIMUM then
+				say("You have exceeded the maximum level of the")
+				say("Dungeon. You must not be higher than 130")
+				say("")
+				return
+			end
+			if pc.getqf("can_access_dragon") > get_global_time() then
+				say("You cannot join yet, please wait:")
+				say("Remain: "..(string.format("%.0f", ((pc.getqf("can_access_dragon")-get_global_time())/60))).." min")
+				return
+			end
+			if pc.count_item("30179") < 1 then
+				say_title("Ghost of a Sura:")
+				say("Hello... So you want to become a Dragon slayer?")
+				say("Many have already tried and failed...")
+				say("If you want to try, bring me a")
+				say("Twisted Key! This looks like this:")
+				say_item_vnum(30179)
+			elseif pc.count_item("30179") >= 1 then
+				say_title("Ghost of a Sura:")
+				say("Great you have one!")
+				say_item_vnum(30179)
+				say_reward("I will now teleport you to the Dragon Room.")
+				pc.remove_item(30179, 1)
+				wait()
+				pc.setqf("can_access_dragon", get_global_time() + 900)
+				d.new_jump(409, 842700, 1066800)
+				d.spawn_mob(8868, 182, 173)
+			end
+		end
+		
+		when login begin
+			pc.remove_item(27283, 200)
+		end
+		
+		when 27283.use with pc.get_map_index() >= 4090000 and pc.get_map_index() < 4100000 begin
+			item.remove()
+			d.spawn_mob(2493,183,172)
+		end
+		when 2493.kill with pc.get_map_index() >= 4090000 and pc.get_map_index() < 4100000 begin
+			d.clear_regen()
+			timer("bosskill_dragon", 60*1)
+			notice_all(" "..pc.get_name().." killed the Beran-Setaou!")
+			syschat("You will be teleported to your home village in 60 seconds.")
+		end
+		when bosskill_dragon.timer begin
+			d.exit_all_to_start_position()
+		end
+	end
+end

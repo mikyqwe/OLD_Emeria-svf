@@ -1,0 +1,52 @@
+quest treasure_item_lost begin 
+    state start begin
+		when login begin
+			
+			-- check if pc has invalid level
+			if pc.get_level() == 1 then
+				return
+			end
+			
+			if pc.get_level() >= 180 then
+				set_state(__COMPLETE__)
+				return
+			end
+			
+			-- check if pc has any chest
+			local hasAnyChest = false
+
+			for iChest=50187, 50199 do
+				if pc.count_item(iChest) > 0 then
+					hasAnyChest = true
+					break
+				end
+			end
+			
+			local aHighChests = {48298, 48299, 48400, 48401}
+			
+			for chests = 1, table.getn(aHighChests) do
+				if pc.count_item(aHighChests[chests]) > 0 then
+					hasAnyChest = true
+					break
+				end
+			end
+			
+			if hasAnyChest then
+				-- set_state(__COMPLETE__)
+				return
+			end
+			
+			
+			-- give chest
+			pc.give_item2(50187, 1)
+			
+			say("You got your lost chest back!")
+			say_item_vnum(50187)
+			
+			
+			set_state(__COMPLETE__)
+		end
+    end
+	state __COMPLETE__ begin
+	end
+end

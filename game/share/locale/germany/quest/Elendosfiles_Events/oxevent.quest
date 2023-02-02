@@ -1,0 +1,295 @@
+quest oxevent_manager begin
+    state start begin
+		when letter with pc.get_map_index()==113 begin
+			send_letter("Leave OX")
+		end
+		when button or info begin
+			say_title("OX Wettbewerb")
+			say("Leave the Tournament?")
+			local s=select("Yes", "No")
+			if s==2 then
+				send_letter("Leave OX")
+				return
+			end
+			local empire = pc.get_empire()
+			if empire== 1 then
+				pc.warp(90300, 67400)
+			elseif  empire == 2 then  
+				pc.warp(90300, 67400)
+			elseif  empire == 3 then 
+				pc.warp(90300, 67400)
+			end
+		end
+        when 20011.chat."The OX-Tournament" begin
+			say_title("Uriel")
+            say("Hey you there")
+            say("Yes, exactly you, come here!")
+            say("There is a Test, names")
+            say("OX-Tournament. There are")
+            say("great things to win!")
+            wait()
+            if game.get_event_flag("oxevent_status") == 0 then
+                say_title("Uriel")
+                say("When the competition starts, i'll tell you.")
+                say("so learn properly!")
+            elseif game.get_event_flag("oxevent_status") == 1 then
+                say_title("Uriel")
+                say("Would you like to participate?")
+                say("You can of course only watch.")
+                local s = select("Participate", "Watch", "Cancel")
+				if s == 1 then
+					say_title("Uriel")
+					say("You want to participate?")
+                    say("Okay - Lets go.")
+                    wait()
+					pc.warp(896500, 24600)
+                elseif s == 2 then
+                    say_title("Uriel")
+                    say("Watch?")
+                    say("Okay - if you dont trust")
+                    say("yourself the questions.")
+                    wait()
+                    pc.warp(896300, 28900)
+                end
+            elseif game.get_event_flag("oxevent_status") == 2 then
+                say_title("Uriel")
+                say("The Tournament has already started.")
+                say("You can not join anymore!")
+                say("Maybe there starts a new tournament soon.")
+                say("You can only watch now!")
+                say("Do you want to watch?")
+                local s = select("Watch", "Cancel")
+                if s == 1 then
+                    say_title("Uriel")
+                    say("Hmm, Hmm, you want to watch?")
+                    say("Watching these Tournament also")
+                    say("brings you advantages!")
+                    wait()
+                    pc.warp(896300, 28900)
+                end
+            end
+        end
+		when 20358.chat."GM: OX-Event normal" with isAdmin() begin			
+			local stat = oxevent.get_status()
+			if stat == 0 then
+				say_title("OX Wettbewerb")
+				say("OX starten?")
+				local s = select("Ja", "Nein")
+				if s==2 then return end
+				local v = oxevent.open()
+				if v == 0 then
+					say_title("OX Wettbewerb")
+					say("Konnte die oxquiz.lua nicht laden.")
+					return
+				elseif v == 1 then
+					say_title("OX Wettbewerb")
+					say("OX wurde erfolgreich gestartet.")
+					notice_all("Get ready for an OX-Tournament!")
+					notice_all("Talk to Uriel to participate.")
+				else
+					say("Error1")
+					return
+				end
+			elseif stat == 1 then
+				say_title("OX Wettbewerb")
+				say("Tore noch offen.")
+				say("Es sind "..oxevent.get_attender().." Spieler auf der Map")
+				say("")
+				local s = select("Tore schließen", "Zurück")
+				if s == 1 then
+					notice_all("The OX gates have been closed.")
+					oxevent.close()					
+				end
+			elseif stat == 2 then
+				say_title("OX Wettbewerb")
+				say("Auswahlmöglischkeiten:")
+				local s = select("OX fragen", "OX Preis", "OX schließen", "OX abbrechen", "Zurück")
+				if s == 1 then
+					local v = oxevent.quiz(1, 30)
+					if v == 0 then
+						say_title("OX Wettbewerb")
+						say("Error2")
+						return						
+					else
+						say_title("OX Wettbewerb")
+						say("Frage erfolgreich gestellt!")
+						return
+					end
+				elseif s == 2 then
+					say_title("OX Wettbewerb")
+					say("Bitte Item ID eingeben.")
+					local item_vnum = input()
+					say_title("OX Wettbewerb")
+					say("Bitte Item Anzahl eingeben.")
+					local item_count = input()
+					oxevent.give_item(item_vnum, item_count)
+					say_title("OX Wettbewerb")
+					say("An "..oxevent.get_attender().." Spieler wurden "..item_count.."x")					
+					say(item_name(item_vnum).." ausgegeben.")
+					notice_all("We have a winner! He received "..item_count.."x "..item_name(item_vnum))
+				elseif s == 3 then					
+					oxevent.end_event()
+					notice_all("The OX-Tournament is over!")
+					notice_all("Participants are teleported to their cities.")
+					setskin(0)
+				elseif s == 4 then
+					say_title("OX Wettbewerb")
+					say("Das Abbrechen kann zu problemen führen.")
+					say("Wirklich abbrechen?")
+					local s = select("Ja", "Nein")
+					if s == 1 then
+						clear_server_timer("ox_check_attender", get_server_timer_arg())
+						clear_server_timer("ox_bridge", get_server_timer_arg())
+						clear_server_timer("ox_ask_question", get_server_timer_arg())
+						clear_server_timer("ox_end", get_server_timer_arg())
+						clear_server_timer("ox_close_gate", get_server_timer_arg())
+						game.set_event_flag("ox_reward_vnum", 0)
+						game.set_event_flag("ox_reward_amount", 0)
+						game.set_event_flag("ox_attender_limit", 0)
+						oxevent.end_event_force()
+					end
+				elseif s == 5 then
+					return
+				end
+			elseif stat == 3 then
+				say_title("OX Wettbewerb")
+				say("Momentan ist eine Frage gestellt.")
+			else
+				say_title("OX Wettbewerb")
+				say("Error4")
+				return
+			end
+		end	
+		when 20358.chat."GM: Autmotischer OX" with isAdmin() begin			
+			say_title("Automatischer OX")
+			if oxevent.get_status()>0 then
+				say("Es findet bereits ein OX statt.")
+				return
+			end
+			say("Möchtest du den Automatischen OX")
+			say("starten?")
+			if select("Ja", "Nein")==2 then return end
+			say_title("Automatischer OX")
+			say("Soll nach Anzahl der Spieler oder")
+			say("bestimmter Zeit geschlossen werden?")
+			local mode = select("Zeit", "Spieleranzahl", "Abbrechen")
+			if mode==3 then return end
+			local close_time, close_amount = 0,0
+			if mode==1 then
+				say_title("Automatischer OX")
+				say("Wie viel Minuten soll die Anmeldung")
+				say("offen sein.")
+				close_time = tonumber(input())
+				if close_time==nil or close_time<=0 then
+					say("Falsche Eingabe.")
+					return
+				end
+			elseif mode==2 then
+				say_title("Automatischer OX")
+				say("Bei wievielen Spielern soll der")
+				say("Zugang geschlossen werden?")
+				say_reward("Mindestens 2")
+				close_amount = tonumber(input())
+				if close_amount==nil or close_amount<2 then
+					say("Falsche Eingabe.")
+					return
+				end
+			end
+			say_title("Automatischer OX")
+			say("Welcher Itempreis soll vergeben werden?")
+			say_reward("Gib die Vnum des Items ein.")
+			local reward = tonumber(input())
+			if reward==nil then
+				say("Falsche Eingabe.")
+				return
+			end
+			say_title("Automatischer OX")
+			say("Gib die Anzahl an, wie oft")
+			say_item_vnum(reward)
+			say("ausgegeben werden soll.")
+			local reward_amount = tonumber(input())
+			if reward_amount==nil or reward_amount<=0 or reward_amount>200 then
+				say("Falsche Eingabe.")
+				return
+			end
+			say_title("Automatischer OX")
+			say("Soll der automatische OX wirklich:")
+			if mode==1 then
+				say("Nach "..close_time.." Minuten schließen.")
+			elseif mode==2 then
+				say("Bei "..close_amount.." Spielern schließen.")
+			end
+			say("Das Item")
+			say_item_vnum(reward)
+			say(reward_amount.."x an den Gewinner ausgeben?")
+			if select("Ja", "Nein")==2 then return end
+			if oxevent.open()==1 then
+				notice_all("The OX-Tournament has been started")
+				notice_all("Talk to Uriel to participate.")
+				if mode==1 then
+					server_timer("ox_close_gate", close_time*60, pc.get_map_index())
+				elseif mode==2 then
+					server_loop_timer("ox_check_attender", 30, pc.get_map_index())
+					game.set_event_flag("ox_attender_limit", close_amount)
+				end
+				game.set_event_flag("ox_reward_vnum", reward)
+				game.set_event_flag("ox_reward_amount", reward_amount)
+			else
+				say("Error, oxquiz.lua could not find.")
+			end
+		end
+		when ox_close_gate.server_timer begin
+			notice_all("The OX gates have been closed!")
+			notice_all("The OX-Tournament has been started.")
+			server_timer("ox_bridge", 10, get_server_timer_arg())
+			oxevent.close()
+		end
+		when ox_check_attender.server_timer begin
+			if oxevent.get_attender()>=game.get_event_flag("ox_attender_limit") then
+				notice_all("The OX gates have been closed!")
+				notice_all("The OX-Tournament has been started.")
+				game.set_event_flag("ox_attender_limit", 0)
+				clear_server_timer("ox_check_attender", get_server_timer_arg())
+				server_timer("ox_bridge", 10, get_server_timer_arg())
+				oxevent.close()
+			end
+		end
+		when ox_bridge.server_timer begin
+			if oxevent.quiz(1, 30)==0 then
+				notice_all("The OX-Tournament had to be cancelled.")
+				oxevent.end_event_force()
+			end
+			server_loop_timer("ox_ask_question", 35, get_server_timer_arg())
+		end
+		when ox_ask_question.server_timer begin
+			if oxevent.get_attender()==1 then
+				clear_server_timer("ox_ask_question", get_server_timer_arg())
+				oxevent.give_item(game.get_event_flag("ox_reward_vnum"), game.get_event_flag("ox_reward_amount"))
+				notice_all("We have a winner! He received "..game.get_event_flag("ox_reward_amount").."x "..item_name(game.get_event_flag("ox_reward_vnum")))
+				server_timer("ox_end", 15, get_server_timer_arg())
+				game.set_event_flag("ox_reward_vnum", 0)
+				game.set_event_flag("ox_reward_amount", 0)
+			elseif oxevent.get_attender()==0 then
+				clear_server_timer("ox_ask_question", get_server_timer_arg())
+				notice_all("This time there is no winner, pity!")
+				server_timer("ox_end", 15, get_server_timer_arg())
+				game.set_event_flag("ox_reward_vnum", 0)
+				game.set_event_flag("ox_reward_amount", 0)
+			else
+				if oxevent.quiz(1, 30)==0 then
+					notice_all("The OX-Tournament had to be cancelled.")
+					oxevent.end_event_force()
+				end
+			end
+		end
+		when ox_end.server_timer begin
+			oxevent.end_event()
+			notice_all("The OX-Tournament is over.")
+			notice_all("Participants are teleported to heir cities")
+		end
+		when 70036.use begin
+			item.remove()
+			set_achievement(2000)
+		end
+    end
+end

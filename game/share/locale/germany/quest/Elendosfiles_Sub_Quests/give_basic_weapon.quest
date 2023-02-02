@@ -1,0 +1,120 @@
+--[[
+	UPDATE:
+		06.08: PROMOEVENT ÜBERARBEITET
+]]
+quest give_basic_weapon begin
+	state start begin
+		when login begin
+			if pc.is_gm() then
+				pc.give_item2(11971+pc.get_job(), 1)
+				local i = 189
+				if pc.get_job()==3 then i = 5129 end
+				pc.give_item2(i, 1)
+				pc.give_item2(30132, 1)
+				syschat("With Uriel's book you can announce yourself.")
+				setstate(ende)
+				return
+			end
+			pc.give_item2(50187, 1)
+			horse.set_level(21)			
+			--pc.set_skill_level(137, 20)
+			--pc.set_skill_level(138, 20)
+			--pc.set_skill_level(139, 20)
+			--pc.set_skill_level(121, 20)
+			--pc.set_skill_level(124, 20)
+			--pc.set_skill_level(129, 20)
+			--pc.give_item2(50053)
+			pc.setqf("bugged", 1)
+			setstate(info)
+		end
+	end	
+	state info begin
+		--[[when login begin
+			if horse.get_level()<21 then
+				horse.set_level(21)	
+			end
+			if pc.get_skill_level(137)<20 then
+				pc.set_skill_level(137, 20)			
+			end
+			if pc.get_skill_level(138)<20 then
+				pc.set_skill_level(138, 20)			
+			end
+			if pc.get_skill_level(139)<20 then
+				pc.set_skill_level(139, 20)			
+			end
+			if pc.get_skill_level(121)<20 then
+				pc.set_skill_level(121, 20)			
+			end
+			if pc.get_skill_level(124)<20 then
+				pc.set_skill_level(124, 20)			
+			end
+			if pc.get_skill_level(129)<20 then
+				pc.set_skill_level(129, 20)			
+			end
+		end]]
+		when letter begin
+			send_letter("Elendosfiles - The best Metin2 Server Files")
+		end
+		when button or info begin
+			say_title("Welcome to Elendosfiles, "..pc.get_name()..".")
+			say("")
+			say_reward("You are currently on the best")
+			say_reward("Metin2 server files available.")
+			say("")
+			say_reward("Over 25+ new systems await you")
+			say_reward("Years of work have gone into this!")
+			say("")
+			say_reward("Have fun with the Elendosfiles.")
+			say("")
+			say("")
+			say_reward("Kind regards [DEV]Elendos")
+			wait()
+			if game.get_event_flag("promotion_pet")==1 then
+				say_title("XXXXXXXXXXXXX")
+				say("XXXXXXXXXXXXX")
+				say("XXXXXXXXXXXXX")
+				say("XXXXXXXXXXXXX")
+				say("XXXXXXXXXXXXX")
+				wait()
+				pc.give_item2(55260, 1)
+			end
+			clear_letter()
+			set_state(ganzende)
+		end
+	end
+	state ende begin
+		when login begin
+			for i=50187, 50196 do
+				pc.remove_item(i)
+			end
+			pc.give_item2(50187, 1)	
+			syschat("Your Apprentice Chest has been removed. For this you have been added an Apprentice Chest I.")
+			set_state(ganzende)
+		end
+	end
+	state ganzende begin
+		--[[when login begin
+			if horse.get_level()<21 then
+				horse.set_level(21)	
+			end
+			if pc.get_skill_level(137)<20 then
+				pc.set_skill_level(137, 20)			
+			end
+			if pc.get_skill_level(138)<20 then
+				pc.set_skill_level(138, 20)			
+			end
+			if pc.get_skill_level(139)<20 then
+				pc.set_skill_level(139, 20)			
+			end
+			if pc.get_skill_level(121)<20 then
+				pc.set_skill_level(121, 20)			
+			end
+			if pc.get_skill_level(124)<20 then
+				pc.set_skill_level(124, 20)			
+			end
+			if pc.get_skill_level(129)<20 then
+				pc.set_skill_level(129, 20)			
+			end
+		end]]
+	end
+end

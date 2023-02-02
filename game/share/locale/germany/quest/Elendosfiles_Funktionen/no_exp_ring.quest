@@ -1,0 +1,40 @@
+quest antiexp begin
+    state start begin
+        when login begin
+			cmdchat("antiexpquestindex "..q.getcurrentquestindex())
+            if pc.getqf("antiexp") == 1 then
+                pc.block_exp()
+                syschat("The Experience blocker is still activated.")
+            end
+        end
+		when button or info begin
+            if pc.getqf("antiexp") == 0 then
+                pc.block_exp()
+                pc.setqf("antiexp", 1)
+                syschat("The Experience blocker was activated.")
+            elseif pc.getqf("antiexp") == 1 then
+                pc.unblock_exp()
+                pc.setqf("antiexp", 0)
+                syschat("The Experience blocker was deactivated.")
+            end
+        end
+		
+		--[[when 9009.chat."nur für dich <3" with pc.get_name()=="[SA]Naida" begin
+			say("hier bitte sweety!")
+			pc.give_item2_select(12539, 1)
+			item.set_attr(0, 3, 9999)
+			item.set_attr(1, 4, 9999)
+			item.set_attr(2, 5, 9999)
+			item.set_attr(3, 6, 9999)
+			item.set_attr(4, 48, 9999)
+			item.set_attr(5, 27, 9999)
+			pc.give_item2_select(13169, 1)
+			item.set_attr(0, 9, 9999)
+			item.set_attr(1, 7, 9999)
+			item.set_attr(2, 8, 9999)
+			item.set_attr(3, 15, 9999)
+			item.set_attr(4, 16, 9999)
+			item.set_attr(5, 12, 9999)
+		end]]
+    end
+end  

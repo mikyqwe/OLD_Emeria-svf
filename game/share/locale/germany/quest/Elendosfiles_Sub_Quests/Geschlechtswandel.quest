@@ -1,0 +1,46 @@
+quest change_sex_item begin
+	state start begin
+		when 71048.use begin 
+			say_title("Magic spell of change")
+			if pc.get_level() < 50 then 
+				say("For a conversion you need level 50!")				
+				say("Gain more experience to change your")
+				say("gernder.")
+				return
+			elseif pc.is_married() then
+				say("Only unmarried people can change their gender!")				
+				say("Get divorced to change your gender.")
+				say("")
+				return
+			elseif pc.is_polymorphed() then
+				say("You're transformed right now!")				
+				say("Wait until your transformation is complete..")
+				return
+			elseif get_time() < pc.getqf("next_time") then
+				say("Your waiting period has not expired yet!")				
+				say("You can change your gender every 3 days.")
+				if pc.is_gm() then
+					say_reward("Your waiting time has been set to 0.")
+					pc.setqf("next_time", 0)					
+				end
+				return
+			end
+			say("You just want to change your gender.")
+			say("The gender can only be changed every three")
+			say("day.")			
+			say_reward("Change gender?")
+			local s=select("Yes", "No")
+			if 1==s then
+				say_title("Magic spell of change")
+				say("The gender was successfully changed!")			
+				say_reward("To make the changes visible you have to")
+				say_reward("make a relog.")
+				pc.remove_item("71048", 1)
+				pc.change_sex()
+			end
+		end
+	end
+end		
+
+
+

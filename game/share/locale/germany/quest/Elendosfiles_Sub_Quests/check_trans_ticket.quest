@@ -1,0 +1,27 @@
+--[[
+	UPDATES:
+		02.08:	-PREMIUM KANN OHNE ITEM REIN
+		22.08:	-10 sek warten
+]]
+quest check_trans_ticket begin
+	state start begin
+		when 20088.chat."Pass" begin
+			say_title("Chuk-Sal")
+			say("I've never experienced anyone voluntarily")
+			say("moving to the second floor.")
+			say("There are many strong monsters waiting for you there.")
+			if pc.count_item(71095)==0 and game.get_event_flag("premium_"..pc.get_account_id())==0 then
+				say_reward("You need a pass")
+				say_reward("to get in the next floor.")
+				return
+			end
+			if select("Let me in", "Exit")==2 then return end
+			say_title("Chuk-Sal")
+			say("Okay follow me..")	
+			wait()
+			if not pc.can_warp() then syschat("You have to wait 10 seconds..") return end
+			pc.remove_item(71095, 1)
+			pc.warp(704100, 466700)			
+		end
+	end
+end

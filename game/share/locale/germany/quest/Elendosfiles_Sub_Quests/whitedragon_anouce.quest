@@ -1,0 +1,7 @@
+quest whitedragon_anouce begin
+    state start begin
+        when 6791.kill with pc.get_map_index() == 272 begin
+            notice_all(pc.get_name() .." killed the White Dragon. He will reappear in 1 hours.")
+		end
+    end
+end

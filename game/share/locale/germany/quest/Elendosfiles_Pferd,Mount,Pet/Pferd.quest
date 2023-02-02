@@ -1,0 +1,18 @@
+quest millitar_pferd begin
+	state start begin
+		when 20349.chat."Military Horse" begin
+			say_title("Stableboy:")
+			say("You want a Military Horse?")
+			say("I can serve with that, my horses are")
+			say("the best in the whole of the Elendosfiles!")
+			say("")
+			wait()
+			say_reward("You received the Military Horse Book")
+            pc.give_item2 ( "50053" , 1 )
+            horse.set_level("21")
+			set_state(complete)
+        end
+    end
+    state complete begin
+    end
+end

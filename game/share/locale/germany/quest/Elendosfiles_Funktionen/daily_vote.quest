@@ -1,0 +1,56 @@
+define WAIT_TIME 60*60*24
+
+quest daily_vote begin
+	state start begin
+		when login begin
+			if pc.getqf("last_reward") + WAIT_TIME > get_global_time() then
+				timer("daily_vote_reward_notice", pc.getqf("last_reward") + WAIT_TIME - get_global_time())
+			end
+		end
+		
+		when daily_vote_reward_notice.timer begin
+			notice("Your daily rewards ran out!")
+		end
+		
+		when 20011.chat."Daily reward" begin
+			say_title("Uriel")
+			say("I give a daily reward to you, if")
+			say("you give me a Vote Pass!")
+			say("")
+			local diff_time = (pc.getqf("last_reward") + WAIT_TIME) - get_global_time()
+			if diff_time > 0 then
+				say("I only give this reward once a")
+				say("day. Come back in "..(diff_time/60).." minutes.")
+			elseif pc.count_item(90030) == 0 then
+				say("You do not seem to have that item.")
+			else 
+				say("I see you have one of those.")
+				say("Would you like to trade it for a")
+				say("reward?")
+				if select("Yes", "No") == 2 then return end 
+				say_title("Uriel")
+				say("Which reward would you like to receive?")
+				local s = select("Strong against half humans +10%", "Max. HP +3000", "+10% chance of piercing hits", "Strong against monsters +10%", "Cancel")
+				if s == 1 then
+					affect.add_collect(apply.ATTBONUS_HUMAN, 10, WAIT_TIME)
+					syschat("You now have a +10% strong against half humans bonus for 24 hours!")
+				elseif s == 2 then				
+					affect.add_collect(apply.MAX_HP, 3000, WAIT_TIME)
+					syschat("You now have a +3000 HP bonus for 24 hours!")
+				elseif s == 3 then				
+					affect.add_collect(apply.PENETRATE_PCT, 10, WAIT_TIME)
+					syschat("You now have a +10% chance of piercing hits bonus for 24 hours!")
+				elseif s == 4 then				
+					affect.add_collect(apply.ATTBONUS_MONSTER, 10, WAIT_TIME)
+					syschat("You now have a +10% strong against monsters bonus for 24 hours!")
+				else
+					return
+				end
+				
+				pc.setqf("last_reward", get_global_time())
+				timer("daily_vote_reward_notice", WAIT_TIME)
+				pc.remove_item(90030, 1)
+			end
+		end
+	end
+end

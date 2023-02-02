@@ -1,0 +1,57 @@
+quest guild_manage begin
+    state start begin	
+		when 11000.chat."Leaving the guild" or 11002.chat."Leaving the guild" or 11004.chat."Leaving the guild" with pc.hasguild() and not pc.isguildmaster() and npc.get_empire() == pc.get_empire() begin
+		   say_title("Guardian")
+			say("Do you want to leave your Guild?")
+			say("I think your members are disappointed with you")
+			local s = select("Yes", "No")
+			if s==1 then
+				say_title("Guardian")
+				say("You're now Guildless Again!")
+				pc.remove_from_guild()
+			end
+		end
+		when 11000.chat."Dissolve Guild" or 11002.chat."Dissolve Guild" or 11004.chat."Dissolve Guild" with pc.hasguild() and pc.isguildmaster() and npc.get_empire() == pc.get_empire() begin
+			say_title("Guardian")
+			say("Do you really want to Dissolve your Guild?")
+			say("I think your members are disappointed with you")
+			local s = select("Yes", "No")
+			if s==1 then
+				say_title("Guardian")
+				say("Your guild is now broken!")
+				pc.destroy_guild()
+			end
+		end
+
+		when 11000.chat."Create Guild" or 11002.chat."Create Guild" or 11004.chat."Create Guild" with not pc.hasguild() and not pc.isguildmaster() and npc.get_empire() == pc.get_empire() begin	    
+			if game.get_event_flag("guild_withdraw_delay")*86400 > 
+			get_global_time() - pc.getqf("new_withdraw_time") or
+			game.get_event_flag("guild_disband_delay")*86400 > 
+			get_global_time() - pc.getqf("new_disband_time")	then
+				say_title("Guardian")
+				say("At the moment you cant create a guild!")
+				say("Wait a bit!")
+				return
+			end
+			say_title("Guardian")
+			say("To create a new Guild,")
+			say("you need:")
+			say("-Level 40")
+			say("-500.000 Yang")
+			say("Do you want to create a Guild??")
+			local s = select("Yes", "No")
+			if s == 2 then
+				return
+			elseif pc.get_level()<40 then
+				say_title("Guardian")
+				say("You are not Level 40.")
+				return
+			elseif pc.get_gold()<500000 then
+				say_title("Guardian")
+				say("You dont have 500.000 Yang.")
+				return
+			end			
+			game.request_make_guild()
+		end
+    end
+end

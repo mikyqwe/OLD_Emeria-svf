@@ -1,0 +1,63 @@
+define ENTRY_LEVEL 110
+define ENTRY_LEVEL_MAXIMUM 150
+
+
+
+quest hydra_neu begin
+	state start begin
+		when 37026.chat."Hydras Ship" begin
+			if pc.get_level()<ENTRY_LEVEL then
+				say("You can not enter yet")
+				say("because you are not level "..string.format("%d", ENTRY_LEVEL).." yet.")
+				return
+			end
+			if pc.get_level() >ENTRY_LEVEL_MAXIMUM then
+				say("You have exceeded the maximum level of the")
+				say("Dungeon. You must not be higher than 150")
+				say("")
+				return
+			end
+			if pc.getqf("can_access_hydra") > get_global_time() then
+				say("You cannot join yet, please wait:")
+				say("Remain: "..(string.format("%.0f", ((pc.getqf("can_access_hydra")-get_global_time())/60))).." min")
+				return
+			end
+			if pc.count_item("50342") < 1 then
+				say_title("Captain Fishman:")
+				say("Hello... So you want to go to Hydra?")
+				say("Many have already tried and failed...")
+				say("If you want to try, bring me a")
+				say("Hydra-Ticket! This looks like this:")
+				say_item_vnum(50342)
+			elseif pc.count_item("50342") >= 1 then
+				say_title("Captain Fishman:")
+				say("Great you have one!")
+				say_item_vnum(50342)
+				say_reward("I will now teleport you to the Hydra.")
+				pc.remove_item(50342, 1)
+				wait()
+				pc.setqf("can_access_hydra", get_global_time() + 1800)
+				d.new_jump(319, 167800, 526300)
+				d.spawn_mob(20432, 385, 415)
+			end
+		end
+		
+		when login begin
+			pc.remove_item(55963, 200)
+		end
+		
+		when 55963.use with pc.get_map_index() >= 3190000 and pc.get_map_index() < 3195000 begin
+			item.remove()
+			d.spawn_mob(3964,384,386)
+		end
+		when 3964.kill with pc.get_map_index() >= 3190000 and pc.get_map_index() < 3195000 begin
+			d.clear_regen()
+			timer("bosskill_hydra", 60*1)
+			notice_all(" "..pc.get_name().." killed Hydra!")
+			syschat("You will be teleported to your home village in 60 seconds.")
+		end
+		when bosskill_hydra.timer begin
+			d.exit_all_to_start_position()
+		end
+	end
+end

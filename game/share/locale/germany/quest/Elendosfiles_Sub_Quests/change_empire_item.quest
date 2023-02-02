@@ -1,0 +1,84 @@
+quest change_empire_item begin
+	state start begin
+		when 71054.use begin
+			say_title("Tinctur of Kingdoms")
+			say("With this special tincture you can")
+			say("choose a new kingdom to live your life.")
+			say("")
+			if get_time() < pc.getqf("next_use_time") then
+				say_reward("You can't change your kingdom yet.")
+				if pc.is_gm() then
+					pc.setqf("next_use_time", 0)
+				end
+				return
+			elseif party.is_party() then 
+				say_reward("You can't change your kingdom while in")
+				say_reward("a party.")
+				return
+			end
+			if change_empire_item.move_pc() == true then
+				--pc.setqf("next_use_time", get_time() + time_hour_to_sec(1*1))
+			end
+		end
+		function move_pc()
+			if pc.is_engaged() then
+				say_reward("You are married.")
+				say_reward("You can't change your kingdom.")
+				return false
+			end
+			if pc.is_married() then
+				say_reward("You are married.")
+				say_reward("You can't change your kingdom.")
+				return false
+			end
+			if pc.is_polymorphed() then
+				say_reward("You are polymorphed.")
+				say_reward("You can't change your kingdom.")
+				return false
+			end
+			if pc.has_guild() then
+				say_reward("You're member of a guild.")
+				say_reward("You can't change your kingdom.")
+				return false
+			end
+			if pc.money < 500000 then
+				say_reward("You don't have enough yang.")
+				say_reward("To change the kingdom you need atleast 500k yang.")
+				return false
+			end
+			say_reward("In which kingdom do you want to live?")
+			local s = select("Red Kingdom", "Yellow Kingdom", "Blue Kingdom", "Abort")
+			if 4==s then
+				return false 
+			end
+			say_title("Tinctur of Kingdoms")
+			say("Do you really want to change your kingdom?")
+			say("For treason against the people there is no excuse!")
+			local a = select("Change", "Don't change")
+			if 2== a then
+				return false
+			end
+			local ret = pc.change_empire(s)
+			local oldempire = pc.get_empire()
+			if ret == 999 then
+				say_title("Tinctur of Kingdoms")
+				say("You successfully change your kingdom.")
+				pc.change_gold(-500000)			
+				pc.remove_item(71054)
+				return  true
+			elseif ret == 1 then
+				say("You are already in that kingdom.")
+				say("Please choose another kingdom.")
+			elseif ret == 2 then
+				say("Changin kingdoms is not ready yet.")
+				say("You can't change your kingdom yet")
+				say("since you recently changed it already.")
+			elseif ret == 3 then
+				say("Changin kingdoms is not ready yet.")
+				say("You can't change your kingdom yet")
+				say("since you were married recently.")
+			end
+			return false
+		end
+	end
+end

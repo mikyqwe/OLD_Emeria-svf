@@ -1,0 +1,11 @@
+quest lager begin	
+	state start begin
+		when login begin 
+			cmdchat("SetQidForStorage "..q.getcurrentquestindex())
+		end
+		when button or info begin
+			game.open_safebox()
+		end
+		
+	end
+end

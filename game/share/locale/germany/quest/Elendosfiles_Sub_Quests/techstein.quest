@@ -1,0 +1,60 @@
+quest techstein begin
+	state start begin
+		when 50517.use begin
+			if pc.get_skill_group() == 0 then
+				syschat("You cannot use this stone.")
+				return
+			end
+			local result = techstein.BuildGrandMasterSkillList(pc.get_job(), pc.get_skill_group())
+			local vnum_list = result[1]
+			local name_list = result[2]
+			if table.getn(vnum_list) == 0 then
+				syschat("You have no skills to improve with this stone.")
+				return
+			end
+			say_title("Techstone")
+			say("Which skill would you like to improve?")
+			say("")
+            local handel = pc.can_warp()
+			local menu_list = {}
+			table.foreach(name_list, function(i, name) table.insert(menu_list, name) end)
+			table.insert(menu_list, "Cancel") 
+			local s=select_table(menu_list)
+			local skill_name=name_list[s]
+			local skill_vnum=vnum_list[s]
+			if table.getn(menu_list) == s then
+				return
+			elseif get_time() < pc.getqf("skill_"..skill_vnum) and not pc.is_skill_book_no_delay() then
+				syschat("You have improved this skill recently. Try again later..") 
+				return
+			elseif (not handel) or (not pc.can_warp()) then
+                syschat("You have traded or teleported recently. Try again later..")
+                return
+            end
+			syschat("You have sucessfully improved the skill "..skill_name)
+			pc.set_skill_level(skill_vnum, pc.get_skill_level(skill_vnum)+1)
+			pc.remove_skill_book_no_delay()
+			pc.remove_item(50517, 1)
+			pc.delqf("tech"..skill_vnum)
+			pc.setqf("skill_"..skill_vnum, get_time()+60*60)
+		end
+		function BuildGrandMasterSkillList(job, group)
+			GRAND_MASTER_SKILL_LEVEL = 20
+			PERFECT_MASTER_SKILL_LEVEL = 30
+			local skill_list = special.active_skill_list[job+1][group]
+			local ret_vnum_list = {}
+			local ret_name_list = {}
+			table.foreach(skill_list, 
+			function(i, skill_vnum) 
+			local skill_level = pc.get_skill_level(skill_vnum)
+			if skill_level >= GRAND_MASTER_SKILL_LEVEL and skill_level < PERFECT_MASTER_SKILL_LEVEL then
+				table.insert(ret_vnum_list, skill_vnum)
+				local name=locale.GM_SKILL_NAME_DICT[skill_vnum]
+				if name == nil then name=skill_vnum end
+				table.insert(ret_name_list, name)
+			end
+			end)
+			return {ret_vnum_list, ret_name_list}
+		end
+	end
+end

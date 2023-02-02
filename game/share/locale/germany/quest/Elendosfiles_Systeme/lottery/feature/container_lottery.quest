@@ -1,0 +1,260 @@
+quest avandos_container_lottery begin
+	state start begin
+	
+		function GetBoxItemCategory(iItemVnum)
+			
+			local aBoxCategories = {
+			
+				[60028]		= { "WEAPON_ENERGY_CASE" },
+				[60029]		= { "ARMOR_DARKNESS_CASE" },
+				[60030]		= { "WINGS_CERUS_CASE" },
+				[60031]		= { "MIX_FREE_CASE_1" },
+				[44829]		= { "COSTUME_ARMOR_CASE" },
+				[44830]		= { "BEGLEITER_CASE" },
+			
+			}
+			
+			return aBoxCategories[iItemVnum][1]
+		end
+	
+		function GetBoxItems(iItemVnum)
+		
+			local sBoxItemName = avandos_container_lottery.GetBoxItemCategory(iItemVnum)
+			
+			-- WEAPON_ENERGY_CASE
+			if sBoxItemName == "WEAPON_ENERGY_CASE" then
+			
+				local aBoxItems = {
+			  
+					[1]		= { 60276, 12, 1 },
+					[2]		= { 60277, 13, 1 },
+					[3]		= { 60278, 12, 1 },
+					[4]		= { 60279, 13, 1 },
+					[5]		= { 60260, 10, 2 },
+					[6]		= { 60263, 10, 2 },
+					[7]		= { 60264, 10, 2 },
+					[8]		= { 60267, 8, 3 },
+					[9]		= { 60268, 7, 3 },
+					[10]	= { 60270, 5, 4 },
+				}
+				
+				return aBoxItems
+			end
+			
+			-- ARMOR_DARKNESS_CASE
+			if sBoxItemName == "ARMOR_DARKNESS_CASE" then
+			
+				local aBoxItems = {
+			  
+					[1]		= { 60239, 12, 1 },
+					[2]		= { 60240, 13, 1 },
+					[3]		= { 60241, 12, 1 },
+					[4]		= { 60242, 13, 1 },
+					[5]		= { 60234, 10, 2 },
+					[6]		= { 60236, 10, 2 },
+					[7]		= { 60247, 10, 2 },
+					[8]		= { 60244, 8, 3 },
+					[9]		= { 60246, 7, 3 },
+					[10]	= { 60231, 5, 4 },
+				}
+				
+				return aBoxItems
+			end
+			
+			-- WINGS_CERUS_CASE
+			if sBoxItemName == "WINGS_CERUS_CASE" then
+			
+				local aBoxItems = {
+			  
+					[1]		= { 65210, 15, 5 },
+					[2]		= { 65211, 15, 5 },
+					[3]		= { 65212, 15, 5 },
+					[4]		= { 65213, 15, 5 },
+					[5]		= { 65214, 15, 5 },
+					[6]		= { 65206, 8, 5 },
+					[7]		= { 65207, 15, 5 },
+				}
+				
+				return aBoxItems
+			end
+			
+			-- COSTUME_ARMOR_CASE
+			if sBoxItemName == "COSTUME_ARMOR_CASE" then
+			
+				local aBoxItems = {
+			  
+					[1]		= { 41119, 15, 5 },
+					[2]		= { 41120, 15, 5 },
+					[3]		= { 41121, 15, 5 },
+					[4]		= { 41122, 15, 5 },
+					[5]		= { 41311, 15, 5 },
+					[6]		= { 41312, 15, 5 },
+					[7]		= { 45056, 15, 5 },
+					[8]		= { 45057, 15, 5 },
+					[9]		= { 45160, 15, 5 },
+					[10]	= { 45161, 15, 5 },
+				}
+				
+				return aBoxItems
+			end
+			
+			-- BEGLEITER_CASE
+			if sBoxItemName == "BEGLEITER_CASE" then
+			
+				local aBoxItems = {
+			  
+					[1]		= { 57010, 15, 5 },
+					[2]		= { 57011, 15, 5 },
+					[3]		= { 57012, 15, 5 },
+					[4]		= { 57013, 15, 5 },
+					[5]		= { 33820, 15, 5 },
+					[6]		= { 33821, 15, 5 },
+				}
+				
+				return aBoxItems
+			end
+			
+			-- TEST_BOX
+			if sBoxItemName == "TEST_BOX" then
+			
+				local aBoxItems = {
+			  
+					[1]		= { 19, 90, 1 },
+					[2]		= { 189, 10, 1 },
+				}
+				
+				return aBoxItems
+			end
+		end
+		
+		function GetBoxItemsRandomPercentageVnum(aBoxItems)
+		
+			local itemLen = table.getn(aBoxItems)
+			local iItemVnum = 0
+			local iItemPct = 0
+			local aItemVnums = {}
+			
+			local randtbl = {}
+			for i = 1, itemLen do
+				
+				iItemVnum = aBoxItems[i][1]
+				iItemPct = aBoxItems[i][2]
+				
+				aItemVnums[i] = iItemVnum
+				
+				for i2 = 1, iItemPct do
+					table.insert(randtbl, i)
+				end
+			end
+			
+			local aItemResult = {}
+			local iRandomPctId = randtbl[math.random(table.getn(randtbl))]
+			
+			-- chat(iRandomPctId)
+			
+			aItemResult[1] = iRandomPctId
+			aItemResult[2] = aItemVnums[iRandomPctId]
+			return aItemResult
+		end
+		
+		function BoxItemsCreateList(aBoxItems, iIndex)
+			
+			local sItemList = ""
+			local itemLen = table.getn(aBoxItems)
+			
+			for i = 1, itemLen do
+				sItemList = sItemList .. aBoxItems[i][iIndex]
+				
+				if i < itemLen then
+					sItemList = sItemList .. "|"
+				end
+			end
+			
+			return sItemList
+		end
+		
+		when login begin
+			pc.delqf("used_vnum")
+			pc.delqf("reward_id")
+			pc.delqf("reward_vnum")
+			pc.delqf("spinning")
+			
+			cmdchat("AVANDOS_CONTAINER_LOTTERY index/"..q.getcurrentquestindex())
+		end
+		
+		when button begin
+			cmdchat("getinputbegin")
+			local INPUT = split(input(cmdchat("AVANDOS_CONTAINER_LOTTERY input/")), "/")
+			cmdchat("getinputend")
+			
+			if INPUT[1] == "GIVE_REWARD" then
+			
+				local iRewardId = pc.getqf("reward_id")
+				local iItemRewardVnum = pc.getqf("reward_vnum")
+				
+				if iRewardId == 0 or iItemRewardVnum == 0 then
+					chat("Error: reward data are empty.")
+					return
+				end
+				
+				pc.delqf("used_vnum")
+				pc.delqf("reward_id")
+				pc.delqf("reward_vnum")
+				pc.delqf("spinning")
+				
+				-- chat("[reward] "..iRewardId.." "..iItemRewardVnum)
+				pc.give_item2(iItemRewardVnum)
+			
+			elseif INPUT[1] == "START_SPIN" then
+				
+				local iItemUsedVnum = pc.getqf("used_vnum")
+				local iRewardId = pc.getqf("reward_id")
+				
+				if iItemUsedVnum == 0 or iRewardId == 0 then
+					chat("Error: reward data are empty.")
+					return
+				end
+				
+				if pc.countitem(iItemUsedVnum) < 1 then
+					chat("Error: Used item not found.")
+					return
+				end
+				pc.remove_item(iItemUsedVnum)
+				
+				pc.setqf("spinning", 1)
+				
+				cmdchat("LotteryRegisterReward "..iRewardId)
+			end
+		end
+		
+		when 60028.use or 60029.use or 60030.use or 60031.use or 44829.use or 44830.use begin
+		
+			local isSpinning = pc.getqf("spinning")
+			if isSpinning != 0 then
+				syschat("Already spinning!")
+				return
+			end
+			
+			local iItemUsedVnum = item.vnum
+			
+			local aItems = avandos_container_lottery.GetBoxItems(iItemUsedVnum)
+			local sItemVnumList = avandos_container_lottery.BoxItemsCreateList(aItems, 1)
+			local sItemRarityList = avandos_container_lottery.BoxItemsCreateList(aItems, 3)
+			local aRewardItem = avandos_container_lottery.GetBoxItemsRandomPercentageVnum(aItems)
+			
+			local iRewardId = tonumber(aRewardItem[1])
+			local iItemRewardVnum = tonumber(aRewardItem[2])
+			
+			pc.setqf("used_vnum", iItemUsedVnum)
+			pc.setqf("reward_id", iRewardId)
+			pc.setqf("reward_vnum", iItemRewardVnum)
+			
+			cmdchat("AVANDOS_CONTAINER_LOTTERY item_vnum_list/"..sItemVnumList)
+			cmdchat("AVANDOS_CONTAINER_LOTTERY item_rarity_list/"..sItemRarityList)
+			
+			cmdchat("LotteryOpenWindow")
+			-- cmdchat("LotteryRegisterReward "..iRewardId)
+		end
+		
+	end
+end

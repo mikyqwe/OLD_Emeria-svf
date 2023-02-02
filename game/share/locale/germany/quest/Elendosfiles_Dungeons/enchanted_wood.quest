@@ -1,0 +1,74 @@
+define MAP_INDEX 405
+define NPC 20412
+define BOSS 6418
+define ITEM 90028
+define WAIT_TIME 60*60
+
+quest enchanted_wood begin
+	state start begin
+		when login with pc.get_map_index() >= MAP_INDEX * 10000 and pc.get_map_index() < (MAP_INDEX + 1) * 10000 begin
+			pc.set_warp_location(MAP_INDEX, 8081, 14965)
+		end
+		
+		when NPC.chat."Into the dungeon.." with pc.get_map_index() == MAP_INDEX begin
+			say_title(""..mob_name(NPC).."")
+			say("Do you want to enter the dungeon and")
+			say("face Jotun Thrym? He will need an hour")
+			say("after being faced to come back.")
+			if not party.is_party() then
+				say("You can only face him in a party.")
+				return
+			elseif game.get_event_flag("enchanted_wood_block_time") > get_global_time() then
+				say("You can not enter the dungeon right")
+				say("now, because Jotun Thrym is not back yet.")
+				say("Wait another ".. math.floor((game.get_event_flag("enchanted_wood_block_time") - get_global_time()) / 60) .." minutes.")
+				return
+			end
+			
+			local pids = {party.get_member_pids()}
+			local ticketCheck = true
+			for i, pid in next, pids, nil do
+				q.begin_other_pc_block(pid)
+				if pc.count_item(ITEM) == 0 then
+					ticketCheck = false
+				end
+				q.end_other_pc_block()
+			end
+
+			if not ticketCheck then
+				say("Not all party members have the item.")
+				return
+			end
+			
+			
+			if select("Yes", "No") == 2 then return end
+			for i, pid in next, pids, nil do
+				q.begin_other_pc_block(pid)
+				pc.remove_item(ITEM, 1)
+				q.end_other_pc_block()
+			end
+			
+			--d.new_jump_party(MAP_INDEX, 148, 941)
+			d.new_jump_party(MAP_INDEX, 7828, 15019)
+			d.regen_file ("data/dungeon/juton/regen.txt")
+			game.set_event_flag("enchanted_wood_block_time", get_global_time() + WAIT_TIME)
+		end
+		
+		when BOSS.kill begin
+			if pc.get_map_index() >= MAP_INDEX * 10000 and pc.get_map_index() < (MAP_INDEX + 1)*10000 then
+				--d.purge()
+				--d.clear_regen()
+				notice_all("The group of "..pc.get_name().." killed Jotun Thrym!")
+				d.notice("You will be teleported to your own City in 30 seconds!")
+				server_timer("enchanted_wood_end", 30, d.get_map_index())
+			end
+		end
+		
+		when enchanted_wood_end.server_timer begin
+			if d.select(get_server_timer_arg()) then
+				warp_all_to_village(d.get_map_index(), 1)
+			end
+		end
+	end
+end	
+		

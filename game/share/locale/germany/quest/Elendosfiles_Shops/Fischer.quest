@@ -1,0 +1,62 @@
+quest fisher begin
+    state start begin
+		when 9009.chat."Shop use" begin
+			npc.open_shop()
+			setskin(NOWINDOW)
+		end
+		when 9009.chat."Improving the fishing rod" begin
+			say_title("Fisher")
+            say("So you want to know about the")
+            say("secrets of the rod?")
+            say("To be honest, it's not a big deal.")
+            say("The more time you invest in fishing,")
+            say("the faster the level of the angel rises.")
+            say("if your angel has been used enough you")
+            say("can give ie to me and i'll try to upgrade it.")     
+		end
+        when 9009.take with item.vnum<27400 or item.vnum>27590 begin
+            say_title("Fisher")
+            say("I can only improve fishing rods.")
+        end
+        when 9009.take with item.vnum == 27590 begin
+            say_title("Fisher")
+            say("These fishing rod can no longer be improved.")
+        end
+        when 9009.take with item.vnum >= 27400 and item.vnum < 27590 and item.get_socket(0)!= item.get_value(2) begin
+            say_title("Fisher")
+            say("The fishing rod has not been used enough to improve it")
+        end
+        when 9009.take with item.vnum >= 27400 and item.vnum < 27590 and item.get_socket(0) == item.get_value(2) begin
+            say_title("Fisher")
+            say("You want to have your fishing rod improved?")
+            say("Let me see...")
+            say(string.format("Your Rod is Level %d.", item.get_value(0) / 10))
+            say("Hmm, I don't think I'm good enough")
+			say("to improve this fishing line. Should I try it?")
+            say(string.format("It may be that the level of your Angel Level %d von 100", 100 - item.get_value(3)))
+            say("be reduced.")
+            say("Should I try it anyway?")
+            local s = select("Yes", "No")
+			if s == 1 then
+				local f = __fish_real_refine_rod(item.get_cell())
+				say_title("Fisher")
+                if f == 2 then					
+                    say("Unfortunately I didn't manage to improve your rod")
+					say("but it wasn't destroyed")                              
+                    say("You'll get her back as it was.")
+                    say("")
+                elseif f == 1 then
+                    say("Hey, it worked!")
+                    say("Here's your improved fishing rod!")
+                else
+                    say("Damn it didn't work out!")
+                    say("I'm sorry your rod was taken by a level")
+                    say("down. I had warned you!")
+                end
+			else
+                say_title("Fisher")
+                say("Come back later.")
+            end
+        end
+    end
+end

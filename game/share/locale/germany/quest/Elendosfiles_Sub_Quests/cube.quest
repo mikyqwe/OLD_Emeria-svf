@@ -1,0 +1,97 @@
+quest cube begin
+	state start begin
+		when 34085.chat."PvP - Equipment?"  with pc.get_level()>=1 begin
+			say("PvP Smith")
+			say("Hello "..pc.get_name())
+			say("With me you can make your PvP equipment!")
+			say("There are many things that will help you.")
+			say("Do you want to try it?")
+			wait()
+			setskin(NOWINDOW)
+			command("cube open")
+		end
+		when 34087.chat."Belts?"  with pc.get_level()>=1 begin
+			say("Belts Smith")
+			say("Hello "..pc.get_name())
+			say("With me you can make Belts!")
+			say("These can help you in different situations.")
+			say("Do you want to try it?")
+			wait()
+			setskin(NOWINDOW)
+			command("cube open")
+		end
+		when 34088.chat."Dungeon Tickets?"  with pc.get_level()>=1 begin
+			say("Dungeon Tickets Smith")
+			say("Hello "..pc.get_name())
+			say("With me you can make Dungeon Tickets!")
+			say("You need them to get into Dungeon.")
+			say("Do you want to try it?")
+			wait()
+			setskin(NOWINDOW)
+			command("cube open")
+		end
+		when 34089.chat."Mounts and Pets?"  with pc.get_level()>=1 begin
+			say("Mounts and Pets Smith")
+			say("Hello "..pc.get_name())
+			say("Here you can craft mounts and pets.")
+			say("These can help you in different situations.")
+			say("Do you want to try it?")
+			wait()
+			setskin(NOWINDOW)
+			command("cube open")
+		end
+		when 34090.chat."PvM - Equipment?"  with pc.get_level()>=1 begin
+			say("PvM Smith")
+			say("Hello "..pc.get_name())
+			say("Here you can create your PvM equipment.")
+			say("These can help you in different situations.")
+			say("Do you want to try it?")
+			wait()
+			setskin(NOWINDOW)
+			command("cube open")
+		end
+		when 34086.chat."Rings / Shinings / Others?"  with pc.get_level()>=1 begin
+			say("Rings / Shinings / Others Smith")
+			say("Hello "..pc.get_name())
+			say("Here you can make rings, shinings and other useful things.")
+			say("These can help you in different situations.")
+			say("Do you want to try it?")
+			wait()
+			setskin(NOWINDOW)
+			command("cube open")
+		end
+		when 9928.chat."Exchange your Event Items"  with pc.get_level()>=1 begin
+			say("Florentina:")
+			say("")
+			say_reward("Hello "..pc.get_name())
+			say("You can exchange your Event Items with me.")
+			say("I have learned the skill of crafting.")
+			say("Do you trust me with your items?")
+			wait()
+			setskin(NOWINDOW)
+			command("cube open")
+		end
+		when 22811.chat."Exchange your Event Items"  with pc.get_level()>=1 begin
+			say("Angel of God:")
+			say("")
+			say_reward("Hello "..pc.get_name())
+			say("You can exchange your Event Items with me.")
+			say("I have learned the skill of crafting.")
+			say("Do you trust me with your items?")
+			wait()
+			setskin(NOWINDOW)
+			command("cube open")
+		end
+		when 22821.chat."Summer Event Crafting"  with pc.get_level()>=1 begin
+			say("Plant Troll:")
+			say("")
+			say_reward("Hello "..pc.get_name())
+			say("You can exchange your Event Items with me.")
+			say("I have learned the skill of crafting.")
+			say("Do you trust me with your items?")
+			wait()
+			setskin(NOWINDOW)
+			command("cube open")
+		end
+	end
+end

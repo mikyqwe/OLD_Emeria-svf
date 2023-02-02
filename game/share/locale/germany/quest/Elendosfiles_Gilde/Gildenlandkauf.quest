@@ -1,0 +1,53 @@
+quest guild_building begin
+    state start begin
+		when 20040.click begin
+			say_title("Land Management")
+			say("I am a property manager and responsible")
+			say("for the sale of land. before the monsters")
+			say("occupied the country in the middle of the continent,")
+			say("we did not suffer from land shortages")
+			say("and everyone was fine. Now I'm only selling")
+			say("the land to the guild leaders")
+			say("who use it as a guild land.")
+			say("Do you want to buy it?")
+			local s = select("Yes", "No")
+			if s == 1 then
+				local land_id = building.get_land_id(pc.get_map_index(), pc.get_x()*100, pc.get_y()*100)
+				local price, owner, guild_level_limit = building.get_land_info(land_id)
+				say_title("Land Management")
+				if not pc.is_guild_master() then				
+					say("I can't sell you this land,")
+					say("because you are not the guild leader.")
+					return
+				elseif building.has_land(pc.get_guild()) then
+					say("You already own a guild land.")
+					return
+				elseif guild.level(pc.get_guild()) < guild_level_limit then
+					say("Your guild level is too low.")
+					return
+				elseif land_id == 0 then
+					say("Land ID could not be determined.")
+					return
+				elseif owner != 0 then
+					say("This piece of land has already been purchased.")
+					return
+				end
+				say("The following costs apply to this country.")
+				say("Purchase price: "..price.." Yang.")
+				say("Do you really want to buy this country?")
+				s = select("Yes", "No")
+				if s == 1 then
+					say_title("Land Management")
+					if pc.get_gold()<price then					
+						say("You don't have enough Yang.")
+						return
+					end
+					pc.changegold(-price)
+					building.set_land_owner(land_id, pc.get_guild())
+					notice_all(guild.name(pc.get_guild()).." now owns a guild land!")
+				end
+			end
+		end
+	end
+end
+

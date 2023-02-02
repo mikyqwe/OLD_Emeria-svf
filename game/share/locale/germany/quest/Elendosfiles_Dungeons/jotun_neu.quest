@@ -1,0 +1,57 @@
+define ENTRY_LEVEL 105
+
+
+
+
+quest jotun_neu begin
+	state start begin
+		when 20412.chat."Jotuns Boss Chamber" begin
+			if pc.get_level()<ENTRY_LEVEL then
+				say("You can not enter yet")
+				say("because you are not level "..string.format("%d", ENTRY_LEVEL).." yet.")
+				return
+			end
+			if pc.getqf("can_access_jotun") > get_global_time() then
+				say("You cannot join yet, please wait:")
+				say("Remain: "..(string.format("%.0f", ((pc.getqf("can_access_jotun")-get_global_time())/60))).." min")
+				return
+			end
+			if pc.count_item("90028") < 1 then
+				say_title("Forest Guardian Leader:")
+				say("Hello... So you want to go to Jotun Thrym?")
+				say("Many have already tried and failed...")
+				say("If you want to try, bring me a")
+				say("Stone of the Dryads! This looks like this:")
+				say_item_vnum(90028)
+			elseif pc.count_item("90028") >= 1 then
+				say_title("Forest Guardian Leader:")
+				say("Great you have one!")
+				say_item_vnum(90028)
+				say_reward("I will now teleport you to the Jotun Thrym.")
+				pc.remove_item(90028, 1)
+				wait()
+				pc.setqf("can_access_jotun", get_global_time() + 1800)
+				d.new_jump(405, 781400, 1502200)
+				d.spawn_mob(36270, 70, 942)
+			end
+		end
+		
+		when login begin
+			pc.remove_item(55964, 200)
+		end
+		
+		when 55964.use with pc.get_map_index() >= 4050000 and pc.get_map_index() < 4055000 begin
+			item.remove()
+			d.spawn_mob(6418,68,941)
+		end
+		when 6418.kill with pc.get_map_index() >= 4050000 and pc.get_map_index() < 4055000 begin
+			d.clear_regen()
+			timer("bosskill_jotun", 60*1)
+			notice_all(" "..pc.get_name().." killed Jotun Thrym!")
+			syschat("You will be teleported to your home village in 60 seconds.")
+		end
+		when bosskill_jotun.timer begin
+			d.exit_all_to_start_position()
+		end
+	end
+end

@@ -1,0 +1,58 @@
+define gutschein1_vnum 80017
+define gutschein1_amount 50
+define gutschein2_vnum 80014
+define gutschein2_amount 100
+define gutschein3_vnum 80015
+define gutschein3_amount 500
+define gutschein4_vnum 80016
+define gutschein4_amount 1000
+define gutschein5_vnum 61041
+define gutschein5_amount 50000
+define gutschein6_vnum 61042
+define gutschein6_amount 5000
+
+quest is_coin_gutschein begin
+	state start begin
+		when gutschein1_vnum.use begin
+            if item.remove()==1 then
+                notice(string.format("You received %d coins.", gutschein1_amount))
+                mysql_query("UPDATE account.account SET coins=coins+"..string.format("%d", gutschein1_amount).." WHERE id="..pc.get_account_id()..";")
+			end
+		end
+		
+		when gutschein2_vnum.use begin
+            if item.remove()==1 then
+                notice(string.format("You received %d coins.", gutschein2_amount))
+                mysql_query("UPDATE account.account SET coins=coins+"..string.format("%d", gutschein2_amount).." WHERE id="..pc.get_account_id()..";")
+			end
+		end
+		
+		when gutschein3_vnum.use begin
+            if item.remove()==1 then
+                notice(string.format("You received %d coins.", gutschein3_amount))
+                mysql_query("UPDATE account.account SET coins=coins+"..string.format("%d", gutschein3_amount).." WHERE id="..pc.get_account_id()..";")
+			end
+		end
+		
+		when gutschein4_vnum.use begin
+            if item.remove()==1 then
+                notice(string.format("You received %d coins.", gutschein4_amount))
+                mysql_query("UPDATE account.account SET coins=coins+"..string.format("%d", gutschein4_amount).." WHERE id="..pc.get_account_id()..";")
+            end
+        end
+		
+		when gutschein5_vnum.use begin
+            if item.remove()==1 then
+                notice(string.format("You received %d Freeshop-Coins.", gutschein5_amount))
+                mysql_query("UPDATE account.account SET free_shop=free_shop+"..string.format("%d", gutschein5_amount).." WHERE id="..pc.get_account_id()..";")
+			end
+		end
+		
+		when gutschein6_vnum.use begin
+            if item.remove()==1 then                
+                notice(string.format("You received %d Freeshop-Coins.", gutschein6_amount))
+                mysql_query("UPDATE account.account SET free_shop=free_shop+"..string.format("%d", gutschein6_amount).." WHERE id="..pc.get_account_id()..";")
+			end
+		end
+	end
+end
