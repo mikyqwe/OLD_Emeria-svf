@@ -1,7 +1,7 @@
 quest switcher_tausch begin
 	state start begin
 		when 30286.take with item.vnum==27990 begin
-			if item.get_count()<50 then syschat("You can only exchange 50 pieces.") return end
+			if item.get_count()<50 then syschat("Poti schimba doar 50 de bucati de piatra.") return end
 			pc.remove_item(27990, 50)
 			local num = number(1, 4)
 			if num == 1 then
@@ -13,19 +13,19 @@ quest switcher_tausch begin
 			elseif num == 4 then
 				pc.give_item2(27987, 15)
 			end
-			syschat("Successfully exchanged!")
+			syschat("Schimbul a fost efectuat cu succes!")
 		end
-		when 30286.chat."Exchange Stone Pieces" begin
+		when 30286.chat."Schimba bucata de piatra" begin
 			say_title("Exchange Guardian:")
-			say("I exchange 50 Stone Pieces against")
-			say("one of the following Items randomly:")
+			say("Da-mi 50 de bucati de piatra si iti voi da la schimb")
+			say("unul din aceste iteme aleatoriu:")
 			say("")
 			say_reward("1x White Pearl")
 			say_reward("1x Blue Pearl")
 			say_reward("1x Red Pearl")
 			say_reward("15x Clams")
 			say("")
-			say("Just pull the Stone Pieces on me!")
+			say("Doar trage bucata de piatra pe mine!")
 		end
 	end
 end

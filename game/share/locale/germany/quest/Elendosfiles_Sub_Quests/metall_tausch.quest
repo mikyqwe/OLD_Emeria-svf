@@ -1,22 +1,22 @@
 quest metall_tausch begin
 	state start begin
 		when 30286.take with item.vnum==25040 begin
-			if item.get_count()<50 then syschat("You can only exchange 50 Blessing scrolls.") return end
+			if item.get_count()<50 then syschat("Poti schimba doar 50 Blessing scrolls.") return end
 			pc.remove_item(25040, 50)
 			local num = number(1, 1)
 			if num == 1 then
 				pc.give_item2(25041, 1)
 			end
-			syschat("Successfully exchanged!")
+			syschat("Schimbul a fost efectuat cu succes!")
 		end
-		when 30286.chat."Exchange Blessing scrolls" begin
+		when 30286.chat."Schimba Blessing scrolls" begin
 			say_title("Exchange Guardian:")
-			say("I exchange 50 Blessing scrolls.")
-			say("I give you for it :")
+			say("Da-mi 50 Blessing scrolls")
+			say("si iti voi da la schimb:")
 			say("")
 			say_reward("1x Magic Stone")
 			say("")
-			say("Just pull the Blessing scrolls on me!")
+			say("Doar trage Blessing scrolls pe mine!")
 		end
 	end
 end

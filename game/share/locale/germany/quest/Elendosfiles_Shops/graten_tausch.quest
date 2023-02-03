@@ -1,7 +1,7 @@
 quest graten_tausch begin
 	state start begin
 		when 30286.take with item.vnum==27799 begin
-			if item.get_count()<200 then syschat("You can only exchange 200 Fishbones.") return end
+			if item.get_count()<200 then syschat("Poti schimba doar 200 Fishbones.") return end
 			pc.remove_item(27799, 200)
 			local num = number(1, 4)
 			if num == 1 then
@@ -13,19 +13,19 @@ quest graten_tausch begin
 			elseif num == 4 then
 				pc.give_item2(27987, 2)
 			end
-			syschat("Successfully exchanged!")
+			syschat("Schimbul a fost efectuat cu succes!")
 		end
-		when 30286.chat."Exchange Fishbones" begin
+		when 30286.chat."Schimba Fishbones" begin
 			say_title("Exchange Guardian:")
-			say("I exchange 200 Fishbones against")
-			say("one of the following Items randomly:")
+			say("Da-mi 200 si iti voi da la schimb")
+			say("unul din aceste iteme aleatoriu:")
 			say("")
 			say_reward("1x White Pearl")
 			say_reward("1x Blue Pearl")
 			say_reward("1x Blood-Red Pearl")
 			say_reward("2x Clam")
 			say("")
-			say("Just pull the Fishbones on me!")
+			say("Doar trage Fishbones pe mine!")
 		end
 	end
 end
