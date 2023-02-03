@@ -1,7 +1,7 @@
 quest halloween_event_management begin
 	state start begin	
 		-- Event management for admins
-		when 22819.chat."Admin: Summer Event" with isAdmin() begin
+		when 22819.chat."Admin: Summer Event" with pc.is_gm() begin
 			say_title(mob_name(22819))
 			say("What do you want to do?")
 			say("At the moment the Event is")

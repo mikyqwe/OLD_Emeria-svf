@@ -69,7 +69,7 @@ quest oxevent_manager begin
                 end
             end
         end
-		when 20358.chat."GM: OX-Event normal" with isAdmin() begin			
+		when 20358.chat."GM: OX-Event normal" with pc.is_gm() begin			
 			local stat = oxevent.get_status()
 			if stat == 0 then
 				say_title("OX Wettbewerb")
@@ -95,15 +95,15 @@ quest oxevent_manager begin
 				say("Tore noch offen.")
 				say("Es sind "..oxevent.get_attender().." Spieler auf der Map")
 				say("")
-				local s = select("Tore schließen", "Zurück")
+				local s = select("Tore schlieï¿½en", "Zurï¿½ck")
 				if s == 1 then
 					notice_all("The OX gates have been closed.")
 					oxevent.close()					
 				end
 			elseif stat == 2 then
 				say_title("OX Wettbewerb")
-				say("Auswahlmöglischkeiten:")
-				local s = select("OX fragen", "OX Preis", "OX schließen", "OX abbrechen", "Zurück")
+				say("Auswahlmï¿½glischkeiten:")
+				local s = select("OX fragen", "OX Preis", "OX schlieï¿½en", "OX abbrechen", "Zurï¿½ck")
 				if s == 1 then
 					local v = oxevent.quiz(1, 30)
 					if v == 0 then
@@ -134,7 +134,7 @@ quest oxevent_manager begin
 					setskin(0)
 				elseif s == 4 then
 					say_title("OX Wettbewerb")
-					say("Das Abbrechen kann zu problemen führen.")
+					say("Das Abbrechen kann zu problemen fï¿½hren.")
 					say("Wirklich abbrechen?")
 					local s = select("Ja", "Nein")
 					if s == 1 then
@@ -160,13 +160,13 @@ quest oxevent_manager begin
 				return
 			end
 		end	
-		when 20358.chat."GM: Autmotischer OX" with isAdmin() begin			
+		when 20358.chat."GM: Autmotischer OX" with pc.is_gm() begin			
 			say_title("Automatischer OX")
 			if oxevent.get_status()>0 then
 				say("Es findet bereits ein OX statt.")
 				return
 			end
-			say("Möchtest du den Automatischen OX")
+			say("Mï¿½chtest du den Automatischen OX")
 			say("starten?")
 			if select("Ja", "Nein")==2 then return end
 			say_title("Automatischer OX")
@@ -215,9 +215,9 @@ quest oxevent_manager begin
 			say_title("Automatischer OX")
 			say("Soll der automatische OX wirklich:")
 			if mode==1 then
-				say("Nach "..close_time.." Minuten schließen.")
+				say("Nach "..close_time.." Minuten schlieï¿½en.")
 			elseif mode==2 then
-				say("Bei "..close_amount.." Spielern schließen.")
+				say("Bei "..close_amount.." Spielern schlieï¿½en.")
 			end
 			say("Das Item")
 			say_item_vnum(reward)
