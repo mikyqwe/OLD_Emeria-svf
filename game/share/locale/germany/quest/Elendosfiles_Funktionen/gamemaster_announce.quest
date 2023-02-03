@@ -1,12 +1,13 @@
 quest gamemaster_announce begin
 	state start begin
 		when 30132.use with pc.is_gm() begin
-			say_title("Announcement")
-			say("What would you like to advertise?")
-			local s = select("Online", "Offline", "Nothing")
-			local n = {pc.get_name().." is online and ready for your questions.", pc.get_name().." goes offline. Have a good time!"}
+			say_title("Anunt")
+			say("Te-ai ajuns GM...")
+			say("In ce mood esti astazi muistule?")
+			local s = select("Online", "Offline", "Inchide")
+			local n = {pc.get_name().." este online si va poate raspunde la intrebari.", pc.get_name().." este offline. O zi buna!"}
 			if s==3 then return end
-			if pc.getqf("time")>get_time() then syschat("Wait until you can advertise again.") return end
+			if pc.getqf("time")>get_time() then syschat("Hoooo, ai rabdare bai... Taca Paca") return end
 			pc.setqf("time", get_time()+60)
 			notice_all(n[s])
 		end
