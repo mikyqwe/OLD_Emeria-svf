@@ -21,12 +21,14 @@ quest gmstatus begin
 		
 		function TeamMember()
 			local TeamMember = {
-				"[GM]Elendosfiles1",
-				"[GM]Elendosfiles2",
-				"[GM]Elendosfiles3",
-				"[GM]Elendosfiles4",
-				"[GM]Elendosfiles5",
-				"[GM]Elendosfiles6"
+				"mikyhm",
+				"[TEST]Freeps",
+				"Goat",
+				"Skante",
+				"Sebi12",
+				"marean",
+				"Georgian",
+				"deniss"
 				}
 			local i = 1
 			local TeamCount = table.getn(TeamMember) + 1
