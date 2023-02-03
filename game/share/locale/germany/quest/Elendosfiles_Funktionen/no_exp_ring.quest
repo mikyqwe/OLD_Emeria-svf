@@ -4,7 +4,7 @@ quest antiexp begin
 			cmdchat("antiexpquestindex "..q.getcurrentquestindex())
             if pc.getqf("antiexp") == 1 then
                 pc.block_exp()
-                syschat("Blocarea Experientei este blocata.")
+                syschat("Experienta este blocata.")
             end
         end
 		when button or info begin
@@ -18,23 +18,5 @@ quest antiexp begin
                 syschat("Ai dezactivat Blocarea Experientei.")
             end
         end
-		
-		--[[when 9009.chat."Emeria va reusi" with pc.get_name()=="[TEST]Freeps" begin
-			say("Emeria va fi cel mai tare server Romanesc.")
-			pc.give_item2_select(12539, 1)
-			item.set_attr(0, 3, 9999)
-			item.set_attr(1, 4, 9999)
-			item.set_attr(2, 5, 9999)
-			item.set_attr(3, 6, 9999)
-			item.set_attr(4, 48, 9999)
-			item.set_attr(5, 27, 9999)
-			pc.give_item2_select(13169, 1)
-			item.set_attr(0, 9, 9999)
-			item.set_attr(1, 7, 9999)
-			item.set_attr(2, 8, 9999)
-			item.set_attr(3, 15, 9999)
-			item.set_attr(4, 16, 9999)
-			item.set_attr(5, 12, 9999)
-		end]]
     end
 end  
