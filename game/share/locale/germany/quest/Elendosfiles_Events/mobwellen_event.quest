@@ -20,7 +20,7 @@ quest mobwellen_event begin
 			pc.warp(83200, 0)
             pc.setqf("warp", 1)
 		end
-		when 20011.chat."GM: Mobinvasion" with isAdmin() begin
+		when 20011.chat."GM: Mobinvasion" with pc.is_gm() begin
 			if game.get_event_flag("mobwellen_status")==0 then
 				say("For which Empire?")
 				local s = select("Red", "Yellow", "Blue", "None")
@@ -54,7 +54,7 @@ quest mobwellen_event begin
 				warp_all_to_village(242, 2)
 			end
 		end
-		when 20011.chat."GM: Evaluate mob invasion" with isAdmin() begin
+		when 20011.chat."GM: Evaluate mob invasion" with pc.is_gm() begin
 			local tab, r = {}, {"red", "yellow", "blue"}
 			for i=1, 3 do				
 				if game.get_event_flag("mobwellen_zeit_fin"..i)==0 then
@@ -96,7 +96,7 @@ quest mobwellen_event begin
 			regen_in_map(get_server_timer_arg(), "data/dungeon/mob_wellen/mobwelle"..next_wave..".txt")
 			game.set_event_flag("mobwellen_count", next_wave)
 		end
-		when 70023.use with pc.get_map_index()==242 and isAdmin() begin
+		when 70023.use with pc.get_map_index()==242 and pc.is_gm() begin
 			if game.get_event_flag("mobwellen_count")==10 then				
 				local t = math.floor((get_time()-game.get_event_flag("mobwellen_zeit"..game.get_event_flag("mobwellen_reich")))/60)
 				notice_in_map("You killed all Monsters in "..t.." minutes!")

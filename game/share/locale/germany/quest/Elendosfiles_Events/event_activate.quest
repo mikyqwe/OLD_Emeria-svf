@@ -2,7 +2,7 @@ quest event_activate begin
 	state start begin
         when login begin
             local announce_flags = {"dropevent_mondi_an", "dropevent_fruhling_an", "oxevent_an", "mobwellen_an", "item_an", "cards_event_1"}
-            local text = {"Mondlicht-Schatztruhen Dropevent", "Rätselhafte Truhen Dropevent", "OX-Wettbewerb", "Monsterinvasion Event", "Itemsammel Event", "Okay Event"}
+            local text = {"Mondlicht-Schatztruhen Dropevent", "Rï¿½tselhafte Truhen Dropevent", "OX-Wettbewerb", "Monsterinvasion Event", "Itemsammel Event", "Okay Event"}
             for i=1, 5 do
 				if game.get_event_flag(announce_flags[i])>0 and math.ceil((game.get_event_flag(announce_flags[i])-get_time())/60)>0 then
                     notice_big("In "..math.ceil((game.get_event_flag(announce_flags[i])-get_time())/60).." Minutes finds a "..text[i].." statt!")
@@ -39,9 +39,9 @@ quest event_activate begin
                 end
 			end
         end
-		when 33002.chat."Events aktivieren/deaktivieren" with isAdmin() begin
-            say("ankündigen oder machen?")
-            local t = select("ankündigen", "machen", "nichts")
+		when 33002.chat."Events aktivieren/deaktivieren" with pc.is_gm() begin
+            say("ankï¿½ndigen oder machen?")
+            local t = select("ankï¿½ndigen", "machen", "nichts")
             if t==3 then return end
             if t==1 then
                 say("welches event?")
@@ -53,15 +53,15 @@ quest event_activate begin
                     local stu = input()
                     if tonumber(stu)==false then return end
                     game.set_event_flag(flags[q], get_time()+(stu*60*60))
-                    chat("ankündigung an")
+                    chat("ankï¿½ndigung an")
                 else
                     game.set_event_flag(flags[q], 0)
-                    chat("ankündigung aus")
+                    chat("ankï¿½ndigung aus")
                 end
                 return
             end
 			say("welches event?")
-			local s = select("promotion", "mondlicht", "fruhlings", "dropevent_jub", "Okaycard Event", "entschädigung", "nichts")--"sechseck", "nichts")			
+			local s = select("promotion", "mondlicht", "fruhlings", "dropevent_jub", "Okaycard Event", "entschï¿½digung", "nichts")--"sechseck", "nichts")			
 			if s==6 then return end			
 			local flags = {"promotion_pet", "dropevent_mondi", "dropevent_fruhling", "dropevent_jub", "cards_event", "entschaedigung"}--, "dropevent_sechs"}
 			local text = {
