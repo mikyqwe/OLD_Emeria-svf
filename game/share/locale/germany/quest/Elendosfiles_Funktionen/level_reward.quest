@@ -1,13 +1,13 @@
 --[[
 	UPDATE
-		14.01.2022.: -Belohnungen überarbeitet
+		14.01.2022.: -Belohnungen ï¿½berarbeitet
 ]]
 quest level_reward begin
     state start begin
         when levelup begin
 			if pc.is_gm() then return end
 			if table_is_in({15, 30, 40, 50, 60, 70, 80, 90, 95, 99, 105, 110, 120, 125, 130, 135, 140, 145, 150, 160, 170, 175, 180}, pc.get_level()) then
-				notice_all(pc.get_name().." has reached Level "..pc.get_level().." on the Elendosfiles. Congratulations!.")
+				notice_all(pc.get_name().." a atins nivelul "..pc.get_level().." pe server. Felicitari!")
 			end
             local l = {10, 20, 30, 40, 50, 60, 70, 80, 90, 99, 105, 110, 120, 135, 150, 160, 170, 180}
             local b = {
@@ -19,7 +19,7 @@ quest level_reward begin
                     {38054, 5},
                 },
                 {
-                    {76011, 1}, --[[ Reward Level 30 - Buch des Anführers 1x ]]
+                    {76011, 1}, --[[ Reward Level 30 - Buch des Anfï¿½hrers 1x ]]
                     {30006, 3}, --[[ Reward Level 30 - Orkzahn 3x ]]
                 },
                 {
@@ -27,7 +27,7 @@ quest level_reward begin
                 },
                 {
                     {82120, 10}, --[[ Reward Level 50  - Verbesserungstruhe Zwei 10x ]]
-                    {30015, 5},  --[[ Reward Level 50  - Dämonenandenken 5x ]]
+                    {30015, 5},  --[[ Reward Level 50  - Dï¿½monenandenken 5x ]]
                     {71015, 2},  --[[ Reward Level 50  - Erfahrungsring 1x ]]
                 },
                 {
@@ -45,12 +45,12 @@ quest level_reward begin
                     {30166, 10}, --[[ Reward Level 80 - Tugyis Tafel 10x ]]
                 },
                 {
-                    {27992, 1}, --[[ Reward Level 90 - Weiße Perle 1x ]]
+                    {27992, 1}, --[[ Reward Level 90 - Weiï¿½e Perle 1x ]]
                     {27993, 1}, --[[ Reward Level 90 - Blaue Perle 1x ]]
                     {27994, 1}, --[[ Reward Level 90 - Rote Perle 1x ]]
                 },
                 {
-                    {27992, 2}, --[[ Reward Level 99 - Weiße Perle 2x ]]
+                    {27992, 2}, --[[ Reward Level 99 - Weiï¿½e Perle 2x ]]
                     {27993, 2}, --[[ Reward Level 99 - Blaue Perle 2x ]]
                     {27994, 2}, --[[ Reward Level 99 - Rote Perle 2x ]]
                 },
@@ -69,7 +69,7 @@ quest level_reward begin
                 },
                 {
                     {82106, 3}, --[[ Reward Level 120 - Buch der Steine 3x ]]
-                    {27992, 5}, --[[ Reward Level 120 - Weiße Perle 3x ]]
+                    {27992, 5}, --[[ Reward Level 120 - Weiï¿½e Perle 3x ]]
                     {27993, 5}, --[[ Reward Level 120 - Blaue Perle 3x ]]
                     {27994, 5}, --[[ Reward Level 120 - Rote Perle 5x ]]
                     {25041, 5}, --[[ Reward Level 120 - Magischer Stein 5x ]]
@@ -80,7 +80,7 @@ quest level_reward begin
                 },
                 {
                     {80017, 1}, --[[ Reward Level 135 - Elendosfiles Coupon (50 DR) 1x ]]
-                    {27992, 5}, --[[ Reward Level 135 - Weiße Perle 5x ]]
+                    {27992, 5}, --[[ Reward Level 135 - Weiï¿½e Perle 5x ]]
                     {27993, 5}, --[[ Reward Level 135 - Blaue Perle 5x ]]
                     {27994, 5}, --[[ Reward Level 135 - Rote Perle 5x ]]
                     {25041, 5}, --[[ Reward Level 135 - Magischer Stein 5x ]]
@@ -91,7 +91,7 @@ quest level_reward begin
                 },
                 {
                     {80017, 1}, --[[ Reward Level 150 - Elendosfiles Coupon (50 DR) 1x ]]
-                    {27992, 5}, --[[ Reward Level 150 - Weiße Perle 5x ]]
+                    {27992, 5}, --[[ Reward Level 150 - Weiï¿½e Perle 5x ]]
                     {27993, 5}, --[[ Reward Level 150 - Blaue Perle 5x ]]
                     {27994, 5}, --[[ Reward Level 150 - Rote Perle 5x ]]
                     {25041, 5}, --[[ Reward Level 150 - Magischer Stein 5x ]]
@@ -102,7 +102,7 @@ quest level_reward begin
                 },
                 {
                     {60028, 1}, --[[ Reward Level 160 - Kiste der Waffen 1x ]]
-                    {27992, 5}, --[[ Reward Level 160 - Weiße Perle 5x ]]
+                    {27992, 5}, --[[ Reward Level 160 - Weiï¿½e Perle 5x ]]
                     {27993, 5}, --[[ Reward Level 160 - Blaue Perle 5x ]]
                     {27994, 5}, --[[ Reward Level 160 - Rote Perle 5x ]]
                     {25041, 5}, --[[ Reward Level 160 - Magischer Stein 5x ]]
@@ -112,8 +112,8 @@ quest level_reward begin
                     {49880, 15}, --[[ Reward Level 160 - Dunkle Truhe 15x ]]
                 },
                 {
-                    {60029, 1}, --[[ Reward Level 170 - Kiste der Rüstungen 1x]]
-                    {27992, 5}, --[[ Reward Level 170 - Weiße Perle 5x ]]
+                    {60029, 1}, --[[ Reward Level 170 - Kiste der Rï¿½stungen 1x]]
+                    {27992, 5}, --[[ Reward Level 170 - Weiï¿½e Perle 5x ]]
                     {27993, 5}, --[[ Reward Level 170 - Blaue Perle 5x ]]
                     {27994, 5}, --[[ Reward Level 170 - Rote Perle 5x ]]
                     {25041, 5}, --[[ Reward Level 170 - Magischer Stein 5x ]]
@@ -122,8 +122,8 @@ quest level_reward begin
 					{49880, 18}, --[[ Reward Level 170 - Dunkle Truhe 18x ]]
                 },
 				{
-                    {60030, 1}, --[[ Reward Level 180 - Kiste der Flügel 1x]]
-                    {27992, 5}, --[[ Reward Level 180 - Weiße Perle 5x ]]
+                    {60030, 1}, --[[ Reward Level 180 - Kiste der Flï¿½gel 1x]]
+                    {27992, 5}, --[[ Reward Level 180 - Weiï¿½e Perle 5x ]]
                     {27993, 5}, --[[ Reward Level 180 - Blaue Perle 5x ]]
                     {27994, 5}, --[[ Reward Level 180 - Rote Perle 5x ]]
                     {25041, 5}, --[[ Reward Level 180 - Magischer Stein 5x ]]
@@ -133,13 +133,13 @@ quest level_reward begin
             }
             for i = 1, table.getn(l) do
                 if (pc.get_level() == l[i]) then
-                    syschat("Congratulations on reaching the level " ..l[i])
-                    syschat("As a reward, you will receive the following Item(s):")
+                    syschat("Felicitari pentru ca ai atins nivelul " ..l[i])
+                    syschat("Emeria te recompenseaza cu:")
                     for s = 1, table.getn(b[i]) do
                         syschat(b[i][s][2] .. "x " ..item_name(b[i][s][1]).. " received.")
                         pc.give_item2(b[i][s][1], b[i][s][2])
                     end
-                    syschat("The next reward is at level: " ..l[(i+1)])
+                    syschat("Urmatoarea recompensa este la nivelul " ..l[(i+1)])
                 end
             end
         end 
