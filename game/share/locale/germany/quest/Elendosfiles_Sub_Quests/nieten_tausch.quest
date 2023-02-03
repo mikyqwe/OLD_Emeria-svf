@@ -1,7 +1,7 @@
 quest nieten_tausch begin
 	state start begin
 		when 30286.take with item.vnum==48305 begin
-			if item.get_count()<20 then syschat("You can only exchange 20 Rivets.") return end
+			if item.get_count()<20 then syschat("Poti schimba doar 20 Rivets.") return end
 			pc.remove_item(48305, 20)
 			local num = number(1, 5)
 			if num == 1 then
@@ -15,12 +15,12 @@ quest nieten_tausch begin
 			elseif num == 5 then
 				pc.give_item2(48304, 5)
 			end
-			syschat("Successfully exchanged!")
+			syschat("Schimbul a fost efectuat cu succes!")
 		end
-		when 30286.chat."Exchange Rivets" begin
+		when 30286.chat."Schimba Rivets" begin
 			say_title("Exchange Guardian:")
-			say("I exchange 20 Rivets against")
-			say("one of the following Items randomly:")
+			say("Da-mi 20 Rivets si iti voi da la schimb")
+			say("unul din aceste iteme aleatoriu:")
 			say("")
 			say_reward("5x Lucky Chest (1)")
 			say_reward("5x Lucky Chest (2)")
@@ -28,7 +28,7 @@ quest nieten_tausch begin
 			say_reward("5x Lucky Chest (4)")
 			say_reward("5x Lucky Chest (5)")
 			say("")
-			say("Just pull the Rivets on me!")
+			say("Doar trage Rivets pe mine!")
 		end
 	end
 end
