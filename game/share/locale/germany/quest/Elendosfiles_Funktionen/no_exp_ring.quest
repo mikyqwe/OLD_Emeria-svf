@@ -4,23 +4,23 @@ quest antiexp begin
 			cmdchat("antiexpquestindex "..q.getcurrentquestindex())
             if pc.getqf("antiexp") == 1 then
                 pc.block_exp()
-                syschat("The Experience blocker is still activated.")
+                syschat("Blocarea Experientei este blocata.")
             end
         end
 		when button or info begin
             if pc.getqf("antiexp") == 0 then
                 pc.block_exp()
                 pc.setqf("antiexp", 1)
-                syschat("The Experience blocker was activated.")
+                syschat("Ai activat Blocarea Experientei.")
             elseif pc.getqf("antiexp") == 1 then
                 pc.unblock_exp()
                 pc.setqf("antiexp", 0)
-                syschat("The Experience blocker was deactivated.")
+                syschat("Ai dezactivat Blocarea Experientei.")
             end
         end
 		
-		--[[when 9009.chat."nur für dich <3" with pc.get_name()=="[SA]Naida" begin
-			say("hier bitte sweety!")
+		--[[when 9009.chat."Emeria va reusi" with pc.get_name()=="[TEST]Freeps" begin
+			say("Emeria va fi cel mai tare server Romanesc.")
 			pc.give_item2_select(12539, 1)
 			item.set_attr(0, 3, 9999)
 			item.set_attr(1, 4, 9999)
