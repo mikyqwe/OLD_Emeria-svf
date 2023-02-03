@@ -4,7 +4,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga"); addimage(250, 200, "npcrussi.tga")
 			say("[ENTER][ENTER]")
-			local s = select("Warrior Armors", "Ninja Armors", "Sura Armors", "Shaman Armors", "Jewelry/Shields/Helmets", "Close")
+			local s = select("Armuri Razboinic", "Armuri Ninja", "Armuri Sura", "Armuri Shaman", "Bijuterii/Scuturi/Casti", "Inchide")
 			if s == 6 then return end
 			npc.open_shop(90+s-1)
 			setskin(NOWINDOW)
@@ -14,7 +14,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga"); addimage(240, 200, "npcwaffen.tga")
 			say("[ENTER][ENTER]")
-			if select("Weapons", "Close") == 2 then return end
+			if select("Arme", "Inchide") == 2 then return end
 			npc.open_shop(1)
 			setskin(NOWINDOW)
 		end
@@ -23,7 +23,7 @@ quest shops begin
 			say_size(380,350)
 			addimage(25, 10, "elendosfilesshop.tga"); addimage(240, 200, "Blademaster.tga")
 			say("[ENTER][ENTER]")
-			if select("Lucky Chests", "Close") == 2 then return end
+			if select("Lucky Chests", "Inchide") == 2 then return end
 			npc.open_shop(106)
 			setskin(NOWINDOW)
 		end
@@ -32,7 +32,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga"); addimage(240, 200, "npcevent.tga")
 			say("[ENTER][ENTER]")
-			if select("Event Items", "Close") == 2 then return end
+			if select("Event Items", "Inchide") == 2 then return end
 			npc.open_shop(105)
 			setskin(NOWINDOW)
 		end
@@ -41,7 +41,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga"); addimage(250, 200, "npcgemi.tga")
 			say("[ENTER][ENTER]")
-			local s = select("Main Shop", "Itemshop", "Wedding Shop", "Close")
+			local s = select("Shop Principal", "Shop Secundar", "Shop Nunta", "Inchide")
 			if s == 4 then return end
 			if s == 1 then
 				npc.open_shop(3)
@@ -57,7 +57,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga")
 			say("[ENTER][ENTER]")
-			local s = select("Prestige (1) Costumes", "Prestige (2) Costumes", "Prestige (3) Costumes", "Prestige Pets", "Prestige Sash", "Close")
+			local s = select("Prestige (1) Costumes", "Prestige (2) Costumes", "Prestige (3) Costumes", "Prestige Pets", "Prestige Sash", "Inchide")
 			if s == 6 then return end
 			if s == 1 then
 				npc.open_shop(115)
@@ -77,7 +77,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga")
 			say("[ENTER][ENTER]")
-			local s = select("Rare Pets", "Rare Costumes", "Rare Sashes", "Close")
+			local s = select("Rare Pets", "Rare Costumes", "Rare Sashes", "Inchide")
 			if s == 4 then return end
 			if s == 1 then
 				npc.open_shop(120)
@@ -93,7 +93,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga"); addimage(250, 200, "npchairs.tga")
 			say("[ENTER][ENTER]")
-			local s = select("Warrior Hairstyles Shop", "Ninja Hairstyle Shop", "Sura Hairstyle Shop", "Shaman Hairstyle Shop", "Close")
+			local s = select("Frizuri Razboinic", "Frizuri Ninja", "Frizuri Sura", "Frizuri Shaman", "Inchide")
 			if s == 5 then return end
 			if s == 1 then
 				npc.open_shop(13)
@@ -111,7 +111,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga");
 			say("[ENTER][ENTER]")
-			local s = select("Biologist", "Skill Costume", "Skill Costume (2)", "Potions and others", "Stones", "Fishes", "Close")
+			local s = select("Biologist", "Skill Costume", "Skill Costume (2)", "Potions and others", "Stones", "Fishes", "Inchide")
 			if s == 7 then return end
 			if s == 1 then
 				npc.open_shop(110)
@@ -133,7 +133,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga");
 			say("[ENTER][ENTER]")
-			local s = select("Shoulder Straps", "Belts", "Rings", "Ores", "Pets", "Costumes", "Close")
+			local s = select("Shoulder Straps", "Belts", "Rings", "Ores", "Pets", "Costumes", "Inchide")
 			if s == 7 then return end
 			if s == 1 then
 				npc.open_shop(114)
@@ -155,7 +155,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga");
 			say("[ENTER][ENTER]")
-			local s = select("Helmets", "Bracelets", "Necklaces", "Earrings", "Shoes", "Shields", "Close")
+			local s = select("Helmets", "Bracelets", "Necklaces", "Earrings", "Shoes", "Shields", "Inchide")
 			if s == 7 then return end
 			if s == 1 then
 				npc.open_shop(115)
@@ -177,7 +177,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga");
 			say("[ENTER][ENTER]")
-			local s = select("One Hands", "Two Hands", "Daggers", "Bows", "Fans", "Bells", "Close")
+			local s = select("One Hands", "Two Hands", "Daggers", "Bows", "Fans", "Bells", "Inchide")
 			if s == 7 then return end
 			if s == 1 then
 				npc.open_shop(122)
@@ -199,7 +199,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga");
 			say("[ENTER][ENTER]")
-			local s = select("Krieger Rüstungen", "Ninja Rüstungen", "Sura Rüstungen", "Schamane Rüstungen", "Close")
+			local s = select("Krieger Rï¿½stungen", "Ninja Rï¿½stungen", "Sura Rï¿½stungen", "Schamane Rï¿½stungen", "Inchide")
 			if s == 5 then return end
 			if s == 1 then
 				npc.open_shop(130)
@@ -217,7 +217,7 @@ quest shops begin
 			say_size(350,350)
 			addimage(25, 10, "elendosfilesshop.tga");
 			say("[ENTER][ENTER]")
-			local s = select("Improvement", "Damage Boost", "Costumes (2)", "Costumes (3)", "Uppitems (1)", "Uppitems (2)", "Close")
+			local s = select("Improvement", "Damage Boost", "Costumes (2)", "Costumes (3)", "Uppitems (1)", "Uppitems (2)", "Inchide")
 			if s == 7 then return end
 			if s == 1 then
 				npc.open_shop(141)
@@ -235,24 +235,24 @@ quest shops begin
 			setskin(NOWINDOW)
 		end
 	
-		--[[when 9002.chat."Warrior Armors" begin
+		--[[when 9002.chat."Armuri Razboinic" begin
 		say_size(350,350); addimage(25, 10, "shark_dungeon_bg1.tga"); addimage(220, 200, "shark_dungeon_npc1.tga")
 			npc.open_shop(90) 
 			setskin(NOWINDOW)
 		end
-		when 9002.chat."Ninja Armors" begin 
+		when 9002.chat."Armuri Ninja" begin 
 			npc.open_shop(91) 
 			setskin(NOWINDOW)  
 		end
-		when 9002.chat."Sura Armors" begin 
+		when 9002.chat."Armuri Sura" begin 
 			npc.open_shop(92) 
 			setskin(NOWINDOW)  
 		end
-		when 9002.chat."Shaman Armors" begin 
+		when 9002.chat."Armuri Shaman" begin 
 			npc.open_shop(93) 
 			setskin(NOWINDOW)
 		end
-		when 9002.chat."Jewelry/Shields/Helmets" begin 
+		when 9002.chat."Bijuterii/Scuturi/Casti" begin 
 			npc.open_shop(94) 
 			setskin(NOWINDOW) 			
 		end]]
